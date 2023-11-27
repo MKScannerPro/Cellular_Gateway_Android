@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/grey_ebebeb"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:background="@color/blue_2f84d0">
+
+        <TextView
+            android:id="@+id/tv_back"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:clickable="true"
+            android:drawableLeft="@drawable/ps101_ic_back"
+            android:drawablePadding="6dp"
+            android:gravity="center_vertical"
+            android:onClick="onBack"
+            android:paddingLeft="16dp"
+            android:text=""
+            android:textColor="@color/white_ffffff"
+            android:textSize="15sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="Selftest Interface"
+            android:textColor="@color/white_ffffff"
+            android:textSize="17sp"
+            android:textStyle="bold" />
+    </RelativeLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="10dp">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cl_selftest_status"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white_ffffff"
+                android:padding="10dp">
+
+                <TextView
+                    android:id="@+id/selftest_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:gravity="center_vertical"
+                    android:text="Selftest Status:"
+                    android:textColor="@color/black_333333"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+                <TextView
+                    android:id="@+id/tv_selftest_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="20dp"
+                    android:gravity="center_vertical"
+                    android:text="0"
+                    android:textColor="@color/black_333333"
+                    android:textSize="15sp"
+                    android:visibility="visible"
+                    app:layout_constraintBaseline_toBaselineOf="@id/selftest_status"
+                    app:layout_constraintLeft_toRightOf="@id/selftest_status" />
+
+                <TextView
+                    android:id="@+id/tv_gps_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:gravity="center_vertical"
+                    android:text="1"
+                    android:textColor="@color/black_333333"
+                    android:textSize="15sp"
+                    android:visibility="gone"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/selftest_status"
+                    tools:visibility="visible" />
+
+                <TextView
+                    android:id="@+id/tv_axis_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:text="2"
+                    android:textColor="@color/black_333333"
+                    android:textSize="15sp"
+                    android:visibility="gone"
+                    app:layout_constraintLeft_toRightOf="@+id/tv_gps_status"
+                    app:layout_constraintRight_toLeftOf="@+id/tv_flash_status"
+                    app:layout_constraintTop_toBottomOf="@id/selftest_status"
+                    tools:visibility="visible" />
+
+                <TextView
+                    android:id="@+id/tv_flash_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:text="3"
+                    android:textColor="@color/black_333333"
+                    android:textSize="15sp"
+                    android:visibility="gone"
+                    app:layout_constraintLeft_toRightOf="@id/selftest_status"
+                    app:layout_constraintRight_toLeftOf="@+id/tv_nb_status"
+                    app:layout_constraintTop_toBottomOf="@id/selftest_status"
+                    tools:visibility="visible" />
+
+                <TextView
+                    android:id="@+id/tv_nb_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:text="4"
+                    android:textColor="@color/black_333333"
+                    android:textSize="15sp"
+                    android:visibility="gone"
+                    app:layout_constraintLeft_toRightOf="@id/tv_flash_status"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/selftest_status"
+                    tools:visibility="visible" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@color/white_ffffff"
+                android:padding="10dp">
+
+                <TextView
+                    android:id="@+id/pcba_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:gravity="center_vertical"
+                    android:text="PCBA Status:"
+                    android:textColor="@color/black_333333"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_pcba_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="20dp"
+                    android:gravity="center_vertical"
+                    android:text="0"
+                    android:textColor="@color/black_333333"
+                    android:textSize="15sp"
+                    android:visibility="visible"
+                    app:layout_constraintBaseline_toBaselineOf="@id/pcba_status"
+                    app:layout_constraintLeft_toRightOf="@id/pcba_status" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@color/white_ffffff"
+                android:orientation="vertical"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0px"
+                        android:layout_height="50dp"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:text="Motor State"
+                        android:textColor="@color/black_333333"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tvMotorState"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical"
+                        android:textColor="@color/black_333333"
+                        android:textSize="15sp"
+                        tools:text="Normal" />
+                </LinearLayout>
+
+                <View style="@style/lw006_divider_line" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0px"
+                        android:layout_height="50dp"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:text="Reset Motor State"
+                        android:textColor="@color/black_333333"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tvMotorReset"
+                        android:layout_width="70dp"
+                        android:layout_height="40dp"
+                        android:background="@drawable/shape_radius_blue_btn_bg"
+                        android:gravity="center"
+                        android:onClick="resetMotorState"
+                        android:text="Reset"
+                        android:textColor="@color/white_ffffff"
+                        android:textSize="15sp" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</LinearLayout>

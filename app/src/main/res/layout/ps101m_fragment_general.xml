@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/grey_f2f2f2"
+    android:orientation="vertical"
+    android:padding="10dp">
+
+    <TextView
+        android:id="@+id/tv_device_mode"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/white_ffffff"
+        android:drawableEnd="@drawable/ps101_ic_arrow_right"
+        android:gravity="center_vertical"
+        android:onClick="onDeviceMode"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
+        android:text="@string/general_device_mode"
+        android:textColor="@color/black_333333"
+        android:textSize="15sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tv_auxiliary_interval"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="10dp"
+        android:background="@color/white_ffffff"
+        android:drawableEnd="@drawable/ps101_ic_arrow_right"
+        android:gravity="center_vertical"
+        android:onClick="onAuxiliaryInterval"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
+        android:text="@string/general_auxiliary_operation"
+        android:textColor="@color/black_333333"
+        android:textSize="15sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tv_axis_settings"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="10dp"
+        android:background="@color/white_ffffff"
+        android:drawableEnd="@drawable/ps101_ic_arrow_right"
+        android:gravity="center_vertical"
+        android:onClick="onAxisSettings"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
+        android:text="@string/general_axis_setting"
+        android:textColor="@color/black_333333"
+        android:textSize="15sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tv_ble_settings"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="10dp"
+        android:background="@color/white_ffffff"
+        android:drawableEnd="@drawable/ps101_ic_arrow_right"
+        android:gravity="center_vertical"
+        android:onClick="onBleSettings"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
+        android:text="@string/general_ble_settings"
+        android:textColor="@color/black_333333"
+        android:textSize="15sp"
+        android:textStyle="bold" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="10dp"
+        android:background="@color/white_ffffff"
+        android:gravity="center_vertical"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp">
+
+        <TextView
+            android:layout_width="0px"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:text="@string/general_heartbeat_interval"
+            android:textColor="@color/black_333333"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/et_heartbeat_interval"
+            android:layout_width="110dp"
+            android:layout_height="40dp"
+            android:layout_marginEnd="5dp"
+            android:gravity="center"
+            android:hint="1~14400"
+            android:inputType="number"
+            android:maxLength="5"
+            android:textColor="@color/black_333333"
+            android:textColorHint="@color/grey_ebebeb"
+            android:textSize="15sp"
+            tools:text="720" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Mins"
+            android:textColor="@color/black_333333"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+</LinearLayout>

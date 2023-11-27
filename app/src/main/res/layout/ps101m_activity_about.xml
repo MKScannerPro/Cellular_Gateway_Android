@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white_ffffff">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:background="@color/blue_2f84d0">
+
+        <TextView
+            android:id="@+id/tv_back"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:clickable="true"
+            android:drawableLeft="@drawable/ps101_ic_back"
+            android:drawablePadding="6dp"
+            android:gravity="center_vertical"
+            android:onClick="onBack"
+            android:paddingLeft="16dp"
+            android:textColor="@color/white_ffffff"
+            android:textSize="15sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/about_title"
+            android:textColor="@color/white_ffffff"
+            android:textSize="17sp"
+            android:textStyle="bold" />
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/iv_logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="100dp"
+        android:src="@drawable/ps101_ic_logo" />
+
+    <TextView
+        android:id="@+id/app_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/iv_logo"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp"
+        android:text="PS101-M"
+        android:textColor="@color/grey_888888"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/app_version"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/app_name"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:text="APP Version:V1.0.3"
+        android:textColor="@color/grey_a8a8a8"
+        android:textSize="17sp" />
+
+    <TextView
+        android:id="@+id/fw_version"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/app_version"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp"
+        android:text="FW Version:V1.0"
+        android:textColor="@color/grey_a8a8a8"
+        android:textSize="17sp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="150dp"
+        android:text="@string/company_name"
+        android:textColor="@color/black_333333"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/tv_company_website"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="100dp"
+        android:clickable="true"
+        android:onClick="onCompanyWebsite"
+        android:text="@string/company_website"
+        android:textColor="@color/blue_03bfea"
+        android:textSize="20sp" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:src="@drawable/ic_about_bg" />
+</RelativeLayout>

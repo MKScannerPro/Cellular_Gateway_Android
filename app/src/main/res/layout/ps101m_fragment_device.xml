@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/grey_ebebeb"
+    tools:ignore="HardcodedText"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+        <TextView
+            android:id="@+id/tv_local_data_sync"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@color/white_ffffff"
+            android:drawableEnd="@drawable/ps101_ic_arrow_right"
+            android:gravity="center_vertical"
+            android:onClick="onLocalDataSync"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:text="@string/local_data_sync"
+            android:textColor="@color/black_333333"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/white_ffffff"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp">
+
+            <TextView
+                android:layout_width="0px"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:text="MQTT Data Format"
+                android:textColor="@color/black_333333"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvDataFormat"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:background="@drawable/shape_radius_blue_btn_bg"
+                android:gravity="center"
+                android:minWidth="70dp"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:text="JSON"
+                android:textColor="@color/white_ffffff"
+                android:textSize="15sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/white_ffffff"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp">
+
+            <TextView
+                android:layout_width="0px"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:text="Current Time Zone"
+                android:textColor="@color/black_333333"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tv_time_zone"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:background="@drawable/shape_radius_blue_btn_bg"
+                android:gravity="center"
+                android:minWidth="70dp"
+                android:onClick="selectTimeZone"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:text="UTC+8"
+                android:textColor="@color/white_ffffff"
+                android:textSize="15sp" />
+        </LinearLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@color/white_ffffff"
+            android:paddingStart="10dp"
+            android:paddingTop="10dp"
+            android:paddingEnd="10dp">
+
+            <TextView
+                android:id="@+id/tv1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Low Power Prompt"
+                android:textColor="@color/black_333333"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@+id/tvLowPowerPrompt"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/tvLowPowerPrompt" />
+
+            <TextView
+                android:id="@+id/tvLowPowerPrompt"
+                android:layout_width="60dp"
+                android:layout_height="40dp"
+                android:background="@drawable/shape_radius_blue_btn_bg"
+                android:gravity="center"
+                android:text="10%"
+                android:onClick="selectLowPowerPrompt"
+                android:textColor="@color/white_ffffff"
+                android:textSize="15sp"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tvLowPowerPromptTips"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:lineSpacingMultiplier="1.2"
+                android:text="*When the battery is less than or equal to 10%, the green LED will flash once every 10 seconds."
+                android:textColor="@color/grey_666666"
+                android:textSize="12sp"
+                app:layout_constraintTop_toBottomOf="@+id/tvLowPowerPrompt" />
+
+            <View
+                android:id="@+id/line2"
+                style="@style/lw006_divider_line"
+                android:layout_marginTop="15dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvLowPowerPromptTips" />
+
+            <TextView
+                android:id="@+id/tvLowPowerPayload"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:gravity="center_vertical"
+                android:text="Low-power Payload"
+                android:textColor="@color/black_333333"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/line2" />
+
+            <ImageView
+                android:id="@+id/iv_low_power_payload"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="onLowPowerPayload"
+                android:paddingLeft="10dp"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                android:src="@drawable/ic_checked"
+                app:layout_constraintBottom_toBottomOf="@+id/tvLowPowerPayload"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/tvLowPowerPayload" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <LinearLayout
+            android:id="@+id/layoutBuzzer"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/white_ffffff"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp">
+
+            <TextView
+                android:layout_width="0px"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:text="Buzzer"
+                android:textColor="@color/black_333333"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvBuzzer"
+                android:layout_width="70dp"
+                android:layout_height="40dp"
+                android:background="@drawable/shape_radius_blue_btn_bg"
+                android:gravity="center"
+                android:text="Alarm"
+                android:onClick="onBuzzer"
+                android:textColor="@color/white_ffffff"
+                android:textSize="15sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layoutVibration"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/white_ffffff"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            app:layout_constraintTop_toBottomOf="@+id/layoutBuzzer">
+
+            <TextView
+                android:layout_width="0px"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:text="Vibration Intensity"
+                android:textColor="@color/black_333333"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvVibration"
+                android:layout_width="80dp"
+                android:layout_height="40dp"
+                android:background="@drawable/shape_radius_blue_btn_bg"
+                android:gravity="center"
+                android:text="Medium"
+                android:onClick="onVibration"
+                android:textColor="@color/white_ffffff"
+                android:textSize="15sp" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tvOnOffSet"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/white_ffffff"
+            android:drawableEnd="@drawable/ps101_ic_arrow_right"
+            android:gravity="center_vertical"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:text="ON/OFF Settings"
+            android:onClick="onOffSetting"
+            android:textColor="@color/black_333333"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@+id/layoutVibration" />
+
+        <TextView
+            android:id="@+id/tv_indicator_settings"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/white_ffffff"
+            android:drawableRight="@drawable/ps101_ic_arrow_right"
+            android:gravity="center_vertical"
+            android:onClick="onIndicatorSettings"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:text="@string/indicator_settings"
+            android:textColor="@color/black_333333"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tvNtpServerSetting"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/white_ffffff"
+            android:drawableRight="@drawable/ps101_ic_arrow_right"
+            android:gravity="center_vertical"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:text="NTP Server Settings"
+            android:textColor="@color/black_333333"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tv_factory_reset"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/white_ffffff"
+            android:drawableRight="@drawable/ps101_ic_arrow_right"
+            android:gravity="center_vertical"
+            android:onClick="onFactoryReset"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:text="Factory Reset"
+            android:textColor="@color/black_333333"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tv_device_info"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/white_ffffff"
+            android:drawableRight="@drawable/ps101_ic_arrow_right"
+            android:gravity="center_vertical"
+            android:onClick="onDeviceInfo"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:text="@string/device_information"
+            android:textColor="@color/black_333333"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+</ScrollView>

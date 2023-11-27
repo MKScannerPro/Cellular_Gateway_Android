@@ -9,15 +9,16 @@ android {
 
     defaultConfig {
         if (!isLibrary.toBoolean()) {
-            applicationId "com.moko.mkgw4"
+            applicationId "com.moko.ps101m"
         }
         minSdkVersion 18
         targetSdkVersion 33
-        versionCode 100
+        versionCode 1
         versionName "1.0.0"
+        multiDexEnabled true
 
         def formatDate = new Date().format("yyyyMMddHHmm")
-        setProperty("archivesBaseName", "MKGW4_${versionName}_${formatDate}")
+        setProperty("archivesBaseName", "PS101M_${versionName}_${formatDate}")
     }
 
     buildTypes {
@@ -73,7 +74,7 @@ android {
                 // 修改aar名称
                 variant.outputs.all { output ->
                     def formatDate = new Date().format("yyyyMMddHHmm")
-                    outputFileName = "MKGW4_${android.defaultConfig.versionName}_${formatDate}.aar"
+                    outputFileName = "PS101M_${android.defaultConfig.versionName}_${formatDate}.aar"
                 }
                 // 复制aar到指定目录
                 variant.assemble.doLast {
@@ -99,6 +100,8 @@ dependencies {
     implementation 'com.github.GrenderG:Toasty:1.4.1'
     implementation 'cn.carbswang.android:NumberPickerView:1.1.1'
     implementation 'com.guolindev.permissionx:permissionx:1.7.1'
+    implementation "androidx.viewpager2:viewpager2:1.0.0"
+    implementation files('libs/jxl.jar')
     if (!isLibrary.toBoolean()) {
         implementation project(path: ':mokosupport')
     } else {

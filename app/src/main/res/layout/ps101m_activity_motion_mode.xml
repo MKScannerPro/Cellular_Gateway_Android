@@ -1,0 +1,599 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/grey_f2f2f2"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:background="@color/blue_2f84d0">
+
+        <TextView
+            android:id="@+id/tv_back"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:clickable="true"
+            android:drawableLeft="@drawable/ps101_ic_back"
+            android:drawablePadding="6dp"
+            android:gravity="center_vertical"
+            android:onClick="onBack"
+            android:paddingLeft="16dp"
+            android:text=""
+            android:textColor="@color/white_ffffff"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/motion_mode"
+            android:textColor="@color/white_ffffff"
+            android:textSize="17sp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:clickable="true"
+            android:onClick="onSave"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:src="@drawable/ps101_ic_save" />
+
+    </RelativeLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cl_fix_on_start"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white_ffffff"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <CheckBox
+                    android:id="@+id/cb_fix_on_start"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:button="@null"
+                    android:drawableRight="@drawable/selector_cb_btn"
+                    android:gravity="center_vertical"
+                    android:text="Fix On Start"
+                    android:textColor="@color/black_333333"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <View
+                    android:id="@+id/line2"
+                    style="@style/lw006_divider_line"
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    app:layout_constraintTop_toBottomOf="@id/cb_fix_on_start" />
+
+                <TextView
+                    android:id="@+id/tv2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:gravity="center_vertical"
+                    android:text="Pos-Strategy On Start"
+                    android:textColor="@color/black_333333"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/line2" />
+
+                <TextView
+                    android:id="@+id/tv_pos_strategy_on_start"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:background="@drawable/shape_radius_blue_btn_bg"
+                    android:gravity="center"
+                    android:minWidth="70dp"
+                    android:onClick="selectPosStrategyStart"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:text="GPS"
+                    android:textColor="@color/white_ffffff"
+                    android:textSize="15sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/tv2"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/tv2" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cl_fix_in_trip"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@color/white_ffffff"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                app:layout_constraintTop_toBottomOf="@id/cl_fix_on_start">
+
+                <CheckBox
+                    android:id="@+id/cb_fix_in_trip"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:button="@null"
+                    android:drawableRight="@drawable/selector_cb_btn"
+                    android:gravity="center_vertical"
+                    android:text="Fix In Trip"
+                    android:textColor="@color/black_333333"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <View
+                    android:id="@+id/line3"
+                    style="@style/lw006_divider_line"
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    app:layout_constraintTop_toBottomOf="@id/cb_fix_in_trip" />
+
+
+                <TextView
+                    android:id="@+id/tv3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:gravity="center_vertical"
+                    android:text="Report Interval In Trip"
+                    android:textColor="@color/black_333333"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/line3" />
+
+                <EditText
+                    android:id="@+id/et_report_interval_in_trip"
+                    android:layout_width="110dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
+                    android:gravity="center"
+                    android:hint="10~86400"
+                    android:inputType="number"
+                    android:maxLength="5"
+                    android:textColor="@color/black_333333"
+                    android:textColorHint="@color/grey_ebebeb"
+                    android:textSize="15sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/tv3"
+                    app:layout_constraintRight_toLeftOf="@+id/tv3Unit"
+                    app:layout_constraintTop_toTopOf="@+id/tv3" />
+
+                <TextView
+                    android:id="@+id/tv3Unit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="s"
+                    android:textColor="@color/black_333333"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="@+id/tv3"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/tv3" />
+
+                <View
+                    android:id="@+id/line4"
+                    style="@style/lw006_divider_line"
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    app:layout_constraintTop_toBottomOf="@id/tv3" />
+
+                <TextView
+                    android:id="@+id/tv4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:gravity="center_vertical"
+                    android:text="Pos-Strategy In Trip"
+                    android:textColor="@color/black_333333"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/line4" />
+
+                <TextView
+                    android:id="@+id/tv_pos_strategy_in_trip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:background="@drawable/shape_radius_blue_btn_bg"
+                    android:gravity="center"
+                    android:minWidth="70dp"
+                    android:onClick="selectPosStrategyTrip"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:text="GPS"
+                    android:textColor="@color/white_ffffff"
+                    android:textSize="15sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/tv4"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/tv4" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cl_fix_on_end"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@color/white_ffffff"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                app:layout_constraintTop_toBottomOf="@id/cl_fix_in_trip">
+
+                <CheckBox
+                    android:id="@+id/cb_fix_on_end"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:button="@null"
+                    android:drawableRight="@drawable/selector_cb_btn"
+                    android:gravity="center_vertical"
+                    android:text="Fix On End"
+                    android:textColor="@color/black_333333"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <View
+                    android:id="@+id/line5"
+                    style="@style/lw006_divider_line"
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    app:layout_constraintTop_toBottomOf="@id/cb_fix_on_end" />
+
+                <TextView
+                    android:id="@+id/tv5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:gravity="center_vertical"
+                    android:text="Trip End Timeout"
+                    android:textColor="@color/black_333333"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/line5" />
+
+                <EditText
+                    android:id="@+id/et_trip_end_timeout"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
+                    android:gravity="center"
+                    android:hint="1~180"
+                    android:inputType="number"
+                    android:maxLength="3"
+                    android:textColor="@color/black_333333"
+                    android:textColorHint="@color/grey_ebebeb"
+                    android:textSize="15sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/tv5"
+                    app:layout_constraintRight_toLeftOf="@+id/tv5Unit"
+                    app:layout_constraintTop_toTopOf="@+id/tv5" />
+
+                <TextView
+                    android:id="@+id/tv5Unit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="x10s"
+                    android:textColor="@color/black_333333"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="@+id/tv5"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/tv5" />
+
+                <View
+                    android:id="@+id/line6"
+                    style="@style/lw006_divider_line"
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    app:layout_constraintTop_toBottomOf="@id/tv5" />
+
+                <TextView
+                    android:id="@+id/tv6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:gravity="center_vertical"
+                    android:text="Number Of Fix On End"
+                    android:textColor="@color/black_333333"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/line6" />
+
+                <EditText
+                    android:id="@+id/et_fix_on_end_number"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:hint="1~255"
+                    android:inputType="number"
+                    android:maxLength="3"
+                    android:textColor="@color/black_333333"
+                    android:textColorHint="@color/grey_ebebeb"
+                    android:textSize="15sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/tv6"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/tv6" />
+
+                <View
+                    android:id="@+id/line7"
+                    style="@style/lw006_divider_line"
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    app:layout_constraintTop_toBottomOf="@id/tv6" />
+
+                <TextView
+                    android:id="@+id/tv7"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:gravity="center_vertical"
+                    android:text="Report Interval On End"
+                    android:textColor="@color/black_333333"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/line7" />
+
+                <EditText
+                    android:id="@+id/et_report_interval_on_end"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
+                    android:gravity="center"
+                    android:hint="10~300"
+                    android:inputType="number"
+                    android:maxLength="3"
+                    android:textColor="@color/black_333333"
+                    android:textColorHint="@color/grey_ebebeb"
+                    android:textSize="15sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/tv7"
+                    app:layout_constraintRight_toLeftOf="@+id/tv7Unit"
+                    app:layout_constraintTop_toTopOf="@+id/tv7" />
+
+                <TextView
+                    android:id="@+id/tv7Unit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="s"
+                    android:textColor="@color/black_333333"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="@+id/tv7"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/tv7" />
+
+                <View
+                    android:id="@+id/line8"
+                    style="@style/lw006_divider_line"
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    app:layout_constraintTop_toBottomOf="@id/tv7" />
+
+                <TextView
+                    android:id="@+id/tv8"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:gravity="center_vertical"
+                    android:text="Pos-Strategy On End"
+                    android:textColor="@color/black_333333"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/line8" />
+
+                <TextView
+                    android:id="@+id/tv_pos_strategy_on_end"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:background="@drawable/shape_radius_blue_btn_bg"
+                    android:gravity="center"
+                    android:minWidth="70dp"
+                    android:onClick="selectPosStrategyEnd"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:text="GPS"
+                    android:textColor="@color/white_ffffff"
+                    android:textSize="15sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/tv8"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/tv8" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@color/white_ffffff"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                app:layout_constraintTop_toBottomOf="@+id/cl_fix_on_end">
+
+                <CheckBox
+                    android:id="@+id/cb_fix_on_stationary_state"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:button="@null"
+                    android:drawableRight="@drawable/selector_cb_btn"
+                    android:gravity="center_vertical"
+                    android:text="Fix On Stationary State"
+                    android:textColor="@color/black_333333"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <View
+                    android:id="@+id/line9"
+                    style="@style/lw006_divider_line"
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    app:layout_constraintTop_toBottomOf="@id/cb_fix_on_stationary_state" />
+
+                <TextView
+                    android:id="@+id/tv9"
+                    android:layout_width="0px"
+                    android:layout_height="50dp"
+                    android:layout_marginRight="10dp"
+                    android:gravity="center_vertical"
+                    android:text="Report Interval On Stationary"
+                    android:textColor="@color/black_333333"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toLeftOf="@+id/et_report_interval_on_stationary"
+                    app:layout_constraintTop_toBottomOf="@+id/line9" />
+
+                <EditText
+                    android:id="@+id/et_report_interval_on_stationary"
+                    android:layout_width="110dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="5dp"
+                    android:gravity="center"
+                    android:hint="1~14400"
+                    android:inputType="number"
+                    android:maxLength="5"
+                    android:textColor="@color/black_333333"
+                    android:textColorHint="@color/grey_ebebeb"
+                    android:textSize="15sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/tv9"
+                    app:layout_constraintRight_toLeftOf="@+id/tv9Unit"
+                    app:layout_constraintTop_toTopOf="@+id/tv9" />
+
+                <TextView
+                    android:id="@+id/tv9Unit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Mins"
+                    android:textColor="@color/black_333333"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="@+id/tv9"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/tv9" />
+
+                <View
+                    android:id="@+id/line10"
+                    style="@style/lw006_divider_line"
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    app:layout_constraintTop_toBottomOf="@id/tv9" />
+
+                <TextView
+                    android:id="@+id/tv10"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:gravity="center_vertical"
+                    android:text="Pos-Strategy On Stationary"
+                    android:textColor="@color/black_333333"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/line10" />
+
+                <TextView
+                    android:id="@+id/tv_pos_strategy_on_stationary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:background="@drawable/shape_radius_blue_btn_bg"
+                    android:gravity="center"
+                    android:minWidth="70dp"
+                    android:onClick="selectPosStrategyStationary"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:text="GPS"
+                    android:textColor="@color/white_ffffff"
+                    android:textSize="15sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/tv10"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/tv10" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cl_notify_event"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@color/white_ffffff"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                app:layout_constraintTop_toBottomOf="@id/layout">
+
+                <CheckBox
+                    android:id="@+id/cb_notify_on_start"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:button="@null"
+                    android:drawableRight="@drawable/selector_cb_btn"
+                    android:gravity="center_vertical"
+                    android:text="Notify Event On Start"
+                    android:textColor="@color/black_333333"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <View
+                    android:id="@+id/line11"
+                    style="@style/lw006_divider_line"
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    app:layout_constraintTop_toBottomOf="@id/cb_notify_on_start" />
+
+                <CheckBox
+                    android:id="@+id/cb_notify_in_trip"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:button="@null"
+                    android:drawableRight="@drawable/selector_cb_btn"
+                    android:text="Notify Event In Trip"
+                    android:textColor="@color/black_333333"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    app:layout_constraintTop_toBottomOf="@id/line11" />
+
+                <View
+                    android:id="@+id/line12"
+                    style="@style/lw006_divider_line"
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    app:layout_constraintTop_toBottomOf="@id/cb_notify_in_trip" />
+
+                <CheckBox
+                    android:id="@+id/cb_notify_on_end"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:button="@null"
+                    android:drawableRight="@drawable/selector_cb_btn"
+                    android:gravity="center_vertical"
+                    android:text="Notify Event On End"
+                    android:textColor="@color/black_333333"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    app:layout_constraintTop_toBottomOf="@id/cb_notify_in_trip" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+</LinearLayout>

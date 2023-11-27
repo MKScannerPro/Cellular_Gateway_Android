@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/grey_f2f2f2"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:background="@color/blue_2f84d0">
+
+        <TextView
+            android:id="@+id/tv_back"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:clickable="true"
+            android:drawableLeft="@drawable/ps101_ic_back"
+            android:drawablePadding="6dp"
+            android:gravity="center_vertical"
+            android:onClick="onBack"
+            android:paddingLeft="16dp"
+            android:text=""
+            android:textColor="@color/white_ffffff"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/general_axis_setting"
+            android:textColor="@color/white_ffffff"
+            android:textSize="17sp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:clickable="true"
+            android:onClick="onSave"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:src="@drawable/ps101_ic_save" />
+
+    </RelativeLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@color/white_ffffff"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:paddingLeft="10dp"
+        android:paddingTop="10dp"
+        android:paddingRight="10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Wakeup Threshold"
+            android:textColor="@color/black_333333"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/et_wakeup_threshold"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="@id/et_wakeup_threshold" />
+
+        <EditText
+            android:id="@+id/et_wakeup_threshold"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:hint="1~20"
+            android:inputType="number"
+            android:maxLength="2"
+            android:textColor="@color/black_333333"
+            android:textColorHint="@color/grey_ebebeb"
+            android:textSize="15sp"
+            app:layout_constraintHorizontal_bias="0.75"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_percent="0.25" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="x16mg"
+            android:textColor="@color/black_333333"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/et_wakeup_threshold"
+            app:layout_constraintLeft_toRightOf="@id/et_wakeup_threshold"
+            app:layout_constraintTop_toTopOf="@id/et_wakeup_threshold" />
+
+        <View
+            style="@style/lw006_divider_line"
+            android:layout_width="0dp"
+            android:layout_marginTop="10dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/et_wakeup_threshold" />
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Wakeup Duration"
+            android:textColor="@color/black_333333"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/et_wakeup_duration"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="@id/et_wakeup_duration" />
+
+        <EditText
+            android:id="@+id/et_wakeup_duration"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:hint="1~10"
+            android:inputType="number"
+            android:maxLength="2"
+            android:text=""
+            android:textColor="@color/black_333333"
+            android:textColorHint="@color/grey_ebebeb"
+            android:textSize="15sp"
+            app:layout_constraintHorizontal_bias="0.75"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/et_wakeup_threshold"
+            app:layout_constraintWidth_percent="0.25" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="x10ms"
+            android:textColor="@color/black_333333"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/et_wakeup_duration"
+            app:layout_constraintLeft_toRightOf="@id/et_wakeup_duration"
+            app:layout_constraintTop_toTopOf="@id/et_wakeup_duration" />
+
+        <View
+            style="@style/lw006_divider_line"
+            android:layout_width="0dp"
+            android:layout_marginTop="10dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/et_wakeup_duration" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Motion Threshold"
+            android:textColor="@color/black_333333"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/et_motion_threshold"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="@id/et_motion_threshold" />
+
+        <EditText
+            android:id="@+id/et_motion_threshold"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:hint="10~250"
+            android:inputType="number"
+            android:maxLength="3"
+            android:text=""
+            android:textColor="@color/black_333333"
+            android:textColorHint="@color/grey_ebebeb"
+            android:textSize="15sp"
+            app:layout_constraintHorizontal_bias="0.75"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/et_wakeup_duration"
+            app:layout_constraintWidth_percent="0.25" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="x2mg"
+            android:textColor="@color/black_333333"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/et_motion_threshold"
+            app:layout_constraintLeft_toRightOf="@id/et_motion_threshold"
+            app:layout_constraintTop_toTopOf="@id/et_motion_threshold" />
+
+        <View
+            style="@style/lw006_divider_line"
+            android:layout_width="0dp"
+            android:layout_marginTop="10dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/et_motion_threshold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Motion Duration"
+            android:textColor="@color/black_333333"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/et_motion_duration"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="@id/et_motion_duration" />
+
+        <EditText
+            android:id="@+id/et_motion_duration"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:hint="1~15"
+            android:inputType="number"
+            android:maxLength="2"
+            android:textColor="@color/black_333333"
+            android:textColorHint="@color/grey_ebebeb"
+            android:textSize="15sp"
+            app:layout_constraintHorizontal_bias="0.75"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/et_motion_threshold"
+            app:layout_constraintWidth_percent="0.25" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="x5ms"
+            android:textColor="@color/black_333333"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/et_motion_duration"
+            app:layout_constraintLeft_toRightOf="@id/et_motion_duration"
+            app:layout_constraintTop_toTopOf="@id/et_motion_duration" />
+
+        <View
+            style="@style/lw006_divider_line"
+            android:layout_width="0dp"
+            android:layout_marginTop="10dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/et_motion_duration" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>
