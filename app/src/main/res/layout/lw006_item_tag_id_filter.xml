@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="12dp">
+
+
+    <TextView
+        android:id="@+id/tv_tag_id_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Tag ID 1"
+        android:textColor="@color/lw006_black_333333"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="@id/et_tag_id"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="@id/et_tag_id" />
+
+
+    <EditText
+        android:id="@+id/et_tag_id"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:digits="0123456789abcdefABCDEF"
+        android:hint="1-6 Bytes"
+        android:maxLength="12"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:textColor="@color/lw006_black_333333"
+        android:textColorHint="@color/lw006_grey_d9d9d9"
+        android:textSize="15sp"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_percent="0.8" />
+</androidx.constraintlayout.widget.ConstraintLayout>

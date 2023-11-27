@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/lw006_white_ffffff"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:background="@color/lw006_blue_2f84d0">
+
+        <TextView
+            android:id="@+id/tv_back"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:clickable="true"
+            android:drawableLeft="@drawable/lw006_ic_back"
+            android:drawablePadding="6dp"
+            android:gravity="center_vertical"
+            android:onClick="onBack"
+            android:paddingLeft="16dp"
+            android:text=""
+            android:textColor="@color/lw006_white_ffffff"
+            android:textSize="15sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="Local Data Sync"
+            android:textColor="@color/lw006_white_ffffff"
+            android:textSize="17sp"
+            android:textStyle="bold" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/lw006_shape_radius_white_bg"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Time"
+            android:textColor="@color/lw006_black_333333"
+            android:textSize="13sp" />
+
+        <EditText
+            android:id="@+id/et_time"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.7"
+            android:gravity="center"
+            android:hint="1~65535"
+            android:inputType="number"
+            android:maxLength="5"
+            android:textColor="@color/lw006_black_333333"
+            android:textSize="13sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Days"
+            android:textColor="@color/lw006_black_333333"
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/tv_start"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="5dp"
+            android:layout_weight="1.0"
+            android:background="@drawable/lw006_selector_btn_bg"
+            android:clickable="true"
+            android:enabled="true"
+            android:gravity="center"
+            android:onClick="onStart"
+            android:text="Start"
+            android:textColor="@drawable/lw006_selector_btn_text"
+            android:textSize="13sp" />
+
+        <LinearLayout
+            android:id="@+id/ll_sync"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_weight="1.0"
+            android:clickable="true"
+            android:gravity="center_horizontal"
+            android:onClick="onSync"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/iv_sync"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:src="@drawable/lw006_ic_sync" />
+
+            <TextView
+                android:id="@+id/tv_sync"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/iv_sync"
+                android:text="Sync"
+                android:textColor="@color/lw006_black_333333"
+                android:textSize="13sp" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_empty"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_toLeftOf="@id/tv_export"
+            android:layout_weight="1.0"
+            android:clickable="true"
+            android:drawableTop="@drawable/lw006_selector_empty_enable"
+            android:enabled="false"
+            android:gravity="center_horizontal"
+            android:onClick="onEmpty"
+            android:text="Empty"
+            android:textColor="@color/lw006_black_333333"
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/tv_export"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_weight="1.0"
+            android:clickable="true"
+            android:drawableTop="@drawable/lw006_selector_export_enable"
+            android:enabled="false"
+            android:gravity="center_horizontal"
+            android:onClick="onExport"
+            android:text="Export"
+            android:textColor="@color/lw006_black_333333"
+            android:textSize="13sp" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_sum"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.0"
+            android:gravity="center"
+            android:text="Sum:N/A"
+            android:textColor="@color/lw006_black_333333"
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/tv_count"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.0"
+            android:gravity="center"
+            android:text="Count:N/A"
+            android:textColor="@color/lw006_black_333333"
+            android:textSize="13sp" />
+    </LinearLayout>
+
+    <View
+        style="@style/lw006_divider_line"
+        android:layout_margin="10dp" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_export_data"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ll_sync"
+        android:padding="10dp"
+        tools:listitem="@layout/lw006_item_export_data" />
+
+</LinearLayout>

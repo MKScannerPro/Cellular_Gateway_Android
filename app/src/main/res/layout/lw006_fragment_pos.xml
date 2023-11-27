@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/lw006_white_ffffff"
+    android:orientation="vertical">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp">
+
+        <TextView
+            android:id="@+id/tv_wifi_fix"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:drawableRight="@drawable/lw006_ic_arrow_right"
+            android:gravity="center_vertical"
+            android:onClick="onWifiFix"
+            android:text="@string/wifi_fix"
+            android:textColor="@color/lw006_black_333333"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            style="@style/lw006_divider_line"
+            android:layout_width="0dp"
+            android:layout_marginTop="10dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_wifi_fix" />
+
+        <TextView
+            android:id="@+id/tv_ble_fix"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="20dp"
+            android:drawableRight="@drawable/lw006_ic_arrow_right"
+            android:gravity="center_vertical"
+            android:onClick="onBleFix"
+            android:text="@string/bluetooth_fix"
+            android:textColor="@color/lw006_black_333333"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_wifi_fix" />
+
+        <View
+            style="@style/lw006_divider_line"
+            android:layout_width="0dp"
+            android:layout_marginTop="10dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_ble_fix" />
+
+        <TextView
+            android:id="@+id/tv_gps_fix"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="20dp"
+            android:drawableRight="@drawable/lw006_ic_arrow_right"
+            android:gravity="center_vertical"
+            android:onClick="onGPSFix"
+            android:text="GPS Fix"
+            android:textColor="@color/lw006_black_333333"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_ble_fix" />
+
+        <View
+            style="@style/lw006_divider_line"
+            android:layout_width="0dp"
+            android:layout_marginTop="10dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_gps_fix" />
+
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:text="Offline Fix"
+            android:textColor="@color/lw006_black_333333"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/iv_offline_fix"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="@id/iv_offline_fix" />
+
+        <ImageView
+            android:id="@+id/iv_offline_fix"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:src="@drawable/lw006_ic_unchecked"
+            android:padding="6dp"
+            android:clickable="true"
+            android:onClick="onOfflineFix"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_gps_fix" />
+
+        <TextView
+            android:id="@+id/offline_fix_tips"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:paddingTop="6dp"
+            android:paddingBottom="6dp"
+            android:text="* Whether to enable positioning when the device fails to connect to the Lorawan network"
+            android:textColor="@color/lw006_black_333333"
+            android:textSize="12sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/iv_offline_fix" />
+
+        <View
+            style="@style/lw006_divider_line"
+            android:layout_width="0dp"
+            android:layout_marginTop="10dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/offline_fix_tips" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

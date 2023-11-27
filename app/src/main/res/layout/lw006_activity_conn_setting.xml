@@ -1,0 +1,719 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/lw006_grey_f2f2f2"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:background="@color/lw006_blue_2f84d0">
+
+        <TextView
+            android:id="@+id/tv_back"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:drawableLeft="@drawable/lw006_ic_back"
+            android:drawablePadding="6dp"
+            android:gravity="center_vertical"
+            android:onClick="onBack"
+            android:paddingLeft="16dp"
+            android:text=""
+            android:textColor="@color/lw006_white_ffffff"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/connection_setting"
+            android:textColor="@color/lw006_white_ffffff"
+            android:textSize="17sp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:onClick="onSave"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:src="@drawable/lw006_ic_save" />
+
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1.0"
+        android:overScrollMode="never">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="10dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/lw006_white_ffffff"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="LoRaWAN Mode"
+                        android:textColor="@color/lw006_black_333333"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+
+                    <TextView
+                        android:id="@+id/tv_upload_mode"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:background="@drawable/lw006_shape_radius_blue_btn_bg"
+                        android:clickable="true"
+                        android:onClick="selectMode"
+                        android:padding="10dp"
+                        android:text="ABP"
+                        android:textColor="@color/lw006_white_ffffff"
+                        android:textSize="15sp" />
+
+                </RelativeLayout>
+
+                <View
+                    style="@style/lw006_divider_line"
+                    android:layout_marginTop="10dp" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:paddingTop="6dp"
+                    android:paddingBottom="6dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="DevEUI"
+                        android:textColor="@color/lw006_black_333333"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/et_dev_eui"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_marginLeft="90dp"
+                        android:digits="0123456789abcdefABCDEF"
+                        android:maxLength="16"
+                        android:singleLine="true"
+                        android:textSize="15sp" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:paddingTop="6dp"
+                    android:paddingBottom="6dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="AppEUI"
+                        android:textColor="@color/lw006_black_333333"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/et_app_eui"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_marginLeft="90dp"
+                        android:digits="0123456789abcdefABCDEF"
+                        android:maxLength="16"
+                        android:singleLine="true"
+                        android:textSize="15sp" />
+
+                </RelativeLayout>
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout
+                        android:id="@+id/ll_modem_otaa"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:visibility="gone"
+                        tools:visibility="visible">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:focusable="true"
+                            android:focusableInTouchMode="true"
+                            android:paddingTop="6dp"
+                            android:paddingBottom="6dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:text="AppKey"
+                                android:textColor="@color/lw006_black_333333"
+                                android:textSize="15sp"
+                                android:textStyle="bold" />
+
+                            <EditText
+                                android:id="@+id/et_app_key"
+                                android:layout_width="match_parent"
+                                android:layout_height="40dp"
+                                android:layout_marginLeft="90dp"
+                                android:digits="0123456789abcdefABCDEF"
+                                android:maxLength="32"
+                                android:singleLine="true"
+                                android:textSize="15sp" />
+
+                        </RelativeLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/ll_modem_abp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:visibility="visible">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:focusable="true"
+                            android:focusableInTouchMode="true"
+                            android:paddingTop="6dp"
+                            android:paddingBottom="6dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:text="DevAddr"
+                                android:textColor="@color/lw006_black_333333"
+                                android:textSize="15sp"
+                                android:textStyle="bold" />
+
+                            <EditText
+                                android:id="@+id/et_dev_addr"
+                                android:layout_width="match_parent"
+                                android:layout_height="40dp"
+                                android:layout_marginLeft="90dp"
+                                android:digits="0123456789abcdefABCDEF"
+                                android:maxLength="8"
+                                android:singleLine="true"
+                                android:textSize="15sp" />
+
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:focusable="true"
+                            android:focusableInTouchMode="true"
+                            android:paddingTop="6dp"
+                            android:paddingBottom="6dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:text="AppSKey"
+                                android:textColor="@color/lw006_black_333333"
+                                android:textSize="15sp"
+                                android:textStyle="bold" />
+
+                            <EditText
+                                android:id="@+id/et_app_skey"
+                                android:layout_width="match_parent"
+                                android:layout_height="40dp"
+                                android:layout_marginLeft="90dp"
+                                android:digits="0123456789abcdefABCDEF"
+                                android:maxLength="32"
+                                android:singleLine="true"
+                                android:textSize="15sp" />
+
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="6dp"
+                            android:paddingBottom="6dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:text="NwkSKey"
+                                android:textColor="@color/lw006_black_333333"
+                                android:textSize="15sp"
+                                android:textStyle="bold" />
+
+                            <EditText
+                                android:id="@+id/et_nwk_skey"
+                                android:layout_width="match_parent"
+                                android:layout_height="40dp"
+                                android:layout_marginLeft="90dp"
+                                android:digits="0123456789abcdefABCDEF"
+                                android:maxLength="32"
+                                android:singleLine="true"
+                                android:textSize="15sp" />
+
+                        </RelativeLayout>
+                    </LinearLayout>
+                </FrameLayout>
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@color/lw006_white_ffffff"
+                android:padding="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="Region/Subnet"
+                    android:textColor="@color/lw006_black_333333"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tv_region"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:background="@drawable/lw006_shape_radius_blue_btn_bg"
+                    android:clickable="true"
+                    android:onClick="selectRegion"
+                    android:padding="10dp"
+                    android:text="EU868"
+                    android:textColor="@color/lw006_white_ffffff"
+                    android:textSize="15sp" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp">
+
+                <CheckBox
+                    android:id="@+id/cb_advance_setting"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:button="@null"
+                    android:drawableRight="@drawable/lw006_selector_cb_btn"
+                    android:paddingTop="6dp"
+                    android:paddingBottom="6dp"
+                    android:text="Advanced Setting(Optional)"
+                    android:textColor="@color/lw006_blue_2f84d0"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/cb_advance_setting"
+                    android:paddingTop="6dp"
+                    android:paddingBottom="6dp"
+                    android:text="Note:Please do not modify advanced settings unless necessary."
+                    android:textColor="@color/lw006_black_333333"
+                    android:textSize="15sp" />
+            </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_advanced_setting"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical"
+                android:visibility="gone"
+                tools:visibility="visible">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/lw006_white_ffffff"
+                    android:orientation="vertical">
+
+                    <RelativeLayout
+                        android:id="@+id/rl_ch"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp"
+                        android:paddingTop="6dp"
+                        android:paddingBottom="6dp"
+                        android:visibility="gone"
+                        tools:visibility="visible">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignTop="@id/tv_ch_1"
+                            android:layout_alignBottom="@id/tv_ch_1"
+                            android:gravity="center_vertical"
+                            android:text="CH"
+                            android:textColor="@color/lw006_black_333333"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tv_ch_1"
+                            android:layout_width="90dp"
+                            android:layout_height="40dp"
+                            android:layout_marginRight="10dp"
+                            android:layout_toLeftOf="@id/tv_ch_2"
+                            android:background="@drawable/lw006_shape_radius_blue_btn_bg"
+                            android:clickable="true"
+                            android:gravity="center"
+                            android:onClick="selectCh1"
+                            android:text=""
+                            android:textColor="@color/lw006_white_ffffff"
+                            android:textSize="15sp" />
+
+                        <TextView
+                            android:id="@+id/tv_ch_2"
+                            android:layout_width="90dp"
+                            android:layout_height="40dp"
+                            android:layout_alignParentRight="true"
+                            android:background="@drawable/lw006_shape_radius_blue_btn_bg"
+                            android:clickable="true"
+                            android:gravity="center"
+                            android:onClick="selectCh2"
+                            android:text=""
+                            android:textColor="@color/lw006_white_ffffff"
+                            android:textSize="15sp" />
+
+                        <TextView
+                            android:id="@+id/tv_ch_tips"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/tv_ch_1"
+                            android:paddingTop="6dp"
+                            android:paddingBottom="6dp"
+                            android:text="*It is only used for US915,AU915,CN470"
+                            android:textColor="@color/lw006_black_333333"
+                            android:textSize="15sp" />
+
+                        <View
+                            style="@style/lw006_divider_line"
+                            android:layout_below="@id/tv_ch_tips"
+                            android:layout_marginTop="10dp" />
+                    </RelativeLayout>
+
+                    <LinearLayout
+                        android:id="@+id/ll_duty_cycle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="10dp"
+                        android:visibility="gone"
+                        tools:visibility="visible">
+
+                        <CheckBox
+                            android:id="@+id/cb_duty_cycle"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:button="@null"
+                            android:drawableRight="@drawable/lw006_selector_cb_btn"
+                            android:paddingTop="6dp"
+                            android:paddingBottom="6dp"
+                            android:text="Duty-cycle"
+                            android:textColor="@color/lw006_black_333333"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="6dp"
+                            android:paddingBottom="6dp"
+                            android:text="*It is only used for EU868,CN779,EU433 and RU864.\nOff: The uplink report interval will not be limit by region freqency.\nOn:The uplink report interval will be limit by region freqency."
+                            android:textColor="@color/lw006_black_333333"
+                            android:textSize="15sp" />
+
+                        <View
+                            style="@style/lw006_divider_line"
+                            android:layout_marginTop="10dp" />
+                    </LinearLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/rl_dr"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp"
+                        android:visibility="gone"
+                        tools:visibility="visible">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_alignBaseline="@id/tv_dr"
+                            android:text="DR For Join"
+                            android:textColor="@color/lw006_black_333333"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tv_dr"
+                            android:layout_width="90dp"
+                            android:layout_height="40dp"
+                            android:layout_alignParentRight="true"
+                            android:background="@drawable/lw006_shape_radius_blue_btn_bg"
+                            android:clickable="true"
+                            android:gravity="center"
+                            android:onClick="selectDrForJoin"
+                            android:text=""
+                            android:textColor="@color/lw006_white_ffffff"
+                            android:textSize="15sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/tv_dr"
+                            android:paddingTop="6dp"
+                            android:paddingBottom="6dp"
+                            android:text="*It is only used for CN470, CN779, EU433, EU868,KR920, IN865, RU864"
+                            android:textColor="@color/lw006_black_333333"
+                            android:textSize="15sp" />
+                    </RelativeLayout>
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/lw006_white_ffffff"
+                    android:orientation="vertical"
+                    android:padding="10dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="6dp"
+                        android:paddingBottom="6dp"
+                        android:text="Uplink Strategy"
+                        android:textColor="@color/lw006_black_333333"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <View
+                        style="@style/lw006_divider_line"
+                        android:layout_marginTop="10dp" />
+
+                    <CheckBox
+                        android:id="@+id/cb_adr"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_marginTop="10dp"
+                        android:button="@null"
+                        android:drawableRight="@drawable/lw006_selector_cb_btn"
+                        android:paddingTop="6dp"
+                        android:paddingBottom="6dp"
+                        android:text="ADR"
+                        android:textColor="@color/lw006_black_333333"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <LinearLayout
+                        android:id="@+id/layoutMaxTimes"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:visibility="gone"
+                        tools:visibility="visible">
+
+                        <View
+                            style="@style/lw006_divider_line"
+                            android:layout_marginTop="10dp" />
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@color/lw006_white_ffffff"
+                            android:orientation="horizontal"
+                            android:paddingTop="10dp"
+                            android:paddingBottom="10dp">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:paddingTop="6dp"
+                                android:paddingBottom="6dp"
+                                android:text="Max retransmission times"
+                                android:textColor="@color/lw006_black_333333"
+                                android:textSize="15sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/tv_max_retransmission_times"
+                                android:layout_width="90dp"
+                                android:layout_height="40dp"
+                                android:layout_alignParentRight="true"
+                                android:background="@drawable/lw006_shape_radius_blue_btn_bg"
+                                android:clickable="true"
+                                android:gravity="center"
+                                android:onClick="selectMaxRetransmissionTimes"
+                                android:text=""
+                                android:textColor="@color/lw006_white_ffffff"
+                                android:textSize="15sp" />
+                        </RelativeLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/ll_adr_options"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:visibility="gone"
+                        tools:visibility="visible">
+
+                        <View style="@style/lw006_divider_line" />
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:paddingTop="6dp"
+                            android:paddingBottom="6dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:text="DR For Payload"
+                                android:textColor="@color/lw006_black_333333"
+                                android:textSize="15sp"
+                                android:textStyle="bold" />
+
+                            <TextView
+                                android:id="@+id/tv_dr_1"
+                                android:layout_width="90dp"
+                                android:layout_height="40dp"
+                                android:layout_marginRight="10dp"
+                                android:layout_toLeftOf="@id/tv_dr_2"
+                                android:background="@drawable/lw006_shape_radius_blue_btn_bg"
+                                android:clickable="true"
+                                android:gravity="center"
+                                android:onClick="selectDr1"
+                                android:text=""
+                                android:textColor="@color/lw006_white_ffffff"
+                                android:textSize="15sp" />
+
+                            <TextView
+                                android:id="@+id/tv_dr_2"
+                                android:layout_width="90dp"
+                                android:layout_height="40dp"
+                                android:layout_alignParentRight="true"
+                                android:background="@drawable/lw006_shape_radius_blue_btn_bg"
+                                android:clickable="true"
+                                android:gravity="center"
+                                android:onClick="selectDr2"
+                                android:text=""
+                                android:textColor="@color/lw006_white_ffffff"
+                                android:textSize="15sp" />
+                        </RelativeLayout>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/lw006_white_ffffff"
+                    android:orientation="horizontal"
+                    android:padding="10dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBaseline="@id/et_adr_ack_limit"
+                        android:paddingTop="6dp"
+                        android:paddingBottom="6dp"
+                        android:text="ADR_ACK_LIMIT"
+                        android:textColor="@color/lw006_black_333333"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/et_adr_ack_limit"
+                        android:layout_width="90dp"
+                        android:layout_height="40dp"
+                        android:layout_alignParentRight="true"
+                        android:gravity="center"
+                        android:hint="1-255"
+                        android:inputType="number"
+                        android:maxLength="3"
+                        android:text=""
+                        android:textColor="@color/lw006_black_333333"
+                        android:textSize="15sp" />
+
+                    <View
+                        style="@style/lw006_divider_line"
+                        android:layout_below="@id/et_adr_ack_limit"
+                        android:layout_marginTop="10dp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBaseline="@id/et_adr_ack_delay"
+                        android:paddingTop="6dp"
+                        android:paddingBottom="6dp"
+                        android:text="ADR_ACK_DELAY"
+                        android:textColor="@color/lw006_black_333333"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/et_adr_ack_delay"
+                        android:layout_width="90dp"
+                        android:layout_height="40dp"
+                        android:layout_below="@id/et_adr_ack_limit"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginTop="20dp"
+                        android:gravity="center"
+                        android:hint="1-255"
+                        android:inputType="number"
+                        android:maxLength="3"
+                        android:text=""
+                        android:textColor="@color/lw006_black_333333"
+                        android:textSize="15sp" />
+                </RelativeLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

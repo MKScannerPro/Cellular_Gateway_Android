@@ -1,0 +1,58 @@
+<resources>
+    <string name="app_name">LW006-MT</string>
+
+    <string name="cancel">Cancel</string>
+    <string name="ensure">OK</string>
+    <string name="confirm">Confirm</string>
+
+
+    <string name="please_enter_password">Please enter password</string>
+    <string name="password_null">Password cannot be empty!</string>
+    <string name="main_password_length">The password should be 8 characters</string>
+    <string name="change_password_length">The password should be 8 characters.Please try again</string>
+    <string name="change_password_match">Password do not match!Please try again.</string>
+    <string name="main_exit_tips">Are you sure you want to quit?</string>
+    <string name="setting_syncing">syncing</string>
+
+    <string name="company_name">MOKO TECHNOLOGY LTD.</string>
+    <string name="about_title">ABOUT</string>
+    <string name="company_website">www.mokosmart.com</string>
+    <string name="rssi_filter">*The device will uplink valid ADV data with RSSI no less than %ddBm.</string>
+
+    <string name="permission_storage_close_content">Please find it in cellphone setting- permission, and allow LW006 use the Storage and location permission</string>
+    <string name="permission_ble_close_content">Please find it in cellphone setting- permission, and allow LW006 use the bluetooth and location permission</string>
+    <string name="permission_open">OK</string>
+    <string name="permission_storage_need_content">LW006 requires access to Storage and location permission. If the permissions are not on, LW006 cannot be used normally.</string>
+    <string name="location_need_title">Turn on Location permission</string>
+    <string name="location_need_content">After that, LW006 could search and connect with the device</string>
+    <string name="permission_location_close_content">Please find it in cellphone setting- permission, and allow LW006 use the Location permission</string>
+    <string name="permission_location_need_content">LW006 requires access to Location permission. If the permissions are not on, LW006 cannot be used normally.</string>
+    <string name="permission_ble_content">LW006 requires access to bluetooth scan contract and location permission. If the permissions are not on, LW006 cannot be used normally.</string>
+    <string name="title_lora">LoRa</string>
+    <string name="title_position">POSITION</string>
+    <string name="title_general">GENERAL</string>
+    <string name="title_device">DEVICE</string>
+    <string name="connection_setting">Connection Settings</string>
+    <string name="application_setting">Application Settings</string>
+    <string name="wifi_fix">WIFI Fix</string>
+    <string name="bluetooth_fix">Bluetooth Fix</string>
+    <string name="gps_fix">GPS Fix</string>
+    <string name="general_device_mode">Device Mode</string>
+    <string name="general_auxiliary_operation">Auxiliary Operation</string>
+    <string name="general_heartbeat_interval">Heartbeat Interval</string>
+    <string name="general_ble_settings">Bluetooth Settings</string>
+    <string name="general_axis_setting">3-Axis Settings</string>
+    <string name="timing_mode">Timing Mode</string>
+    <string name="periodic_mode">Periodic Mode</string>
+    <string name="motion_mode">Motion Mode</string>
+    <string name="downlink_for_position">Downlink For Position</string>
+    <string name="vibration_detection">Shock Detection</string>
+    <string name="man_down_detection">ManDown Detection</string>
+    <string name="active_state_count">Active State Count</string>
+    <string name="device_information">Device Information</string>
+    <string name="local_data_sync">Local Data Sync</string>
+    <string name="indicator_settings">Indicator Settings</string>
+    <string name="low_power_prompt_tips">*When the battery is less than or equal to %s, the green LED will flash once every 10 seconds.</string>
+    <string name="bxp_t_h"><![CDATA[BXP - T&H]]></string>
+    <string name="battery_reset_tips">*After replace with the new battery, need to click \"Reset\", otherwise the low power prompt will be unnormal.</string>
+</resources>
