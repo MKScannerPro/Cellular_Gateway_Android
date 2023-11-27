@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">LW006-MT</string>
+    <string name="app_name">MKGW4</string>
 
     <string name="cancel">Cancel</string>
     <string name="ensure">OK</string>
@@ -19,15 +19,15 @@
     <string name="company_website">www.mokosmart.com</string>
     <string name="rssi_filter">*The device will uplink valid ADV data with RSSI no less than %ddBm.</string>
 
-    <string name="permission_storage_close_content">Please find it in cellphone setting- permission, and allow LW006 use the Storage and location permission</string>
-    <string name="permission_ble_close_content">Please find it in cellphone setting- permission, and allow LW006 use the bluetooth and location permission</string>
+    <string name="permission_storage_close_content">Please find it in cellphone setting- permission, and allow MKGW4 use the Storage and location permission</string>
+    <string name="permission_ble_close_content">Please find it in cellphone setting- permission, and allow MKGW4 use the bluetooth and location permission</string>
     <string name="permission_open">OK</string>
-    <string name="permission_storage_need_content">LW006 requires access to Storage and location permission. If the permissions are not on, LW006 cannot be used normally.</string>
+    <string name="permission_storage_need_content">MKGW4 requires access to Storage and location permission. If the permissions are not on, MKGW4 cannot be used normally.</string>
     <string name="location_need_title">Turn on Location permission</string>
-    <string name="location_need_content">After that, LW006 could search and connect with the device</string>
-    <string name="permission_location_close_content">Please find it in cellphone setting- permission, and allow LW006 use the Location permission</string>
-    <string name="permission_location_need_content">LW006 requires access to Location permission. If the permissions are not on, LW006 cannot be used normally.</string>
-    <string name="permission_ble_content">LW006 requires access to bluetooth scan contract and location permission. If the permissions are not on, LW006 cannot be used normally.</string>
+    <string name="location_need_content">After that, MKGW4 could search and connect with the device</string>
+    <string name="permission_location_close_content">Please find it in cellphone setting- permission, and allow MKGW4 use the Location permission</string>
+    <string name="permission_location_need_content">MKGW4 requires access to Location permission. If the permissions are not on, MKGW4 cannot be used normally.</string>
+    <string name="permission_ble_content">MKGW4 requires access to bluetooth scan contract and location permission. If the permissions are not on, MKGW4 cannot be used normally.</string>
     <string name="title_lora">LoRa</string>
     <string name="title_position">POSITION</string>
     <string name="title_general">GENERAL</string>

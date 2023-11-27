@@ -9,15 +9,15 @@ android {
 
     defaultConfig {
         if (!isLibrary.toBoolean()) {
-            applicationId "com.moko.lw006"
+            applicationId "com.moko.mkgw4"
         }
         minSdkVersion 18
         targetSdkVersion 33
-        versionCode 4
-        versionName "1.0.3"
+        versionCode 100
+        versionName "1.0.0"
 
         def formatDate = new Date().format("yyyyMMddHHmm")
-        setProperty("archivesBaseName", "LW006_${versionName}_${formatDate}")
+        setProperty("archivesBaseName", "MKGW4_${versionName}_${formatDate}")
     }
 
     buildTypes {
@@ -73,7 +73,7 @@ android {
                 // 修改aar名称
                 variant.outputs.all { output ->
                     def formatDate = new Date().format("yyyyMMddHHmm")
-                    outputFileName = "LW006_${android.defaultConfig.versionName}_${formatDate}.aar"
+                    outputFileName = "MKGW4_${android.defaultConfig.versionName}_${formatDate}.aar"
                 }
                 // 复制aar到指定目录
                 variant.assemble.doLast {
