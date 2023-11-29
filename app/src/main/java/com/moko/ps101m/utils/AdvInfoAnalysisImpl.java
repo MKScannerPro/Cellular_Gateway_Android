@@ -29,6 +29,7 @@ public class AdvInfoAnalysisImpl implements DeviceInfoParseable<AdvInfo> {
         if (null == record) return null;
         byte[] bytes = record.getServiceData(new ParcelUuid(OrderServices.SERVICE_ADV.getUuid()));
         if (null == bytes || bytes.length != 16) return null;
+        if ((bytes[0]&0xff) != 0) return null;
         int txPower = bytes[7];
         int powerPercent = bytes[8] & 0xff;
         int batteryVoltage = MokoUtils.toInt(Arrays.copyOfRange(bytes, 9, 11));

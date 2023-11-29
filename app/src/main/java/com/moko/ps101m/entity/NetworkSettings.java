@@ -14,14 +14,7 @@ public class NetworkSettings {
     public boolean cleanSession = true;
     public int qos = 1;
     public int keepAlive;
-    public String apn;
-    public int networkFormat = 3;
     public String userName;
     public String password;
     public int connectMode;
-    public boolean lwtEnable = true;
-    public boolean lwtRetain;
-    public int lwtQos = 1;
-    public String lwtTopic;
-    public String lwtPayload;
 }

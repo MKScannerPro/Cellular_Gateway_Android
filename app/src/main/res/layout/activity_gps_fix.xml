@@ -24,11 +24,10 @@
             android:textSize="15sp" />
 
         <TextView
-            android:id="@+id/tv_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="@string/gps_fix"
+            android:text="GPS fix parameters"
             android:textColor="@color/white_ffffff"
             android:textSize="17sp"
             android:textStyle="bold" />
@@ -45,10 +44,8 @@
     </RelativeLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/cl_pos_ble"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
         android:background="@color/white_ffffff"
         android:paddingStart="10dp"
         android:paddingEnd="10dp">
@@ -58,20 +55,19 @@
             android:layout_width="wrap_content"
             android:layout_height="55dp"
             android:gravity="center_vertical"
-            android:text="Positioning Timeout"
+            android:text="Fix timeout"
             android:textColor="@color/black_333333"
             android:textSize="15sp"
-            android:textStyle="bold"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
-            android:id="@+id/et_position_timeout"
+            android:id="@+id/etTimeout"
             android:layout_width="110dp"
             android:layout_height="45dp"
             android:layout_marginRight="10dp"
             android:gravity="center"
-            android:hint="30~600"
+            android:hint="60~600"
             android:inputType="number"
             android:maxLength="3"
             android:textColor="@color/black_333333"
@@ -86,10 +82,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
-            android:text="s"
+            android:text="second"
             android:textColor="@color/black_333333"
             android:textSize="15sp"
-            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@+id/tv1"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="@+id/tv1" />
@@ -109,12 +104,11 @@
             android:text="PDOP"
             android:textColor="@color/black_333333"
             android:textSize="15sp"
-            android:textStyle="bold"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/line1" />
 
         <EditText
-            android:id="@+id/et_pdop_limit"
+            android:id="@+id/etPdop"
             android:layout_width="110dp"
             android:layout_height="45dp"
             android:layout_marginRight="10dp"
@@ -136,10 +130,8 @@
             android:text="x0.1"
             android:textColor="@color/black_333333"
             android:textSize="15sp"
-            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@+id/tv2"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="@+id/tv2" />
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 </LinearLayout>

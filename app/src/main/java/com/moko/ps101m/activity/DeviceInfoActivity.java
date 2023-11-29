@@ -29,14 +29,14 @@ import com.moko.ps101m.activity.device.IndicatorSettingsActivity;
 import com.moko.ps101m.activity.device.OnOffSettingsActivity;
 import com.moko.ps101m.activity.device.SystemInfoActivity;
 import com.moko.ps101m.activity.setting.AuxiliaryOperationActivity;
-import com.moko.ps101m.activity.setting.AxisSettingActivity;
+import com.moko.ps101m.activity.setting.AxisParameterActivity;
 import com.moko.ps101m.activity.setting.BleSettingsActivity;
 import com.moko.ps101m.activity.setting.DeviceModeActivity;
 import com.moko.ps101m.databinding.Ps101mActivityDeviceInfoBinding;
 import com.moko.ps101m.dialog.AlertMessageDialog;
 import com.moko.ps101m.dialog.ChangePasswordDialog;
-import com.moko.ps101m.fragment.DeviceFragment;
-import com.moko.ps101m.fragment.GeneralFragment;
+import com.moko.ps101m.fragment.SettingsFragment;
+import com.moko.ps101m.fragment.ScannerFragment;
 import com.moko.ps101m.fragment.NetworkFragment;
 import com.moko.ps101m.fragment.PositionFragment;
 import com.moko.ps101m.utils.ToastUtils;
@@ -60,8 +60,8 @@ public class DeviceInfoActivity extends PS101BaseActivity implements RadioGroup.
     private FragmentManager fragmentManager;
     private NetworkFragment networkFragment;
     private PositionFragment posFragment;
-    private GeneralFragment generalFragment;
-    private DeviceFragment deviceFragment;
+    private ScannerFragment generalFragment;
+    private SettingsFragment deviceFragment;
     private boolean mReceiverTag;
     private int disConnectType;
     private boolean savedParamsError;
@@ -87,12 +87,8 @@ public class DeviceInfoActivity extends PS101BaseActivity implements RadioGroup.
             showSyncingProgressDialog();
             mBind.frameContainer.postDelayed(() -> {
                 List<OrderTask> orderTasks = new ArrayList<>();
-                // sync time after connect success;
-                orderTasks.add(OrderTaskAssembler.setTime());
-                // get lora params
                 orderTasks.add(OrderTaskAssembler.getNetworkStatus());
                 orderTasks.add(OrderTaskAssembler.getMqttConnectionStatus());
-                orderTasks.add(OrderTaskAssembler.getNetworkReconnectInterval());
                 MokoSupport.getInstance().sendOrder(orderTasks.toArray(new OrderTask[]{}));
             }, 300);
         }
@@ -101,8 +97,8 @@ public class DeviceInfoActivity extends PS101BaseActivity implements RadioGroup.
     private void initFragment() {
         networkFragment = NetworkFragment.newInstance();
         posFragment = PositionFragment.newInstance();
-        generalFragment = GeneralFragment.newInstance();
-        deviceFragment = DeviceFragment.newInstance();
+        generalFragment = ScannerFragment.newInstance();
+        deviceFragment = SettingsFragment.newInstance();
         fragmentManager.beginTransaction()
                 .add(R.id.frame_container, networkFragment)
                 .add(R.id.frame_container, posFragment)
@@ -114,7 +110,6 @@ public class DeviceInfoActivity extends PS101BaseActivity implements RadioGroup.
                 .hide(deviceFragment)
                 .commit();
         mBind.tvTitle.setText("Network");
-        mBind.ivSave.setVisibility(View.VISIBLE);
     }
 
     @Subscribe(threadMode = ThreadMode.POSTING, priority = 100)
@@ -168,21 +163,14 @@ public class DeviceInfoActivity extends PS101BaseActivity implements RadioGroup.
                         int header = value[0] & 0xFF;// 0xED
                         int flag = value[1] & 0xFF;// read or write
                         int cmd = value[2] & 0xFF;
-                        if (header != 0xED) return;
                         ParamsKeyEnum configKeyEnum = ParamsKeyEnum.fromParamKey(cmd);
-                        if (configKeyEnum == null) return;
+                        if (header != 0xED || configKeyEnum == null) return;
                         int length = value[3] & 0xFF;
                         if (flag == 0x01) {
                             // write
                             int result = value[4] & 0xFF;
                             switch (configKeyEnum) {
-                                case KEY_TIME_UTC:
-                                    if (result == 1)
-                                        ToastUtils.showToast(this, "Time sync completed!");
-                                    break;
-                                case KEY_NETWORK_RECONNECT_INTERVAL:
                                 case KEY_HEARTBEAT_INTERVAL:
-                                case KEY_DATA_COMMUNICATION_TYPE:
                                 case KEY_LOW_POWER_PERCENT:
                                 case KEY_TIME_ZONE:
                                 case KEY_BUZZER_SOUND_CHOOSE:
@@ -198,8 +186,7 @@ public class DeviceInfoActivity extends PS101BaseActivity implements RadioGroup.
                                     }
                                     break;
                             }
-                        }
-                        if (flag == 0x00) {
+                        } else if (flag == 0x00) {
                             // read
                             switch (configKeyEnum) {
                                 case KEY_NETWORK_STATUS:
@@ -214,23 +201,11 @@ public class DeviceInfoActivity extends PS101BaseActivity implements RadioGroup.
                                         networkFragment.setMqttConnectionStatus(status);
                                     }
                                     break;
-                                case KEY_NETWORK_RECONNECT_INTERVAL:
-                                    if (length == 1) {
-                                        int interval = value[4] & 0xff;
-                                        networkFragment.setNetworkReconnectInterval(interval);
-                                    }
-                                    break;
 
                                 case KEY_HEARTBEAT_INTERVAL:
                                     if (length == 2) {
                                         int interval = MokoUtils.toInt(Arrays.copyOfRange(value, 4, value.length));
                                         generalFragment.setHeartbeatInterval(interval);
-                                    }
-                                    break;
-
-                                case KEY_DATA_COMMUNICATION_TYPE:
-                                    if (length == 1) {
-                                        deviceFragment.setDataFormat(value[4] & 0xff);
                                     }
                                     break;
 
@@ -344,25 +319,6 @@ public class DeviceInfoActivity extends PS101BaseActivity implements RadioGroup.
         back();
     }
 
-    public void onSave(View view) {
-        if (isWindowLocked()) return;
-        if (mBind.radioBtnNetwork.isChecked()) {
-            if (networkFragment.isValid()) {
-                showSyncingProgressDialog();
-                MokoSupport.getInstance().sendOrder(OrderTaskAssembler.setNetworkReconnectInterval(networkFragment.getReconnectInterval()));
-            } else {
-                ToastUtils.showToast(this, "Para error!");
-            }
-        } else if (mBind.radioBtnGeneral.isChecked()) {
-            if (generalFragment.isValid()) {
-                showSyncingProgressDialog();
-                generalFragment.saveParams();
-            } else {
-                ToastUtils.showToast(this, "Para error!");
-            }
-        }
-    }
-
     private void back() {
         MokoSupport.getInstance().disConnectBle();
     }
@@ -375,19 +331,18 @@ public class DeviceInfoActivity extends PS101BaseActivity implements RadioGroup.
     @Override
     public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
         if (checkedId == R.id.radioBtnNetwork) {
-            showLoRaAndGetData();
+            showNetworkAndGetData();
         } else if (checkedId == R.id.radioBtn_position) {
             showPosAndGetData();
-        } else if (checkedId == R.id.radioBtn_general) {
-            showGeneralAndGetData();
-        } else if (checkedId == R.id.radioBtn_device) {
-            showDeviceAndGetData();
+        } else if (checkedId == R.id.radioBtn_scanner) {
+            showScannerAndGetData();
+        } else if (checkedId == R.id.radioBtn_setting) {
+            showSettingAndGetData();
         }
     }
 
-    private void showDeviceAndGetData() {
+    private void showSettingAndGetData() {
         mBind.tvTitle.setText("Device Settings");
-        mBind.ivSave.setVisibility(View.GONE);
         fragmentManager.beginTransaction()
                 .hide(networkFragment)
                 .hide(posFragment)
@@ -397,7 +352,6 @@ public class DeviceInfoActivity extends PS101BaseActivity implements RadioGroup.
         showSyncingProgressDialog();
         List<OrderTask> orderTasks = new ArrayList<>(8);
         // device
-        orderTasks.add(OrderTaskAssembler.getDataFormat());
         orderTasks.add(OrderTaskAssembler.getTimeZone());
         orderTasks.add(OrderTaskAssembler.getLowPowerPercent());
         orderTasks.add(OrderTaskAssembler.getLowPowerPayloadEnable());
@@ -406,9 +360,8 @@ public class DeviceInfoActivity extends PS101BaseActivity implements RadioGroup.
         MokoSupport.getInstance().sendOrder(orderTasks.toArray(new OrderTask[]{}));
     }
 
-    private void showGeneralAndGetData() {
+    private void showScannerAndGetData() {
         mBind.tvTitle.setText("General Settings");
-        mBind.ivSave.setVisibility(View.VISIBLE);
         fragmentManager.beginTransaction()
                 .hide(networkFragment)
                 .hide(posFragment)
@@ -420,8 +373,7 @@ public class DeviceInfoActivity extends PS101BaseActivity implements RadioGroup.
     }
 
     private void showPosAndGetData() {
-        mBind.tvTitle.setText("Positioning Strategy");
-        mBind.ivSave.setVisibility(View.GONE);
+        mBind.tvTitle.setText("Position");
         fragmentManager.beginTransaction()
                 .hide(networkFragment)
                 .show(posFragment)
@@ -430,9 +382,8 @@ public class DeviceInfoActivity extends PS101BaseActivity implements RadioGroup.
                 .commit();
     }
 
-    private void showLoRaAndGetData() {
+    private void showNetworkAndGetData() {
         mBind.tvTitle.setText("Network");
-        mBind.ivSave.setVisibility(View.VISIBLE);
         fragmentManager.beginTransaction()
                 .show(networkFragment)
                 .hide(posFragment)
@@ -443,7 +394,6 @@ public class DeviceInfoActivity extends PS101BaseActivity implements RadioGroup.
         List<OrderTask> orderTasks = new ArrayList<>();
         orderTasks.add(OrderTaskAssembler.getNetworkStatus());
         orderTasks.add(OrderTaskAssembler.getMqttConnectionStatus());
-        orderTasks.add(OrderTaskAssembler.getNetworkReconnectInterval());
         MokoSupport.getInstance().sendOrder(orderTasks.toArray(new OrderTask[]{}));
     }
 
@@ -464,12 +414,6 @@ public class DeviceInfoActivity extends PS101BaseActivity implements RadioGroup.
         }, 200);
     }
 
-    public void onWifiFix(View view) {
-        if (isWindowLocked()) return;
-        Intent intent = new Intent(this, PosWifiFixActivity.class);
-        startActivity(intent);
-    }
-
     public void onBleFix(View view) {
         if (isWindowLocked()) return;
         Intent intent = new Intent(this, PosBleFixActivity.class);
@@ -478,7 +422,7 @@ public class DeviceInfoActivity extends PS101BaseActivity implements RadioGroup.
 
     public void onGPSFix(View view) {
         if (isWindowLocked()) return;
-        Intent intent = new Intent(this, PosGpsL76CFixActivity.class);
+        Intent intent = new Intent(this, GpsFixActivity.class);
         startActivity(intent);
     }
 
@@ -502,7 +446,7 @@ public class DeviceInfoActivity extends PS101BaseActivity implements RadioGroup.
 
     public void onAxisSettings(View view) {
         if (isWindowLocked()) return;
-        Intent intent = new Intent(this, AxisSettingActivity.class);
+        Intent intent = new Intent(this, AxisParameterActivity.class);
         startActivity(intent);
     }
 

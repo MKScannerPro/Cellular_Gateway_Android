@@ -15,7 +15,7 @@ import com.moko.ble.lib.event.OrderTaskResponseEvent;
 import com.moko.ble.lib.task.OrderTask;
 import com.moko.ble.lib.task.OrderTaskResponse;
 import com.moko.ps101m.activity.PS101BaseActivity;
-import com.moko.ps101m.databinding.Ps101mActivityAxisSettingBinding;
+import com.moko.ps101m.databinding.ActivityAxisParameterBinding;
 import com.moko.ps101m.utils.ToastUtils;
 import com.moko.support.ps101m.MokoSupport;
 import com.moko.support.ps101m.OrderTaskAssembler;
@@ -29,15 +29,15 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AxisSettingActivity extends PS101BaseActivity {
-    private Ps101mActivityAxisSettingBinding mBind;
+public class AxisParameterActivity extends PS101BaseActivity {
+    private ActivityAxisParameterBinding mBind;
     private boolean mReceiverTag = false;
     private boolean savedParamsError;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mBind = Ps101mActivityAxisSettingBinding.inflate(getLayoutInflater());
+        mBind = ActivityAxisParameterBinding.inflate(getLayoutInflater());
         setContentView(mBind.getRoot());
 
         EventBus.getDefault().register(this);
@@ -98,9 +98,9 @@ public class AxisSettingActivity extends PS101BaseActivity {
                                         savedParamsError = true;
                                     }
                                     if (savedParamsError) {
-                                        ToastUtils.showToast(AxisSettingActivity.this, "Opps！Save failed. Please check the input characters and try again.");
+                                        ToastUtils.showToast(this, "Setup failed");
                                     } else {
-                                        ToastUtils.showToast(this, "Save Successfully！");
+                                        ToastUtils.showToast(this, "Setup succeed");
                                     }
                                     break;
                             }

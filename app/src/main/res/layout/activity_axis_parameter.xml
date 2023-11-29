@@ -15,13 +15,11 @@
             android:id="@+id/tv_back"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:clickable="true"
             android:drawableLeft="@drawable/ps101_ic_back"
             android:drawablePadding="6dp"
             android:gravity="center_vertical"
             android:onClick="onBack"
             android:paddingLeft="16dp"
-            android:text=""
             android:textColor="@color/white_ffffff"
             android:textSize="15sp" />
 
@@ -30,7 +28,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="@string/general_axis_setting"
+            android:text="3-Axis parameters"
             android:textColor="@color/white_ffffff"
             android:textSize="17sp"
             android:textStyle="bold" />
@@ -39,7 +37,6 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
-            android:clickable="true"
             android:onClick="onSave"
             android:paddingLeft="16dp"
             android:paddingRight="16dp"
@@ -50,9 +47,6 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginRight="10dp"
         android:background="@color/white_ffffff"
         android:focusable="true"
         android:focusableInTouchMode="true"
@@ -66,7 +60,6 @@
             android:text="Wakeup Threshold"
             android:textColor="@color/black_333333"
             android:textSize="15sp"
-            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@id/et_wakeup_threshold"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="@id/et_wakeup_threshold" />
@@ -95,7 +88,6 @@
             android:text="x16mg"
             android:textColor="@color/black_333333"
             android:textSize="15sp"
-            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@id/et_wakeup_threshold"
             app:layout_constraintLeft_toRightOf="@id/et_wakeup_threshold"
             app:layout_constraintTop_toTopOf="@id/et_wakeup_threshold" />
@@ -115,7 +107,6 @@
             android:text="Wakeup Duration"
             android:textColor="@color/black_333333"
             android:textSize="15sp"
-            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@id/et_wakeup_duration"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="@id/et_wakeup_duration" />
@@ -146,7 +137,6 @@
             android:text="x10ms"
             android:textColor="@color/black_333333"
             android:textSize="15sp"
-            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@id/et_wakeup_duration"
             app:layout_constraintLeft_toRightOf="@id/et_wakeup_duration"
             app:layout_constraintTop_toTopOf="@id/et_wakeup_duration" />
@@ -165,7 +155,6 @@
             android:text="Motion Threshold"
             android:textColor="@color/black_333333"
             android:textSize="15sp"
-            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@id/et_motion_threshold"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="@id/et_motion_threshold" />
@@ -196,7 +185,6 @@
             android:text="x2mg"
             android:textColor="@color/black_333333"
             android:textSize="15sp"
-            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@id/et_motion_threshold"
             app:layout_constraintLeft_toRightOf="@id/et_motion_threshold"
             app:layout_constraintTop_toTopOf="@id/et_motion_threshold" />
@@ -215,7 +203,6 @@
             android:text="Motion Duration"
             android:textColor="@color/black_333333"
             android:textSize="15sp"
-            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@id/et_motion_duration"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="@id/et_motion_duration" />
@@ -245,7 +232,6 @@
             android:text="x5ms"
             android:textColor="@color/black_333333"
             android:textSize="15sp"
-            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@id/et_motion_duration"
             app:layout_constraintLeft_toRightOf="@id/et_motion_duration"
             app:layout_constraintTop_toTopOf="@id/et_motion_duration" />

@@ -8,44 +8,38 @@
     android:paddingEnd="10dp">
 
     <TextView
-        android:id="@+id/tv_wifi_fix"
+        android:id="@+id/tvFixMode"
         android:layout_width="match_parent"
         android:layout_height="55dp"
         android:drawableEnd="@drawable/ps101_ic_arrow_right"
         android:gravity="center_vertical"
-        android:onClick="onWifiFix"
-        android:text="@string/wifi_fix"
+        android:text="Fix mode"
         android:textColor="@color/black_333333"
-        android:textSize="15sp"
-        android:textStyle="bold" />
+        android:textSize="15sp" />
 
     <View style="@style/lw006_divider_line" />
 
     <TextView
-        android:id="@+id/tv_ble_fix"
+        android:id="@+id/tvGpsParams"
         android:layout_width="match_parent"
         android:layout_height="55dp"
         android:drawableEnd="@drawable/ps101_ic_arrow_right"
         android:gravity="center_vertical"
-        android:onClick="onBleFix"
-        android:text="@string/bluetooth_fix"
+        android:text="GPS parameters"
         android:textColor="@color/black_333333"
-        android:textSize="15sp"
-        android:textStyle="bold" />
+        android:textSize="15sp" />
 
     <View style="@style/lw006_divider_line" />
 
     <TextView
-        android:id="@+id/tv_gps_fix"
+        android:id="@+id/tvAxisParams"
         android:layout_width="match_parent"
         android:layout_height="55dp"
         android:drawableEnd="@drawable/ps101_ic_arrow_right"
         android:gravity="center_vertical"
-        android:onClick="onGPSFix"
-        android:text="GPS Fix"
+        android:text="3-Axis parameters"
         android:textColor="@color/black_333333"
-        android:textSize="15sp"
-        android:textStyle="bold" />
+        android:textSize="15sp" />
 
     <View style="@style/lw006_divider_line" />
 </LinearLayout>

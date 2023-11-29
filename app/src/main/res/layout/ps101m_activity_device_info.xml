@@ -30,17 +30,6 @@
             android:textSize="17sp"
             android:textStyle="bold" />
 
-        <ImageView
-            android:id="@+id/iv_save"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_alignParentRight="true"
-            android:onClick="onSave"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp"
-            android:src="@drawable/ps101_ic_save"
-            android:visibility="gone" />
-
     </RelativeLayout>
 
     <FrameLayout
@@ -79,6 +68,20 @@
                 android:textColor="@drawable/selector_option_radiobtn_color"
                 android:textSize="12sp" />
 
+            <RadioButton
+                android:id="@+id/radioBtn_scanner"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.0"
+                android:button="@null"
+                android:drawableTop="@drawable/selector_general"
+                android:drawablePadding="5dp"
+                android:gravity="center"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:text="Scanner"
+                android:textColor="@drawable/selector_option_radiobtn_color"
+                android:textSize="12sp" />
 
             <RadioButton
                 android:id="@+id/radioBtn_position"
@@ -91,27 +94,12 @@
                 android:gravity="center"
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp"
-                android:text="@string/title_position"
+                android:text="Position"
                 android:textColor="@drawable/selector_option_radiobtn_color"
                 android:textSize="12sp" />
 
             <RadioButton
-                android:id="@+id/radioBtn_general"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1.0"
-                android:button="@null"
-                android:drawableTop="@drawable/selector_general"
-                android:drawablePadding="5dp"
-                android:gravity="center"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp"
-                android:text="@string/title_general"
-                android:textColor="@drawable/selector_option_radiobtn_color"
-                android:textSize="12sp" />
-
-            <RadioButton
-                android:id="@+id/radioBtn_device"
+                android:id="@+id/radioBtn_setting"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1.0"
@@ -121,7 +109,7 @@
                 android:gravity="center"
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp"
-                android:text="@string/title_device"
+                android:text="Settings"
                 android:textColor="@drawable/selector_option_radiobtn_color"
                 android:textSize="12sp" />
         </RadioGroup>

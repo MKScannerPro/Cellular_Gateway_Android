@@ -10,7 +10,7 @@ import com.moko.ble.lib.event.OrderTaskResponseEvent;
 import com.moko.ble.lib.task.OrderTask;
 import com.moko.ble.lib.task.OrderTaskResponse;
 import com.moko.ble.lib.utils.MokoUtils;
-import com.moko.ps101m.databinding.Ps101mActivityPosGpsBinding;
+import com.moko.ps101m.databinding.ActivityGpsFixBinding;
 import com.moko.ps101m.utils.ToastUtils;
 import com.moko.support.ps101m.MokoSupport;
 import com.moko.support.ps101m.OrderTaskAssembler;
@@ -25,20 +25,20 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class PosGpsL76CFixActivity extends PS101BaseActivity {
-    private Ps101mActivityPosGpsBinding mBind;
+public class GpsFixActivity extends PS101BaseActivity {
+    private ActivityGpsFixBinding mBind;
     private boolean savedParamsError;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mBind = Ps101mActivityPosGpsBinding.inflate(getLayoutInflater());
+        mBind = ActivityGpsFixBinding.inflate(getLayoutInflater());
         setContentView(mBind.getRoot());
         EventBus.getDefault().register(this);
         showSyncingProgressDialog();
         List<OrderTask> orderTasks = new ArrayList<>(2);
-        orderTasks.add(OrderTaskAssembler.getGPSPosTimeoutL76());
-        orderTasks.add(OrderTaskAssembler.getGPSPDOPLimitL76());
+        orderTasks.add(OrderTaskAssembler.getGPSTimeout());
+        orderTasks.add(OrderTaskAssembler.getGPSPDOP());
         MokoSupport.getInstance().sendOrder(orderTasks.toArray(new OrderTask[]{}));
     }
 
@@ -78,17 +78,17 @@ public class PosGpsL76CFixActivity extends PS101BaseActivity {
                             // write
                             int result = value[4] & 0xFF;
                             switch (configKeyEnum) {
-                                case KEY_GPS_POS_TIMEOUT_L76C:
+                                case KEY_GPS_TIMEOUT:
                                     if (result != 1) {
                                         savedParamsError = true;
                                     }
                                     break;
-                                case KEY_GPS_PDOP_LIMIT_L76C:
+                                case KEY_GPS_PDOP:
                                     if (result != 1) {
                                         savedParamsError = true;
                                     }
                                     if (savedParamsError) {
-                                        ToastUtils.showToast(PosGpsL76CFixActivity.this, "Opps！Save failed. Please check the input characters and try again.");
+                                        ToastUtils.showToast(GpsFixActivity.this, "Opps！Save failed. Please check the input characters and try again.");
                                     } else {
                                         ToastUtils.showToast(this, "Save Successfully！");
                                     }
@@ -98,19 +98,19 @@ public class PosGpsL76CFixActivity extends PS101BaseActivity {
                         if (flag == 0x00) {
                             // read
                             switch (configKeyEnum) {
-                                case KEY_GPS_POS_TIMEOUT_L76C:
+                                case KEY_GPS_TIMEOUT:
                                     if (length > 0) {
                                         byte[] timeoutBytes = Arrays.copyOfRange(value, 4, 4 + length);
                                         int timeout = MokoUtils.toInt(timeoutBytes);
-                                        mBind.etPositionTimeout.setText(String.valueOf(timeout));
-                                        mBind.etPositionTimeout.setSelection(mBind.etPositionTimeout.getText().length());
+                                        mBind.etTimeout.setText(String.valueOf(timeout));
+                                        mBind.etTimeout.setSelection(mBind.etTimeout.getText().length());
                                     }
                                     break;
-                                case KEY_GPS_PDOP_LIMIT_L76C:
+                                case KEY_GPS_PDOP:
                                     if (length > 0) {
                                         int limit = value[4] & 0xFF;
-                                        mBind.etPdopLimit.setText(String.valueOf(limit));
-                                        mBind.etPdopLimit.setSelection(mBind.etPdopLimit.getText().length());
+                                        mBind.etPdop.setText(String.valueOf(limit));
+                                        mBind.etPdop.setSelection(mBind.etPdop.getText().length());
                                     }
                                     break;
                             }
@@ -132,25 +132,25 @@ public class PosGpsL76CFixActivity extends PS101BaseActivity {
     }
 
     private boolean isValid() {
-        final String posTimeoutStr = mBind.etPositionTimeout.getText().toString();
-        if (TextUtils.isEmpty(posTimeoutStr)) return false;
+        if (TextUtils.isEmpty(mBind.etTimeout.getText())) return false;
+        final String posTimeoutStr = mBind.etTimeout.getText().toString();
         final int posTimeout = Integer.parseInt(posTimeoutStr);
-        if (posTimeout < 30 || posTimeout > 600) return false;
-        final String limitStr = mBind.etPdopLimit.getText().toString();
-        if (TextUtils.isEmpty(limitStr)) return false;
+        if (posTimeout < 60 || posTimeout > 600) return false;
+        if (TextUtils.isEmpty(mBind.etPdop.getText())) return false;
+        final String limitStr = mBind.etPdop.getText().toString();
         final int limit = Integer.parseInt(limitStr);
         return limit >= 25 && limit <= 100;
     }
 
     private void saveParams() {
-        final String posTimeoutStr = mBind.etPositionTimeout.getText().toString();
+        final String posTimeoutStr = mBind.etTimeout.getText().toString();
         final int posTimeout = Integer.parseInt(posTimeoutStr);
-        final String limitStr = mBind.etPdopLimit.getText().toString();
+        final String limitStr = mBind.etPdop.getText().toString();
         final int limit = Integer.parseInt(limitStr);
         savedParamsError = false;
         List<OrderTask> orderTasks = new ArrayList<>();
-        orderTasks.add(OrderTaskAssembler.setGPSPosTimeoutL76C(posTimeout));
-        orderTasks.add(OrderTaskAssembler.setGPSPDOPLimitL76C(limit));
+        orderTasks.add(OrderTaskAssembler.setGPSTimeout(posTimeout));
+        orderTasks.add(OrderTaskAssembler.setGPSPDOP(limit));
         MokoSupport.getInstance().sendOrder(orderTasks.toArray(new OrderTask[]{}));
     }
 

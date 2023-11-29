@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/grey_f2f2f2"
@@ -36,7 +35,6 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
-            android:clickable="true"
             android:onClick="onSave"
             android:paddingLeft="16dp"
             android:paddingRight="16dp"
@@ -89,7 +87,6 @@
                     android:paddingLeft="5dp"
                     android:paddingRight="5dp"
                     android:singleLine="true"
-                    android:text=""
                     android:textColor="@color/black_333333"
                     android:textSize="15sp"
                     app:layout_constraintHorizontal_bias="1.0"
@@ -237,7 +234,8 @@
             <RadioGroup
                 android:id="@+id/rg_mqtt"
                 android:layout_width="match_parent"
-                android:layout_height="30dp"
+                android:layout_height="40dp"
+                android:gravity="center_vertical"
                 android:orientation="horizontal">
 
                 <RadioButton
@@ -274,16 +272,6 @@
                     android:textColor="@drawable/selector_rb_text_color"
                     android:textSize="15sp" />
 
-                <RadioButton
-                    android:id="@+id/rb_lwt"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1.0"
-                    android:button="@null"
-                    android:gravity="center"
-                    android:text="LWT"
-                    android:textColor="@drawable/selector_rb_text_color"
-                    android:textSize="15sp" />
             </RadioGroup>
 
             <androidx.viewpager2.widget.ViewPager2
@@ -294,83 +282,8 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:padding="12dp"
-                android:text="Network Setting"
-                android:textColor="@color/black_333333"
-                android:textSize="15sp" />
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/white_ffffff"
-                android:paddingBottom="10dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingStart="12dp"
-                    android:text="APN"
-                    android:textColor="@color/black_333333"
-                    android:textSize="15sp"
-                    app:layout_constraintBottom_toBottomOf="@+id/etApn"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/etApn" />
-
-                <EditText
-                    android:id="@+id/etApn"
-                    android:layout_width="0px"
-                    android:layout_height="50dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginRight="12dp"
-                    android:background="@drawable/shape_radius_edit_bg"
-                    android:hint="0-100 Characters"
-                    android:maxLength="128"
-                    android:paddingLeft="5dp"
-                    android:paddingRight="5dp"
-                    android:singleLine="true"
-                    android:textColor="@color/black_333333"
-                    android:textSize="15sp"
-                    app:layout_constraintHorizontal_bias="1.0"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintWidth_percent="0.75" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingStart="12dp"
-                    android:text="Network Priority"
-                    android:textColor="@color/black_333333"
-                    android:textSize="15sp"
-                    app:layout_constraintBottom_toBottomOf="@+id/tvNetworkFormat"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/tvNetworkFormat" />
-
-                <TextView
-                    android:id="@+id/tvNetworkFormat"
-                    android:layout_width="wrap_content"
-                    android:layout_height="45dp"
-                    android:layout_marginTop="15dp"
-                    android:layout_marginRight="12dp"
-                    android:background="@drawable/shape_radius_blue_btn_bg"
-                    android:gravity="center"
-                    android:minWidth="100dp"
-                    android:paddingStart="10dp"
-                    android:paddingEnd="10dp"
-                    android:textColor="@color/white_ffffff"
-                    android:textSize="15sp"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/etApn"
-                    tools:text="NB-IOT" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
-                android:layout_marginTop="30dp"
+                android:layout_marginTop="50dp"
                 android:layout_marginRight="20dp"
                 android:background="@drawable/shape_radius_blue_btn_bg"
                 android:gravity="center"
@@ -379,7 +292,6 @@
                 android:text="Clear All Configurations"
                 android:textColor="@color/white_ffffff"
                 android:textSize="15sp" />
-
 
             <LinearLayout
                 android:layout_width="match_parent"

@@ -23,8 +23,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class DeviceFragment extends Fragment {
-    private static final String TAG = DeviceFragment.class.getSimpleName();
+public class SettingsFragment extends Fragment {
+    private static final String TAG = SettingsFragment.class.getSimpleName();
     private Ps101mFragmentDeviceBinding mBind;
     private ArrayList<String> mTimeZones;
     private int mSelectedTimeZone;
@@ -39,11 +39,11 @@ public class DeviceFragment extends Fragment {
     private boolean mLowPowerPayloadEnable;
     private DeviceInfoActivity activity;
 
-    public DeviceFragment() {
+    public SettingsFragment() {
     }
 
-    public static DeviceFragment newInstance() {
-        return new DeviceFragment();
+    public static SettingsFragment newInstance() {
+        return new SettingsFragment();
     }
 
     @Override

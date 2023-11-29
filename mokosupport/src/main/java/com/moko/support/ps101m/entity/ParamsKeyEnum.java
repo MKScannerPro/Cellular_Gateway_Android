@@ -8,8 +8,6 @@ public enum ParamsKeyEnum implements Serializable {
     KEY_CLOSE(0x10),
     KEY_REBOOT(0x11),
     KEY_RESET(0x12),
-    // 时间同步
-    KEY_TIME_UTC(0x13),
     // 时区
     KEY_TIME_ZONE(0x14),
     // 芯片MAC
@@ -36,10 +34,6 @@ public enum ParamsKeyEnum implements Serializable {
     KEY_LOW_POWER_PERCENT(0x1F),
     // 设备心跳间隔
     KEY_HEARTBEAT_INTERVAL(0x20),
-    // 三轴唤醒条件
-    KEY_ACC_WAKEUP_CONDITION(0x21),
-    // 运动检测判断
-    KEY_ACC_MOTION_CONDITION(0x22),
     //蜂鸣器声效选择
     KEY_BUZZER_SOUND_CHOOSE(0x23),
     //马达震动强度选择
@@ -53,9 +47,9 @@ public enum ParamsKeyEnum implements Serializable {
     //充电自动开机
     KEY_AUTO_POWER_ON_ENABLE(0x28),
     //网络状态
-    KEY_NETWORK_STATUS(0x29),
+    KEY_NETWORK_STATUS(0xC4),
     //MQTT连接状态
-    KEY_MQTT_CONNECT_STATUS(0x2A),
+    KEY_MQTT_CONNECT_STATUS(0xC5),
     //ntp服务器
     KEY_NTP_SERVER(0x2B),
     //ntp同步时间间隔
@@ -211,6 +205,25 @@ public enum ParamsKeyEnum implements Serializable {
 
     //// 定位参数
     // WIFI定位数据格式
+    KEY_FIX_MODE(0x90),
+    KEY_PERIODIC_FIX_INTERVAL(0x91),
+    // 三轴唤醒条件
+    KEY_ACC_WAKEUP_CONDITION(0x92),
+    // 运动检测判断
+    KEY_ACC_MOTION_CONDITION(0x93),
+    KEY_MOTION_FIX_ENABLE_WHEN_START(0x94),
+    KEY_MOTION_FIX_ENABLE_WHEN_TRIP(0x95),
+    KEY_MOTION_FIX_INTERVAL_WHEN_TRIP(0x96),
+    KEY_MOTION_FIX_TIMEOUT_WHEN_STOP(0x97),
+    KEY_MOTION_FIX_ENABLE_WHEN_STOP(0x98),
+    KEY_MOTION_FIX_ENABLE_WHEN_STATIONARY(0x99),
+    KEY_MOTION_FIX_INTERVAL_WHEN_STATIONARY(0x9A),
+    KEY_GPS_TIMEOUT(0x9B),
+    KEY_GPS_PDOP(0x9C),
+
+
+
+
     KEY_WIFI_RSSI_FILTER(0x7F),
     //wifi定位机制
     KEY_WIFI_POS_MECHANISM(0x80),
@@ -224,43 +237,34 @@ public enum ParamsKeyEnum implements Serializable {
     KEY_BLE_POS_TIMEOUT(0x84),
     // 蓝牙定位成功MAC数量
     KEY_BLE_POS_MAC_NUMBER(0x85),
-    // GPS定位超时时间（L76版本）
-    KEY_GPS_POS_TIMEOUT_L76C(0x86),
-    // GPS位置精度因子PDOP（L76版本）
-    KEY_GPS_PDOP_LIMIT_L76C(0x87),
-    // GPS定位数据格式（LR1110版本）
 
 
 
     ////网络通信参数
-    //网络重连间隔
-    KEY_APN(0x90),
-    KEY_NETWORK_FORMAT(0x91),
-    KEY_DATA_COMMUNICATION_TYPE(0x92),
-    KEY_NETWORK_RECONNECT_INTERVAL(0x93),
+    KEY_NETWORK_PRIORITY(0x30),
+    KEY_APN(0x31),
+    KEY_APN_NAME(0x32),
+    KEY_APN_PASSWORD(0x33),
+    KEY_CONNECT_NETWORK_TIMEOUT(0x34),
+
 
 
     //////
     /////MQTT参数
-    KEY_MQTT_HOST(0x95),
-    KEY_MQTT_PORT(0x96),
-    KEY_MQTT_USERNAME(0x97),
-    KEY_MQTT_PASSWORD(0x98),
-    KEY_MQTT_CLEAN_SESSION(0x99),
-    KEY_MQTT_CLIENT_ID(0x9A),
-    KEY_MQTT_KEEP_ALIVE(0x9B),
-    KEY_MQTT_QOS(0x9C),
-    KEY_SUBSCRIBE_TOPIC(0x9D),
-    KEY_PUBLISH_TOPIC(0x9E),
-    KEY_MQTT_LWT_ENABLE(0x9F),
-    KEY_MQTT_LWT_QOS(0xA0),
-    KEY_MQTT_LWT_RETAIN(0xA1),
-    KEY_MQTT_LWT_TOPIC(0xA2),
-    KEY_MQTT_LWT_PAYLOAD(0xA3),
-    KEY_CONNECT_MODE(0xA4),
-    KEY_MQTT_CA(0xA5),
-    KEY_MQTT_CLIENT_CERT(0xA6),
-    KEY_MQTT_CLIENT_KEY(0xA7),
+    KEY_MQTT_HOST(0x20),
+    KEY_MQTT_PORT(0x21),
+    KEY_MQTT_CLIENT_ID(0x22),
+    KEY_MQTT_USERNAME(0x23),
+    KEY_MQTT_PASSWORD(0x24),
+    KEY_MQTT_CLEAN_SESSION(0x25),
+    KEY_MQTT_KEEP_ALIVE(0x26),
+    KEY_MQTT_QOS(0x27),
+    KEY_SUBSCRIBE_TOPIC(0x28),
+    KEY_PUBLISH_TOPIC(0x29),
+    KEY_CONNECT_MODE(0x2A),
+    KEY_MQTT_CA(0x2B),
+    KEY_MQTT_CLIENT_CERT(0x2C),
+    KEY_MQTT_CLIENT_KEY(0x2D),
 
 
 

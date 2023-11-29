@@ -399,7 +399,6 @@ public class PS101MainActivity extends PS101BaseActivity implements MokoScanDevi
                 return;
             }
             showLoadingMessageDialog();
-            // open password notify and set passwrord
             MokoSupport.getInstance().sendOrder(OrderTaskAssembler.setPassword(mPassword));
         }
     }
@@ -439,7 +438,7 @@ public class PS101MainActivity extends PS101BaseActivity implements MokoScanDevi
                             XLog.i("Success");
                             Intent i = new Intent(this, DeviceInfoActivity.class);
                             launcher.launch(i);
-                        } else if (0 == result) {
+                        } else {
                             isPasswordError = true;
                             ToastUtils.showToast(this, "Password Error");
                             MokoSupport.getInstance().disConnectBle();

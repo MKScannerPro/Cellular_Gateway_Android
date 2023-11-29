@@ -14,14 +14,14 @@ import com.moko.ps101m.databinding.Ps101mFragmentGeneralBinding;
 import com.moko.support.ps101m.MokoSupport;
 import com.moko.support.ps101m.OrderTaskAssembler;
 
-public class GeneralFragment extends Fragment {
-    private static final String TAG = GeneralFragment.class.getSimpleName();
+public class ScannerFragment extends Fragment {
+    private static final String TAG = ScannerFragment.class.getSimpleName();
     private Ps101mFragmentGeneralBinding mBind;
-    public GeneralFragment() {
+    public ScannerFragment() {
     }
 
-    public static GeneralFragment newInstance() {
-        return new GeneralFragment();
+    public static ScannerFragment newInstance() {
+        return new ScannerFragment();
     }
 
     @Override

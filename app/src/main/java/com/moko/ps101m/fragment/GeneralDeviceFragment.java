@@ -28,12 +28,6 @@ public class GeneralDeviceFragment extends Fragment {
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        Log.i(TAG, "onCreate: ");
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.i(TAG, "onCreateView: ");
         mBind = FragmentGeneralDeviceBinding.inflate(inflater, container, false);
@@ -47,24 +41,6 @@ public class GeneralDeviceFragment extends Fragment {
         }
         mBind.etKeepAlive.setText(String.valueOf(keepAlive));
         return mBind.getRoot();
-    }
-
-    @Override
-    public void onResume() {
-        Log.i(TAG, "onResume: ");
-        super.onResume();
-    }
-
-    @Override
-    public void onPause() {
-        Log.i(TAG, "onPause: ");
-        super.onPause();
-    }
-
-    @Override
-    public void onDestroy() {
-        Log.i(TAG, "onDestroy: ");
-        super.onDestroy();
     }
 
     public void setCleanSession(boolean cleanSession) {

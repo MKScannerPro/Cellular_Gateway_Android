@@ -14,8 +14,6 @@ import com.moko.support.ps101m.entity.ParamsKeyEnum;
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.TimeZone;
 
 public class ParamsWriteTask extends OrderTask {
     public byte[] data;
@@ -58,16 +56,6 @@ public class ParamsWriteTask extends OrderTask {
             System.arraycopy(bytes, 0, data, 4, bytes.length);
         }
         response.responseValue = data;
-    }
-
-    public void setDataFormat(@IntRange(from = 0, to = 1) int format) {
-        response.responseValue = data = new byte[]{
-                (byte) 0xED,
-                (byte) 0x01,
-                (byte) ParamsKeyEnum.KEY_DATA_COMMUNICATION_TYPE.getParamsKey(),
-                (byte) 0x01,
-                (byte) format
-        };
     }
 
     public void setAxisDataReportInterval(@IntRange(from = 0, to = 65535) int interval) {
@@ -195,11 +183,65 @@ public class ParamsWriteTask extends OrderTask {
         response.responseValue = data;
     }
 
-    public void setNetworkFormat(@IntRange(from = 0, to = 3) int networkFormat) {
+    public void setApnUsername(@Nullable String apnUsername) {
+        if (!TextUtils.isEmpty(apnUsername)) {
+            byte[] bytes = apnUsername.getBytes();
+            int length = bytes.length;
+            data = new byte[length + 4];
+            data[0] = (byte) 0xED;
+            data[1] = (byte) 0x01;
+            data[2] = (byte) ParamsKeyEnum.KEY_APN_NAME.getParamsKey();
+            data[3] = (byte) length;
+            System.arraycopy(bytes, 0, data, 4, bytes.length);
+        } else {
+            data = new byte[]{
+                    (byte) 0xED,
+                    (byte) 0x01,
+                    (byte) ParamsKeyEnum.KEY_APN_NAME.getParamsKey(),
+                    (byte) 0x00
+            };
+        }
+        response.responseValue = data;
+    }
+
+    public void setApnPassword(@Nullable String apnPassword) {
+        if (!TextUtils.isEmpty(apnPassword)) {
+            byte[] bytes = apnPassword.getBytes();
+            int length = bytes.length;
+            data = new byte[length + 4];
+            data[0] = (byte) 0xED;
+            data[1] = (byte) 0x01;
+            data[2] = (byte) ParamsKeyEnum.KEY_APN_PASSWORD.getParamsKey();
+            data[3] = (byte) length;
+            System.arraycopy(bytes, 0, data, 4, bytes.length);
+        } else {
+            data = new byte[]{
+                    (byte) 0xED,
+                    (byte) 0x01,
+                    (byte) ParamsKeyEnum.KEY_APN_PASSWORD.getParamsKey(),
+                    (byte) 0x00
+            };
+        }
+        response.responseValue = data;
+    }
+
+    public void setNetworkConnectTimeout(@IntRange(from = 30, to = 600) int timeout) {
+        byte[] bytes = MokoUtils.toByteArray(timeout, 2);
         response.responseValue = data = new byte[]{
                 (byte) 0xED,
                 (byte) 0x01,
-                (byte) ParamsKeyEnum.KEY_NETWORK_FORMAT.getParamsKey(),
+                (byte) ParamsKeyEnum.KEY_CONNECT_NETWORK_TIMEOUT.getParamsKey(),
+                (byte) 0x02,
+                bytes[0],
+                bytes[1]
+        };
+    }
+
+    public void setNetworkPriority(@IntRange(from = 0, to = 10) int networkFormat) {
+        response.responseValue = data = new byte[]{
+                (byte) 0xED,
+                (byte) 0x01,
+                (byte) ParamsKeyEnum.KEY_NETWORK_PRIORITY.getParamsKey(),
                 (byte) 0x01,
                 (byte) networkFormat
         };
@@ -257,60 +299,6 @@ public class ParamsWriteTask extends OrderTask {
         };
     }
 
-    public void setMQTTLwtEnable(@IntRange(from = 0, to = 1) int enable) {
-        response.responseValue = data = new byte[]{
-                (byte) 0xED,
-                (byte) 0x01,
-                (byte) ParamsKeyEnum.KEY_MQTT_LWT_ENABLE.getParamsKey(),
-                (byte) 0x01,
-                (byte) enable
-        };
-    }
-
-    public void setMQTTLwtRetain(@IntRange(from = 0, to = 1) int enable) {
-        response.responseValue = data = new byte[]{
-                (byte) 0xED,
-                (byte) 0x01,
-                (byte) ParamsKeyEnum.KEY_MQTT_LWT_RETAIN.getParamsKey(),
-                (byte) 0x01,
-                (byte) enable
-        };
-    }
-
-    public void setMQTTLwtQos(@IntRange(from = 0, to = 2) int qos) {
-        response.responseValue = data = new byte[]{
-                (byte) 0xED,
-                (byte) 0x01,
-                (byte) ParamsKeyEnum.KEY_MQTT_LWT_QOS.getParamsKey(),
-                (byte) 0x01,
-                (byte) qos
-        };
-    }
-
-    public void setMQTTLwtTopic(String lwtTopic) {
-        byte[] bytes = lwtTopic.getBytes();
-        int length = bytes.length;
-        data = new byte[length + 4];
-        data[0] = (byte) 0xED;
-        data[1] = (byte) 0x01;
-        data[2] = (byte) ParamsKeyEnum.KEY_MQTT_LWT_TOPIC.getParamsKey();
-        data[3] = (byte) length;
-        System.arraycopy(bytes, 0, data, 4, bytes.length);
-        response.responseValue = data;
-    }
-
-    public void setMQTTLwtPayload(String lwtPayload) {
-        byte[] bytes = lwtPayload.getBytes();
-        int length = bytes.length;
-        data = new byte[length + 4];
-        data[0] = (byte) 0xED;
-        data[1] = (byte) 0x01;
-        data[2] = (byte) ParamsKeyEnum.KEY_MQTT_LWT_PAYLOAD.getParamsKey();
-        data[3] = (byte) length;
-        System.arraycopy(bytes, 0, data, 4, bytes.length);
-        response.responseValue = data;
-    }
-
     public void setFile(ParamsKeyEnum key, @Nullable File file) throws Exception {
         if (null == file) {
             data = new byte[dataLength + 6];
@@ -359,15 +347,6 @@ public class ParamsWriteTask extends OrderTask {
         }
     }
 
-    public void setNetworkReconnectInterval(@IntRange(from = 0, to = 100) int interval) {
-        response.responseValue = data = new byte[]{
-                (byte) 0xED,
-                (byte) 0x01,
-                (byte) ParamsKeyEnum.KEY_NETWORK_RECONNECT_INTERVAL.getParamsKey(),
-                (byte) 0x01,
-                (byte) interval
-        };
-    }
 
     /**
      * 上行配置参数
@@ -414,27 +393,6 @@ public class ParamsWriteTask extends OrderTask {
                 (byte) 0x00
         };
         response.responseValue = data;
-    }
-
-    public void setTime() {
-        Calendar calendar = Calendar.getInstance();
-        TimeZone timeZone = TimeZone.getTimeZone("GMT");
-        calendar.setTimeZone(timeZone);
-        long time = calendar.getTimeInMillis() / 1000;
-        byte[] bytes = new byte[4];
-        for (int i = 0; i < 4; ++i) {
-            bytes[i] = (byte) (time >> 8 * (3 - i) & 255);
-        }
-        response.responseValue = data = new byte[]{
-                (byte) 0xED,
-                (byte) 0x01,
-                (byte) ParamsKeyEnum.KEY_TIME_UTC.getParamsKey(),
-                (byte) 0x04,
-                bytes[0],
-                bytes[1],
-                bytes[2],
-                bytes[3],
-        };
     }
 
     public void setTimeZone(@IntRange(from = -24, to = 28) int timeZone) {
@@ -836,6 +794,106 @@ public class ParamsWriteTask extends OrderTask {
                 (byte) 0xED,
                 (byte) 0x01,
                 (byte) ParamsKeyEnum.KEY_MOTION_MODE_STATIONARY_REPORT_INTERVAL.getParamsKey(),
+                (byte) 0x02,
+                bytes[0],
+                bytes[1]
+        };
+    }
+
+    public void setFixMode(@IntRange(from = 0, to = 2) int mode) {
+        response.responseValue = data = new byte[]{
+                (byte) 0xED,
+                (byte) 0x01,
+                (byte) ParamsKeyEnum.KEY_FIX_MODE.getParamsKey(),
+                (byte) 0x01,
+                (byte) mode
+        };
+    }
+
+    public void setPeriodicFixInterval(@IntRange(from = 60, to = 86400) int interval) {
+        byte[] bytes = MokoUtils.toByteArray(interval, 4);
+        response.responseValue = data = new byte[]{
+                (byte) 0xED,
+                (byte) 0x01,
+                (byte) ParamsKeyEnum.KEY_PERIODIC_FIX_INTERVAL.getParamsKey(),
+                (byte) 0x04,
+                bytes[0],
+                bytes[1],
+                bytes[2],
+                bytes[3]
+        };
+    }
+
+    public void setMotionFixEnableStart(@IntRange(from = 0, to = 1) int enable) {
+        response.responseValue = data = new byte[]{
+                (byte) 0xED,
+                (byte) 0x01,
+                (byte) ParamsKeyEnum.KEY_MOTION_FIX_ENABLE_WHEN_START.getParamsKey(),
+                (byte) 0x01,
+                (byte) enable
+        };
+    }
+
+    public void setMotionFixEnableTrip(@IntRange(from = 0, to = 1) int enable) {
+        response.responseValue = data = new byte[]{
+                (byte) 0xED,
+                (byte) 0x01,
+                (byte) ParamsKeyEnum.KEY_MOTION_FIX_ENABLE_WHEN_TRIP.getParamsKey(),
+                (byte) 0x01,
+                (byte) enable
+        };
+    }
+
+    public void setMotionFixIntervalTrip(@IntRange(from = 10, to = 86400) int interval) {
+        byte[] bytes = MokoUtils.toByteArray(interval, 4);
+        response.responseValue = data = new byte[]{
+                (byte) 0xED,
+                (byte) 0x01,
+                (byte) ParamsKeyEnum.KEY_MOTION_FIX_INTERVAL_WHEN_TRIP.getParamsKey(),
+                (byte) 0x04,
+                bytes[0],
+                bytes[1],
+                bytes[2],
+                bytes[3]
+        };
+    }
+
+    public void setMotionFixEnableStop(@IntRange(from = 0, to = 1) int enable) {
+        response.responseValue = data = new byte[]{
+                (byte) 0xED,
+                (byte) 0x01,
+                (byte) ParamsKeyEnum.KEY_MOTION_FIX_ENABLE_WHEN_STOP.getParamsKey(),
+                (byte) 0x01,
+                (byte) enable
+        };
+    }
+
+    public void setMotionFixTimeoutStop(@IntRange(from = 3, to = 180) int timeout) {
+        response.responseValue = data = new byte[]{
+                (byte) 0xED,
+                (byte) 0x01,
+                (byte) ParamsKeyEnum.KEY_MOTION_FIX_TIMEOUT_WHEN_STOP.getParamsKey(),
+                (byte) 0x01,
+                (byte) timeout
+        };
+    }
+
+    public void setMotionFixEnableStationary(@IntRange(from = 0, to = 1) int enable) {
+        response.responseValue = data = new byte[]{
+                (byte) 0xED,
+                (byte) 0x01,
+                (byte) ParamsKeyEnum.KEY_MOTION_FIX_ENABLE_WHEN_STATIONARY.getParamsKey(),
+                (byte) 0x01,
+                (byte) enable
+        };
+    }
+
+    public void setMotionFixIntervalStationary(@IntRange(from = 1, to = 1440) int interval) {
+        byte[] bytes = MokoUtils.toByteArray(interval, 2);
+        response.responseValue = data = new byte[]{
+                (byte) 0xED,
+                (byte) 0x01,
+                (byte) ParamsKeyEnum.KEY_MOTION_FIX_INTERVAL_WHEN_STATIONARY.getParamsKey(),
                 (byte) 0x02,
                 bytes[0],
                 bytes[1]
@@ -1541,29 +1599,27 @@ public class ParamsWriteTask extends OrderTask {
         response.responseValue = data;
     }
 
-    public void setGPSPosTimeoutL76(@IntRange(from = 60, to = 600) int timeout) {
+    public void setGPSTimeout(@IntRange(from = 60, to = 600) int timeout) {
         byte[] timeoutBytes = MokoUtils.toByteArray(timeout, 2);
-        data = new byte[]{
+        response.responseValue =data = new byte[]{
                 (byte) 0xED,
                 (byte) 0x01,
-                (byte) ParamsKeyEnum.KEY_GPS_POS_TIMEOUT_L76C.getParamsKey(),
+                (byte) ParamsKeyEnum.KEY_GPS_TIMEOUT.getParamsKey(),
                 (byte) 0x02,
                 timeoutBytes[0],
                 timeoutBytes[1]
         };
-        response.responseValue = data;
     }
 
 
-    public void setGPSPDOPLimitL76(@IntRange(from = 25, to = 100) int limit) {
-        data = new byte[]{
+    public void setGPSPDOP(@IntRange(from = 25, to = 100) int limit) {
+        response.responseValue =data = new byte[]{
                 (byte) 0xED,
                 (byte) 0x01,
-                (byte) ParamsKeyEnum.KEY_GPS_PDOP_LIMIT_L76C.getParamsKey(),
+                (byte) ParamsKeyEnum.KEY_GPS_PDOP.getParamsKey(),
                 (byte) 0x01,
                 (byte) limit,
         };
-        response.responseValue = data;
     }
 
     public void setBlePosMechanism(@IntRange(from = 0, to = 1) int mechanism) {

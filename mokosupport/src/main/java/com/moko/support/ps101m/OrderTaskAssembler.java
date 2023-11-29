@@ -59,12 +59,6 @@ public class OrderTaskAssembler {
         return task;
     }
 
-    public static OrderTask getTimeUTC() {
-        ParamsReadTask task = new ParamsReadTask();
-        task.setData(ParamsKeyEnum.KEY_TIME_UTC);
-        return task;
-    }
-
     public static OrderTask getLowPowerPercent() {
         ParamsReadTask task = new ParamsReadTask();
         task.setData(ParamsKeyEnum.KEY_LOW_POWER_PERCENT);
@@ -292,6 +286,60 @@ public class OrderTaskAssembler {
     public static OrderTask getWifiRssiFilter() {
         ParamsReadTask task = new ParamsReadTask();
         task.setData(ParamsKeyEnum.KEY_WIFI_RSSI_FILTER);
+        return task;
+    }
+
+    public static OrderTask getFixMode() {
+        ParamsReadTask task = new ParamsReadTask();
+        task.setData(ParamsKeyEnum.KEY_FIX_MODE);
+        return task;
+    }
+
+    public static OrderTask getPeriodicFixInterval() {
+        ParamsReadTask task = new ParamsReadTask();
+        task.setData(ParamsKeyEnum.KEY_PERIODIC_FIX_INTERVAL);
+        return task;
+    }
+
+    public static OrderTask getMotionFixEnableStart() {
+        ParamsReadTask task = new ParamsReadTask();
+        task.setData(ParamsKeyEnum.KEY_MOTION_FIX_ENABLE_WHEN_START);
+        return task;
+    }
+
+    public static OrderTask getMotionFixEnableInTrip() {
+        ParamsReadTask task = new ParamsReadTask();
+        task.setData(ParamsKeyEnum.KEY_MOTION_FIX_ENABLE_WHEN_TRIP);
+        return task;
+    }
+
+    public static OrderTask getMotionFixIntervalInTrip() {
+        ParamsReadTask task = new ParamsReadTask();
+        task.setData(ParamsKeyEnum.KEY_MOTION_FIX_INTERVAL_WHEN_TRIP);
+        return task;
+    }
+
+    public static OrderTask getMotionFixEnableStop() {
+        ParamsReadTask task = new ParamsReadTask();
+        task.setData(ParamsKeyEnum.KEY_MOTION_FIX_ENABLE_WHEN_STOP);
+        return task;
+    }
+
+    public static OrderTask getMotionFixTimeoutStop() {
+        ParamsReadTask task = new ParamsReadTask();
+        task.setData(ParamsKeyEnum.KEY_MOTION_FIX_TIMEOUT_WHEN_STOP);
+        return task;
+    }
+
+    public static OrderTask getMotionFixEnableStationary() {
+        ParamsReadTask task = new ParamsReadTask();
+        task.setData(ParamsKeyEnum.KEY_MOTION_FIX_ENABLE_WHEN_STATIONARY);
+        return task;
+    }
+
+    public static OrderTask getMotionFixIntervalStationary() {
+        ParamsReadTask task = new ParamsReadTask();
+        task.setData(ParamsKeyEnum.KEY_MOTION_FIX_INTERVAL_WHEN_STATIONARY);
         return task;
     }
 
@@ -595,15 +643,15 @@ public class OrderTaskAssembler {
         return task;
     }
 
-    public static OrderTask getGPSPosTimeoutL76() {
+    public static OrderTask getGPSTimeout() {
         ParamsReadTask task = new ParamsReadTask();
-        task.setData(ParamsKeyEnum.KEY_GPS_POS_TIMEOUT_L76C);
+        task.setData(ParamsKeyEnum.KEY_GPS_TIMEOUT);
         return task;
     }
 
-    public static OrderTask getGPSPDOPLimitL76() {
+    public static OrderTask getGPSPDOP() {
         ParamsReadTask task = new ParamsReadTask();
-        task.setData(ParamsKeyEnum.KEY_GPS_PDOP_LIMIT_L76C);
+        task.setData(ParamsKeyEnum.KEY_GPS_PDOP);
         return task;
     }
 
@@ -715,12 +763,6 @@ public class OrderTaskAssembler {
         return task;
     }
 
-    public static OrderTask getNetworkReconnectInterval() {
-        ParamsReadTask task = new ParamsReadTask();
-        task.setData(ParamsKeyEnum.KEY_NETWORK_RECONNECT_INTERVAL);
-        return task;
-    }
-
     public static OrderTask getMQTTHost() {
         ParamsReadTask task = new ParamsReadTask();
         task.setData(ParamsKeyEnum.KEY_MQTT_HOST);
@@ -775,9 +817,27 @@ public class OrderTaskAssembler {
         return task;
     }
 
-    public static OrderTask getNetworkFormat() {
+    public static OrderTask getApnUsername() {
         ParamsReadTask task = new ParamsReadTask();
-        task.setData(ParamsKeyEnum.KEY_NETWORK_FORMAT);
+        task.setData(ParamsKeyEnum.KEY_APN_NAME);
+        return task;
+    }
+
+    public static OrderTask getApnPassword() {
+        ParamsReadTask task = new ParamsReadTask();
+        task.setData(ParamsKeyEnum.KEY_APN_PASSWORD);
+        return task;
+    }
+
+    public static OrderTask getNetworkConnectTimeout() {
+        ParamsReadTask task = new ParamsReadTask();
+        task.setData(ParamsKeyEnum.KEY_CONNECT_NETWORK_TIMEOUT);
+        return task;
+    }
+
+    public static OrderTask getNetworkPriority() {
+        ParamsReadTask task = new ParamsReadTask();
+        task.setData(ParamsKeyEnum.KEY_NETWORK_PRIORITY);
         return task;
     }
 
@@ -799,45 +859,9 @@ public class OrderTaskAssembler {
         return task;
     }
 
-    public static OrderTask getMQTTLwtEnable() {
-        ParamsReadTask task = new ParamsReadTask();
-        task.setData(ParamsKeyEnum.KEY_MQTT_LWT_ENABLE);
-        return task;
-    }
-
-    public static OrderTask getMQTTLwtRetain() {
-        ParamsReadTask task = new ParamsReadTask();
-        task.setData(ParamsKeyEnum.KEY_MQTT_LWT_RETAIN);
-        return task;
-    }
-
-    public static OrderTask getMQTTLwtQos() {
-        ParamsReadTask task = new ParamsReadTask();
-        task.setData(ParamsKeyEnum.KEY_MQTT_LWT_QOS);
-        return task;
-    }
-
-    public static OrderTask getMQTTLwtTopic() {
-        ParamsReadTask task = new ParamsReadTask();
-        task.setData(ParamsKeyEnum.KEY_MQTT_LWT_TOPIC);
-        return task;
-    }
-
-    public static OrderTask getMQTTLwtPayload() {
-        ParamsReadTask task = new ParamsReadTask();
-        task.setData(ParamsKeyEnum.KEY_MQTT_LWT_PAYLOAD);
-        return task;
-    }
-
     public static OrderTask getAxisDataReportInterval() {
         ParamsReadTask task = new ParamsReadTask();
         task.setData(ParamsKeyEnum.KEY_AXIS_REPORT_INTERVAL);
-        return task;
-    }
-
-    public static OrderTask getDataFormat() {
-        ParamsReadTask task = new ParamsReadTask();
-        task.setData(ParamsKeyEnum.KEY_DATA_COMMUNICATION_TYPE);
         return task;
     }
 
@@ -866,12 +890,6 @@ public class OrderTaskAssembler {
     public static OrderTask setNtpSyncInterval(@IntRange(from = 0, to = 720) int interval) {
         ParamsWriteTask task = new ParamsWriteTask();
         task.setNtpSyncInterval(interval);
-        return task;
-    }
-
-    public static OrderTask setDataFormat(@IntRange(from = 0, to = 1) int format) {
-        ParamsWriteTask task = new ParamsWriteTask();
-        task.setDataFormat(format);
         return task;
     }
 
@@ -935,9 +953,27 @@ public class OrderTaskAssembler {
         return task;
     }
 
-    public static OrderTask setNetworkFormat(@IntRange(from = 0, to = 3) int networkFormat) {
+    public static OrderTask setApnUsername(@Nullable String apnUsername) {
         ParamsWriteTask task = new ParamsWriteTask();
-        task.setNetworkFormat(networkFormat);
+        task.setApnUsername(apnUsername);
+        return task;
+    }
+
+    public static OrderTask setApnPassword(@Nullable String apnPassword) {
+        ParamsWriteTask task = new ParamsWriteTask();
+        task.setApnPassword(apnPassword);
+        return task;
+    }
+
+    public static OrderTask setNetworkConnectTimeout(@IntRange(from = 30, to = 600) int timeout) {
+        ParamsWriteTask task = new ParamsWriteTask();
+        task.setNetworkConnectTimeout(timeout);
+        return task;
+    }
+
+    public static OrderTask setNetworkPriority(@IntRange(from = 0, to = 10) int networkFormat) {
+        ParamsWriteTask task = new ParamsWriteTask();
+        task.setNetworkPriority(networkFormat);
         return task;
     }
 
@@ -959,36 +995,6 @@ public class OrderTaskAssembler {
         return task;
     }
 
-    public static OrderTask setMQTTLwtEnable(@IntRange(from = 0, to = 1) int enable) {
-        ParamsWriteTask task = new ParamsWriteTask();
-        task.setMQTTLwtEnable(enable);
-        return task;
-    }
-
-    public static OrderTask setMQTTLwtRetain(@IntRange(from = 0, to = 1) int enable) {
-        ParamsWriteTask task = new ParamsWriteTask();
-        task.setMQTTLwtRetain(enable);
-        return task;
-    }
-
-    public static OrderTask setMQTTLwtQos(@IntRange(from = 0, to = 2) int qos) {
-        ParamsWriteTask task = new ParamsWriteTask();
-        task.setMQTTLwtQos(qos);
-        return task;
-    }
-
-    public static OrderTask setMQTTLwtTopic(String lwtTopic) {
-        ParamsWriteTask task = new ParamsWriteTask();
-        task.setMQTTLwtTopic(lwtTopic);
-        return task;
-    }
-
-    public static OrderTask setMQTTLwtPayload(String lwtPayload) {
-        ParamsWriteTask task = new ParamsWriteTask();
-        task.setMQTTLwtPayload(lwtPayload);
-        return task;
-    }
-
     public static OrderTask setCA(@Nullable File file) throws Exception {
         ParamsWriteTask task = new ParamsWriteTask();
         task.setFile(ParamsKeyEnum.KEY_MQTT_CA, file);
@@ -1004,12 +1010,6 @@ public class OrderTaskAssembler {
     public static OrderTask setClientKey(@Nullable File file) throws Exception {
         ParamsWriteTask task = new ParamsWriteTask();
         task.setFile(ParamsKeyEnum.KEY_MQTT_CLIENT_KEY, file);
-        return task;
-    }
-
-    public static OrderTask setNetworkReconnectInterval(@IntRange(from = 0, to = 100) int interval) {
-        ParamsWriteTask task = new ParamsWriteTask();
-        task.setNetworkReconnectInterval(interval);
         return task;
     }
 
@@ -1034,12 +1034,6 @@ public class OrderTaskAssembler {
     public static OrderTask restore() {
         ParamsWriteTask task = new ParamsWriteTask();
         task.reset();
-        return task;
-    }
-
-    public static OrderTask setTime() {
-        ParamsWriteTask task = new ParamsWriteTask();
-        task.setTime();
         return task;
     }
 
@@ -1233,6 +1227,60 @@ public class OrderTaskAssembler {
     public static OrderTask setWifiRssiFilter(@IntRange(from = -127, to = 0) int rssi) {
         ParamsWriteTask task = new ParamsWriteTask();
         task.setWifiRssiFilter(rssi);
+        return task;
+    }
+
+    public static OrderTask setFixMode(@IntRange(from = 0, to = 2) int mode) {
+        ParamsWriteTask task = new ParamsWriteTask();
+        task.setFixMode(mode);
+        return task;
+    }
+
+    public static OrderTask setPeriodicFixInterval(@IntRange(from = 60, to = 86400) int interval) {
+        ParamsWriteTask task = new ParamsWriteTask();
+        task.setPeriodicFixInterval(interval);
+        return task;
+    }
+
+    public static OrderTask setMotionFixEnableStart(@IntRange(from = 0, to = 1) int enable) {
+        ParamsWriteTask task = new ParamsWriteTask();
+        task.setMotionFixEnableStart(enable);
+        return task;
+    }
+
+    public static OrderTask setMotionFixEnableTrip(@IntRange(from = 0, to = 1) int enable) {
+        ParamsWriteTask task = new ParamsWriteTask();
+        task.setMotionFixEnableTrip(enable);
+        return task;
+    }
+
+    public static OrderTask setMotionFixIntervalTrip(@IntRange(from = 10, to = 86400) int interval) {
+        ParamsWriteTask task = new ParamsWriteTask();
+        task.setMotionFixIntervalTrip(interval);
+        return  task;
+    }
+
+    public static OrderTask setMotionFixEnableStop(@IntRange(from = 0, to = 1) int enable) {
+        ParamsWriteTask task = new ParamsWriteTask();
+        task.setMotionFixEnableStop(enable);
+        return task;
+    }
+
+    public static OrderTask setMotionFixTimeoutStop(@IntRange(from = 3, to = 180) int timeout) {
+        ParamsWriteTask task = new ParamsWriteTask();
+        task.setMotionFixTimeoutStop(timeout);
+        return task;
+    }
+
+    public static OrderTask setMotionFixEnableStationary(@IntRange(from = 0, to = 1) int enable) {
+        ParamsWriteTask task = new ParamsWriteTask();
+        task.setMotionFixEnableStationary(enable);
+        return task;
+    }
+
+    public static OrderTask setMotionFixIntervalStationary(@IntRange(from = 1, to = 1440) int interval) {
+        ParamsWriteTask task = new ParamsWriteTask();
+        task.setMotionFixIntervalStationary(interval);
         return task;
     }
 
@@ -1545,16 +1593,16 @@ public class OrderTaskAssembler {
         return task;
     }
 
-    public static OrderTask setGPSPosTimeoutL76C(@IntRange(from = 60, to = 600) int timeout) {
+    public static OrderTask setGPSTimeout(@IntRange(from = 60, to = 600) int timeout) {
         ParamsWriteTask task = new ParamsWriteTask();
-        task.setGPSPosTimeoutL76(timeout);
+        task.setGPSTimeout(timeout);
         return task;
     }
 
 
-    public static OrderTask setGPSPDOPLimitL76C(@IntRange(from = 25, to = 100) int limit) {
+    public static OrderTask setGPSPDOP(@IntRange(from = 25, to = 100) int limit) {
         ParamsWriteTask task = new ParamsWriteTask();
-        task.setGPSPDOPLimitL76(limit);
+        task.setGPSPDOP(limit);
         return task;
     }
 

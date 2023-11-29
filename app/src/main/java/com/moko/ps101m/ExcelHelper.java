@@ -119,13 +119,6 @@ public class ExcelHelper {
         dataSource.add(new ExcelBean("MQTT Password", !TextUtils.isEmpty(bean.password) ? String.format("value:%s", bean.password) : "", "0-256 characters"));
         dataSource.add(new ExcelBean("SSL/TLS", bean.connectMode > 0 ? "value:1" : String.format(Locale.getDefault(), "value:%d", bean.connectMode), "Range: 0/1 0:Disable SSL (TCP mode) 1:Enable SSL"));
         dataSource.add(new ExcelBean("Certificate type", bean.connectMode > 0 ? String.format(Locale.getDefault(), "value:%d", bean.connectMode) : "value:1", "Valid when SSL is enabled, range: 1/2/3 1: CA certificate file 2: CA certificate file 3: Self signed certificates"));
-        dataSource.add(new ExcelBean("LWT", bean.lwtEnable ? "value:1" : "value:0", "Range: 0/1 0:Disable 1:Enable"));
-        dataSource.add(new ExcelBean("LWT Retain", bean.lwtRetain ? "value:1" : "value:0", "Range: 0/1 0:NO 1:YES"));
-        dataSource.add(new ExcelBean("LWT Qos", String.format(Locale.getDefault(), "value:%d", bean.lwtQos), "Range: 0/1/2 0:qos0 1:qos1 2:qos2"));
-        dataSource.add(new ExcelBean("LWT Topic", String.format("value:%s", bean.lwtTopic), "1-128 characters"));
-        dataSource.add(new ExcelBean("LWT Payload", String.format("value:%s", bean.lwtPayload), "1-128 characters"));
-        dataSource.add(new ExcelBean("APN", !TextUtils.isEmpty(bean.apn) ? String.format("value:%s", bean.apn) : "", "0-100 Characters"));
-        dataSource.add(new ExcelBean("Network Priority", String.format("value:%s", bean.networkFormat), "Range: 0/1/2/3"));
 
         List<Map<String, String>> data = new ArrayList<>();
         for (int i = 0; i < dataSource.size(); i++) {
@@ -177,26 +170,12 @@ public class ExcelHelper {
                     if (bean.connectMode > 0) {
                         bean.connectMode = Integer.parseInt(strValue);
                     }
-                } else if (i == 13) {
-                    bean.lwtEnable = "1".equals(strValue);
-                } else if (i == 14) {
-                    bean.lwtRetain = "1".equals(strValue);
-                } else if (i == 15) {
-                    bean.lwtQos = Integer.parseInt(strValue);
-                } else if (i == 16) {
-                    bean.lwtTopic = strValue;
-                } else if (i == 17) {
-                    bean.lwtPayload = strValue;
-                } else if (i == 18) {
-                    bean.apn = strValue;
-                } else if (i == 19) {
-                    bean.networkFormat = Integer.parseInt(strValue);
                 }
             }
             workbook.close();
             return bean;
         } catch (Exception e) {
-            e.printStackTrace();
+            XLog.e(e);
         }
         return null;
     }
