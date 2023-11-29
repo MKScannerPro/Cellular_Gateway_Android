@@ -205,7 +205,7 @@
                         tools:text="Normal" />
                 </LinearLayout>
 
-                <View style="@style/lw006_divider_line" />
+                <View style="@style/divider_line" />
 
                 <LinearLayout
                     android:layout_width="match_parent"

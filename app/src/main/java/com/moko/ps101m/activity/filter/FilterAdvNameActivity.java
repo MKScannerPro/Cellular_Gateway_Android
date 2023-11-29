@@ -1,5 +1,6 @@
 package com.moko.ps101m.activity.filter;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.text.InputFilter;
 import android.text.TextUtils;
@@ -15,7 +16,7 @@ import com.moko.ble.lib.task.OrderTask;
 import com.moko.ble.lib.task.OrderTaskResponse;
 import com.moko.ps101m.R;
 import com.moko.ps101m.activity.PS101BaseActivity;
-import com.moko.ps101m.databinding.Ps101mActivityFilterAdvNameBinding;
+import com.moko.ps101m.databinding.ActivityFilterAdvNameBinding;
 import com.moko.ps101m.utils.ToastUtils;
 import com.moko.support.ps101m.MokoSupport;
 import com.moko.support.ps101m.OrderTaskAssembler;
@@ -32,7 +33,7 @@ import java.util.List;
 
 public class FilterAdvNameActivity extends PS101BaseActivity {
     private final String FILTER_ASCII = "[ -~]*";
-    private Ps101mActivityFilterAdvNameBinding mBind;
+    private ActivityFilterAdvNameBinding mBind;
     private boolean savedParamsError;
     private ArrayList<String> filterAdvName;
     private InputFilter filter;
@@ -40,7 +41,7 @@ public class FilterAdvNameActivity extends PS101BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mBind = Ps101mActivityFilterAdvNameBinding.inflate(getLayoutInflater());
+        mBind = ActivityFilterAdvNameBinding.inflate(getLayoutInflater());
         setContentView(mBind.getRoot());
         EventBus.getDefault().register(this);
         filterAdvName = new ArrayList<>();
@@ -68,14 +69,13 @@ public class FilterAdvNameActivity extends PS101BaseActivity {
         });
     }
 
+    @SuppressLint("DefaultLocale")
     @Subscribe(threadMode = ThreadMode.POSTING, priority = 300)
     public void onOrderTaskResponseEvent(OrderTaskResponseEvent event) {
         final String action = event.getAction();
         if (!MokoConstants.ACTION_CURRENT_DATA.equals(action))
             EventBus.getDefault().cancelEventDelivery(event);
         runOnUiThread(() -> {
-            if (MokoConstants.ACTION_ORDER_TIMEOUT.equals(action)) {
-            }
             if (MokoConstants.ACTION_ORDER_FINISH.equals(action)) {
                 dismissSyncProgressDialog();
             }
@@ -85,7 +85,6 @@ public class FilterAdvNameActivity extends PS101BaseActivity {
                 byte[] value = response.responseValue;
                 if (orderCHAR == OrderCHAR.CHAR_PARAMS) {
                     if (value.length >= 4) {
-                        int header = value[0] & 0xFF;// 0xED
                         int flag = value[1] & 0xFF;// read or write
                         int cmd = value[2] & 0xFF;
                         ParamsKeyEnum configKeyEnum = ParamsKeyEnum.fromParamKey(cmd);
@@ -105,15 +104,10 @@ public class FilterAdvNameActivity extends PS101BaseActivity {
                                     if (result != 1) {
                                         savedParamsError = true;
                                     }
-                                    if (savedParamsError) {
-                                        ToastUtils.showToast(FilterAdvNameActivity.this, "Opps！Save failed. Please check the input characters and try again.");
-                                    } else {
-                                        ToastUtils.showToast(this, "Save Successfully！");
-                                    }
+                                    ToastUtils.showToast(this, !savedParamsError ? "Setup succeed" : "Setup failed");
                                     break;
                             }
-                        }
-                        if (flag == 0x00) {
+                        }else if (flag == 0x00) {
                             // read
                             switch (configKeyEnum) {
                                 case KEY_FILTER_NAME_PRECISE:
@@ -140,7 +134,7 @@ public class FilterAdvNameActivity extends PS101BaseActivity {
                                         }
                                         for (int i = 0, l = filterAdvName.size(); i < l; i++) {
                                             String advName = filterAdvName.get(i);
-                                            View v = LayoutInflater.from(FilterAdvNameActivity.this).inflate(R.layout.ps101m_item_adv_name_filter, mBind.llDavName, false);
+                                            View v = LayoutInflater.from(this).inflate(R.layout.ps101m_item_adv_name_filter, mBind.llDavName, false);
                                             TextView title = v.findViewById(R.id.tv_adv_name_title);
                                             EditText etAdvName = v.findViewById(R.id.et_adv_name);
                                             etAdvName.setFilters(new InputFilter[]{new InputFilter.LengthFilter(20), filter});
@@ -169,6 +163,7 @@ public class FilterAdvNameActivity extends PS101BaseActivity {
         }
     }
 
+    @SuppressLint("DefaultLocale")
     public void onAdd(View view) {
         if (isWindowLocked()) return;
         int count = mBind.llDavName.getChildCount();
@@ -214,13 +209,9 @@ public class FilterAdvNameActivity extends PS101BaseActivity {
                 View v = mBind.llDavName.getChildAt(i);
                 EditText etAdvName = v.findViewById(R.id.et_adv_name);
                 final String advName = etAdvName.getText().toString();
-                if (TextUtils.isEmpty(advName)) {
-                    return false;
-                }
+                if (TextUtils.isEmpty(advName)) return false;
                 int length = advName.length();
-                if (length > 20) {
-                    return false;
-                }
+                if (length > 20) return false;
                 filterAdvName.add(advName);
             }
         }

@@ -89,7 +89,7 @@
                     android:textSize="15sp"
                     android:textStyle="bold" />
 
-                <View style="@style/lw006_divider_line" />
+                <View style="@style/divider_line" />
 
                 <CheckBox
                     android:id="@+id/cb_reverse_filter"
@@ -105,7 +105,7 @@
                     android:textSize="15sp"
                     android:textStyle="bold" />
 
-                <View style="@style/lw006_divider_line" />
+                <View style="@style/divider_line" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"

@@ -68,7 +68,7 @@
                 android:src="@drawable/ic_checked" />
         </LinearLayout>
 
-        <View style="@style/lw006_divider_line" />
+        <View style="@style/divider_line" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -97,7 +97,7 @@
                 android:src="@drawable/ic_checked" />
         </LinearLayout>
 
-        <View style="@style/lw006_divider_line" />
+        <View style="@style/divider_line" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -126,7 +126,7 @@
                 android:src="@drawable/ps101_ic_unchecked" />
         </LinearLayout>
 
-        <View style="@style/lw006_divider_line" />
+        <View style="@style/divider_line" />
 
         <LinearLayout
             android:layout_width="match_parent"

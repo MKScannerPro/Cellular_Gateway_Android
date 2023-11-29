@@ -77,7 +77,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <View
-                    style="@style/lw006_divider_line"
+                    style="@style/divider_line"
                     android:layout_width="0dp"
                     android:layout_marginTop="10dp"
                     app:layout_constraintLeft_toLeftOf="parent"
@@ -122,7 +122,7 @@
                     app:layout_constraintRight_toRightOf="parent" />
 
                 <View
-                    style="@style/lw006_divider_line"
+                    style="@style/divider_line"
                     android:layout_width="0dp"
                     android:layout_marginTop="10dp"
                     app:layout_constraintLeft_toLeftOf="parent"
@@ -216,7 +216,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <View
-                    style="@style/lw006_divider_line"
+                    style="@style/divider_line"
                     android:layout_width="0dp"
                     android:layout_marginTop="10dp"
                     app:layout_constraintLeft_toLeftOf="parent"
@@ -246,7 +246,7 @@
                     app:layout_constraintTop_toBottomOf="@id/tv_mac_address" />
 
                 <View
-                    style="@style/lw006_divider_line"
+                    style="@style/divider_line"
                     android:layout_width="0dp"
                     android:layout_marginTop="10dp"
                     app:layout_constraintLeft_toLeftOf="parent"

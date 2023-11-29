@@ -65,7 +65,7 @@
                 android:textSize="15sp"
                 android:textStyle="bold" />
 
-            <View style="@style/lw006_divider_line" />
+            <View style="@style/divider_line" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -117,7 +117,7 @@
                     app:layout_constraintTop_toBottomOf="@id/iv_add" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <View style="@style/lw006_divider_line" />
+            <View style="@style/divider_line" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/cl_other_relationship"

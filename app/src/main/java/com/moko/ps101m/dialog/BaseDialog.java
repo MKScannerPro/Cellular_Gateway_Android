@@ -24,7 +24,7 @@ public abstract class BaseDialog<VM extends ViewBinding> extends Dialog {
     protected VM mBind;
 
     public BaseDialog(Context context) {
-        super(context, R.style.LW006BaseDialogTheme);
+        super(context, R.style.BaseDialogTheme);
     }
 
     public BaseDialog(Context context, int themeResId) {

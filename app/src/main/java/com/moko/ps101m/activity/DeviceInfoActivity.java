@@ -415,42 +415,6 @@ public class DeviceInfoActivity extends PS101BaseActivity implements RadioGroup.
         }, 200);
     }
 
-    public void onBleFix(View view) {
-        if (isWindowLocked()) return;
-        Intent intent = new Intent(this, PosBleFixActivity.class);
-        startActivity(intent);
-    }
-
-    public void onGPSFix(View view) {
-        if (isWindowLocked()) return;
-        Intent intent = new Intent(this, GpsFixActivity.class);
-        startActivity(intent);
-    }
-
-    public void onDeviceMode(View view) {
-        if (isWindowLocked()) return;
-        Intent intent = new Intent(this, ScanReportModeActivity.class);
-        startActivity(intent);
-    }
-
-    public void onAuxiliaryInterval(View view) {
-        if (isWindowLocked()) return;
-        Intent intent = new Intent(this, AuxiliaryOperationActivity.class);
-        startActivity(intent);
-    }
-
-    public void onBleSettings(View view) {
-        if (isWindowLocked()) return;
-        Intent intent = new Intent(this, BleSettingsActivity.class);
-        startActivity(intent);
-    }
-
-    public void onAxisSettings(View view) {
-        if (isWindowLocked()) return;
-        Intent intent = new Intent(this, AxisParameterActivity.class);
-        startActivity(intent);
-    }
-
     public void onLocalDataSync(View view) {
         if (isWindowLocked()) return;
         startActivity(new Intent(this, ExportDataActivity.class));

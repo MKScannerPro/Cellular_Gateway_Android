@@ -36,7 +36,6 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
             android:background="@color/white_ffffff"
             android:orientation="vertical">
 
@@ -53,8 +52,7 @@
                     android:layout_marginRight="12dp"
                     android:text="iBeacon"
                     android:textColor="@color/black_333333"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
+                    android:textSize="15sp" />
 
                 <TextView
                     android:id="@+id/tv_filter_by_ibeacon"
@@ -69,11 +67,10 @@
                     android:gravity="center_vertical"
                     android:text="ON"
                     android:textColor="@color/black_333333"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
+                    android:textSize="15sp" />
             </RelativeLayout>
 
-            <View style="@style/lw006_divider_line" />
+            <View style="@style/divider_line" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -88,8 +85,7 @@
                     android:layout_marginRight="12dp"
                     android:text="Eddystone-UID"
                     android:textColor="@color/black_333333"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
+                    android:textSize="15sp" />
 
                 <TextView
                     android:id="@+id/tv_filter_by_uid"
@@ -104,11 +100,10 @@
                     android:gravity="center_vertical"
                     android:text="ON"
                     android:textColor="@color/black_333333"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
+                    android:textSize="15sp" />
             </RelativeLayout>
 
-            <View style="@style/lw006_divider_line" />
+            <View style="@style/divider_line" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -123,8 +118,7 @@
                     android:layout_marginRight="12dp"
                     android:text="Eddystone-URL"
                     android:textColor="@color/black_333333"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
+                    android:textSize="15sp" />
 
                 <TextView
                     android:id="@+id/tv_filter_by_url"
@@ -139,11 +133,10 @@
                     android:gravity="center_vertical"
                     android:text="ON"
                     android:textColor="@color/black_333333"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
+                    android:textSize="15sp" />
             </RelativeLayout>
 
-            <View style="@style/lw006_divider_line" />
+            <View style="@style/divider_line" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -158,8 +151,7 @@
                     android:layout_marginRight="12dp"
                     android:text="Eddystone-TLM"
                     android:textColor="@color/black_333333"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
+                    android:textSize="15sp" />
 
                 <TextView
                     android:id="@+id/tv_filter_by_tlm"
@@ -174,46 +166,11 @@
                     android:gravity="center_vertical"
                     android:text="ON"
                     android:textColor="@color/black_333333"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
+                    android:textSize="15sp" />
             </RelativeLayout>
 
-            <View style="@style/lw006_divider_line" />
+            <View style="@style/divider_line" />
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:onClick="onFilterByBXPiBeacon">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="12dp"
-                    android:layout_marginRight="12dp"
-                    android:text="BXP - iBeacon"
-                    android:textColor="@color/black_333333"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/tv_filter_by_bxp_ibeacon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="12dp"
-                    android:layout_marginRight="12dp"
-                    android:drawableRight="@drawable/ic_arrow_right"
-                    android:drawablePadding="10dp"
-                    android:gravity="center_vertical"
-                    android:text="ON"
-                    android:textColor="@color/black_333333"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
-            </RelativeLayout>
-
-            <View style="@style/lw006_divider_line" />
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
@@ -227,8 +184,7 @@
                     android:layout_marginRight="12dp"
                     android:text="BXP - Device Info"
                     android:textColor="@color/black_333333"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
+                    android:textSize="15sp" />
 
                 <ImageView
                     android:id="@+id/iv_filter_by_bxp_device"
@@ -241,7 +197,7 @@
                     android:src="@drawable/ps101_ic_unchecked" />
             </RelativeLayout>
 
-            <View style="@style/lw006_divider_line" />
+            <View style="@style/divider_line" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -256,8 +212,7 @@
                     android:layout_marginRight="12dp"
                     android:text="BXP – ACC"
                     android:textColor="@color/black_333333"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
+                    android:textSize="15sp" />
 
                 <ImageView
                     android:id="@+id/iv_filter_by_bxp_acc"
@@ -270,7 +225,7 @@
                     android:src="@drawable/ps101_ic_unchecked" />
             </RelativeLayout>
 
-            <View style="@style/lw006_divider_line" />
+            <View style="@style/divider_line" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -285,8 +240,7 @@
                     android:layout_marginRight="12dp"
                     android:text="@string/bxp_t_h"
                     android:textColor="@color/black_333333"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
+                    android:textSize="15sp" />
 
                 <ImageView
                     android:id="@+id/iv_filter_by_bxp_th"
@@ -299,7 +253,8 @@
                     android:src="@drawable/ps101_ic_unchecked" />
             </RelativeLayout>
 
-            <View style="@style/lw006_divider_line" />
+            <View style="@style/divider_line" />
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
@@ -313,8 +268,7 @@
                     android:layout_marginRight="12dp"
                     android:text="BXP - Button"
                     android:textColor="@color/black_333333"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
+                    android:textSize="15sp" />
 
                 <TextView
                     android:id="@+id/tv_filter_by_bxp_button"
@@ -329,11 +283,11 @@
                     android:gravity="center_vertical"
                     android:text="ON"
                     android:textColor="@color/black_333333"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
+                    android:textSize="15sp" />
             </RelativeLayout>
 
-            <View style="@style/lw006_divider_line" />
+            <View style="@style/divider_line" />
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
@@ -347,8 +301,7 @@
                     android:layout_marginRight="12dp"
                     android:text="BXP - Tag"
                     android:textColor="@color/black_333333"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
+                    android:textSize="15sp" />
 
                 <TextView
                     android:id="@+id/tv_filter_by_bxp_tag"
@@ -363,15 +316,15 @@
                     android:gravity="center_vertical"
                     android:text="ON"
                     android:textColor="@color/black_333333"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
+                    android:textSize="15sp" />
             </RelativeLayout>
 
-            <View style="@style/lw006_divider_line" />
+            <View style="@style/divider_line" />
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:onClick="onFilterByMkPir">
+                android:onClick="onFilterByPir">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -379,13 +332,12 @@
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="12dp"
                     android:layout_marginRight="12dp"
-                    android:text="MK - PIR"
+                    android:text="PIR Presence"
                     android:textColor="@color/black_333333"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
+                    android:textSize="15sp" />
 
                 <TextView
-                    android:id="@+id/tv_filter_by_mk_pir"
+                    android:id="@+id/tv_filter_by_pir"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
@@ -397,11 +349,43 @@
                     android:gravity="center_vertical"
                     android:text="ON"
                     android:textColor="@color/black_333333"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
+                    android:textSize="15sp" />
             </RelativeLayout>
 
-            <View style="@style/lw006_divider_line" />
+            <View style="@style/divider_line" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:onClick="onFilterByMkTof">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginRight="12dp"
+                    android:text="MK TOF"
+                    android:textColor="@color/black_333333"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/tv_filter_by_mk_tof"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginRight="12dp"
+                    android:drawableRight="@drawable/ic_arrow_right"
+                    android:drawablePadding="10dp"
+                    android:gravity="center_vertical"
+                    android:text="ON"
+                    android:textColor="@color/black_333333"
+                    android:textSize="15sp" />
+            </RelativeLayout>
+
+            <View style="@style/divider_line" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -416,8 +400,7 @@
                     android:layout_marginRight="12dp"
                     android:text="Other"
                     android:textColor="@color/black_333333"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
+                    android:textSize="15sp" />
 
                 <TextView
                     android:id="@+id/tv_filter_by_other"
@@ -432,11 +415,9 @@
                     android:gravity="center_vertical"
                     android:text="ON"
                     android:textColor="@color/black_333333"
-                    android:textSize="15sp"
-                    android:textStyle="bold" />
+                    android:textSize="15sp" />
             </RelativeLayout>
 
-            <View style="@style/lw006_divider_line" />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </LinearLayout>

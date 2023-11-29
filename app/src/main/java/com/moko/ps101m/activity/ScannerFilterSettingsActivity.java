@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Build;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.SeekBar;
 
@@ -19,8 +18,8 @@ import com.moko.ble.lib.task.OrderTaskResponse;
 import com.moko.ps101m.R;
 import com.moko.ps101m.activity.filter.FilterAdvNameActivity;
 import com.moko.ps101m.activity.filter.FilterMacAddressActivity;
-import com.moko.ps101m.activity.filter.FilterRawDataSwitchActivity;
-import com.moko.ps101m.databinding.Ps101mActivityPosBleBinding;
+import com.moko.ps101m.activity.filter.FilterRawDataActivity;
+import com.moko.ps101m.databinding.ActivityScannerFilterSettingsBinding;
 import com.moko.ps101m.dialog.BottomDialog;
 import com.moko.ps101m.utils.ToastUtils;
 import com.moko.support.ps101m.MokoSupport;
@@ -37,21 +36,22 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
-public class PosBleFixActivity extends PS101BaseActivity implements SeekBar.OnSeekBarChangeListener {
-    private Ps101mActivityPosBleBinding mBind;
+public class ScannerFilterSettingsActivity extends PS101BaseActivity implements SeekBar.OnSeekBarChangeListener {
+    private ActivityScannerFilterSettingsBinding mBind;
     private boolean mReceiverTag = false;
     private boolean savedParamsError;
-    private final String[] mRelationshipValues = {"Null", "Only MAC", "Only ADV Name", "Only Raw Data", "ADV Name&Raw Data", "MAC&ADV Name&Raw Data", "ADV Name | Raw Data"};
+    private final String[] mRelationshipValues = {"Null", "Only MAC", "Only ADV Name", "Only Raw Data",
+            "ADV Name&Raw Data", "MAC&ADV Name&Raw Data", "ADV Name | Raw Data", "ADV NAME & MAC"};
     private int mRelationshipSelected;
-    private final String[] mScanningTypeValues = {"1M PHY(BLE 4.x)", "1M PHY(BLE 5)", "1M PHY(BLE 4.x + BLE 5)", "Coded PHY(BLE 5)"};
-    private int mScanningTypeSelected;
-    private final String[] mBleFixMechanismValues = {"RSSI Priority", "Time Priority"};
-    private int mBleFixMechanismSelected;
+    private final String[] mFilterTypeValues = {"1M PHY(V4.2)", "1M PHY(V5.0)", "1M PHY(V4.2) & 1M PHY(V5.0)", "Coded PHY(V5.0)"};
+    private int mFilterTypeSelected;
+    private final String[] duplicateDataValues = {"None", "MAC", "MAC+Data type", "MAC+Raw data"};
+    private int duplicateDataSelected;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mBind = Ps101mActivityPosBleBinding.inflate(getLayoutInflater());
+        mBind = ActivityScannerFilterSettingsBinding.inflate(getLayoutInflater());
         setContentView(mBind.getRoot());
         EventBus.getDefault().register(this);
         mBind.sbRssiFilter.setOnSeekBarChangeListener(this);
@@ -65,14 +65,19 @@ public class PosBleFixActivity extends PS101BaseActivity implements SeekBar.OnSe
         }
         mReceiverTag = true;
         showSyncingProgressDialog();
-        List<OrderTask> orderTasks = new ArrayList<>();
-        orderTasks.add(OrderTaskAssembler.getBlePosTimeout());
-        orderTasks.add(OrderTaskAssembler.getBlePosNumber());
-        orderTasks.add(OrderTaskAssembler.getBlePosMechanism());
-        orderTasks.add(OrderTaskAssembler.getFilterBleScanPhy());
+        List<OrderTask> orderTasks = new ArrayList<>(8);
         orderTasks.add(OrderTaskAssembler.getFilterRSSI());
+        orderTasks.add(OrderTaskAssembler.getFilterBleScanPhy());
         orderTasks.add(OrderTaskAssembler.getFilterRelationship());
+        orderTasks.add(OrderTaskAssembler.getFilterDuplicateData());
         MokoSupport.getInstance().sendOrder(orderTasks.toArray(new OrderTask[]{}));
+        initListener();
+    }
+
+    private void initListener() {
+        mBind.tvFilterType.setOnClickListener(v -> onFilterType());
+        mBind.tvFilterRelationship.setOnClickListener(v -> onFilterRelationship());
+        mBind.tvFilterDuplicate.setOnClickListener(v -> onDuplicateFilter());
     }
 
     @Subscribe(threadMode = ThreadMode.POSTING, priority = 200)
@@ -91,8 +96,6 @@ public class PosBleFixActivity extends PS101BaseActivity implements SeekBar.OnSe
         if (!MokoConstants.ACTION_CURRENT_DATA.equals(action))
             EventBus.getDefault().cancelEventDelivery(event);
         runOnUiThread(() -> {
-            if (MokoConstants.ACTION_ORDER_TIMEOUT.equals(action)) {
-            }
             if (MokoConstants.ACTION_ORDER_FINISH.equals(action)) {
                 dismissSyncProgressDialog();
             }
@@ -105,58 +108,27 @@ public class PosBleFixActivity extends PS101BaseActivity implements SeekBar.OnSe
                         int header = value[0] & 0xFF;// 0xED
                         int flag = value[1] & 0xFF;// read or write
                         int cmd = value[2] & 0xFF;
-                        if (header != 0xED) return;
                         ParamsKeyEnum configKeyEnum = ParamsKeyEnum.fromParamKey(cmd);
-                        if (configKeyEnum == null) return;
+                        if (header != 0xED || configKeyEnum == null) return;
                         int length = value[3] & 0xFF;
                         if (flag == 0x01) {
                             // write
                             int result = value[4] & 0xFF;
                             switch (configKeyEnum) {
-                                case KEY_BLE_POS_TIMEOUT:
-                                case KEY_BLE_POS_MAC_NUMBER:
-                                case KEY_FILTER_BLE_SCAN_PHY:
-                                case KEY_BLE_POS_MECHANISM:
-                                    if (result != 1) {
-                                        savedParamsError = true;
-                                    }
-                                    break;
+                                case KEY_FILTER_RSSI:
+                                case KEY_FILTER_PHY:
                                 case KEY_FILTER_RELATIONSHIP:
-                                    if (result != 1) {
-                                        savedParamsError = true;
-                                    }
-                                    if (savedParamsError) {
-                                        ToastUtils.showToast(PosBleFixActivity.this, "Opps！Save failed. Please check the input characters and try again.");
-                                    } else {
-                                        ToastUtils.showToast(this, "Save Successfully！");
-                                    }
+                                    if (result != 1) savedParamsError = true;
+                                    break;
+
+                                case KEY_DUPLICATE_DATA_FILTER:
+                                    if (result != 1) savedParamsError = true;
+                                    ToastUtils.showToast(this, !savedParamsError ? "Setup succeed" : "Setup failed");
                                     break;
                             }
-                        }
-                        if (flag == 0x00) {
+                        } else if (flag == 0x00) {
                             // read
                             switch (configKeyEnum) {
-                                case KEY_BLE_POS_TIMEOUT:
-                                    if (length > 0) {
-                                        int number = value[4] & 0xFF;
-                                        mBind.etPosTimeout.setText(String.valueOf(number));
-                                        mBind.etPosTimeout.setSelection(mBind.etPosTimeout.getText().length());
-                                    }
-                                    break;
-                                case KEY_BLE_POS_MAC_NUMBER:
-                                    if (length > 0) {
-                                        int number = value[4] & 0xFF;
-                                        mBind.etMacNumber.setText(String.valueOf(number));
-                                        mBind.etMacNumber.setSelection(mBind.etMacNumber.getText().length());
-                                    }
-                                    break;
-                                case KEY_BLE_POS_MECHANISM:
-                                    if (length > 0) {
-                                        int mechanism = value[4] & 0xFF;
-                                        mBleFixMechanismSelected = mechanism;
-                                        mBind.tvBleFixMechanism.setText(mBleFixMechanismValues[mechanism]);
-                                    }
-                                    break;
                                 case KEY_FILTER_RSSI:
                                     if (length > 0) {
                                         final int rssi = value[4];
@@ -165,18 +137,27 @@ public class PosBleFixActivity extends PS101BaseActivity implements SeekBar.OnSe
                                         mBind.tvRssiFilterTips.setText(getString(R.string.ble_fix_filter, rssi));
                                     }
                                     break;
-                                case KEY_FILTER_BLE_SCAN_PHY:
+
+                                case KEY_FILTER_PHY:
                                     if (length > 0) {
                                         int type = value[4] & 0xFF;
-                                        mScanningTypeSelected = type;
-                                        mBind.tvScanningType.setText(mScanningTypeValues[type]);
+                                        mFilterTypeSelected = type;
+                                        mBind.tvFilterType.setText(mFilterTypeValues[type]);
                                     }
                                     break;
+
                                 case KEY_FILTER_RELATIONSHIP:
                                     if (length > 0) {
                                         int relationship = value[4] & 0xFF;
                                         mRelationshipSelected = relationship;
                                         mBind.tvFilterRelationship.setText(mRelationshipValues[relationship]);
+                                    }
+                                    break;
+
+                                case KEY_DUPLICATE_DATA_FILTER:
+                                    if (length > 0) {
+                                        duplicateDataSelected = value[4] & 0xff;
+                                        mBind.tvFilterDuplicate.setText(duplicateDataValues[duplicateDataSelected]);
                                     }
                                     break;
                             }
@@ -189,40 +170,13 @@ public class PosBleFixActivity extends PS101BaseActivity implements SeekBar.OnSe
 
     public void onSave(View view) {
         if (isWindowLocked()) return;
-        if (isValid()) {
-            showSyncingProgressDialog();
-            saveParams();
-        } else {
-            ToastUtils.showToast(this, "Para error!");
-        }
-    }
-
-    private boolean isValid() {
-        final String posTimeoutStr = mBind.etPosTimeout.getText().toString();
-        if (TextUtils.isEmpty(posTimeoutStr)) return false;
-        final int posTimeout = Integer.parseInt(posTimeoutStr);
-        if (posTimeout < 1 || posTimeout > 10) return false;
-        final String numberStr = mBind.etMacNumber.getText().toString();
-        if (TextUtils.isEmpty(numberStr)) return false;
-        final int number = Integer.parseInt(numberStr);
-        return number >= 1 && number <= 15;
-    }
-
-
-    private void saveParams() {
-        final String posTimeoutStr = mBind.etPosTimeout.getText().toString();
-        final String numberStr = mBind.etMacNumber.getText().toString();
-        final int posTimeout = Integer.parseInt(posTimeoutStr);
-        final int number = Integer.parseInt(numberStr);
-        savedParamsError = false;
-        List<OrderTask> orderTasks = new ArrayList<>();
-        orderTasks.add(OrderTaskAssembler.setBlePosTimeout(posTimeout));
-        orderTasks.add(OrderTaskAssembler.setBlePosNumber(number));
-        orderTasks.add(OrderTaskAssembler.setBlePosMechanism(mBleFixMechanismSelected));
+        showSyncingProgressDialog();
+        List<OrderTask> orderTasks = new ArrayList<>(6);
         orderTasks.add(OrderTaskAssembler.setFilterRSSI(mBind.sbRssiFilter.getProgress() - 127));
-        orderTasks.add(OrderTaskAssembler.setFilterBleScanPhy(mScanningTypeSelected));
+        orderTasks.add(OrderTaskAssembler.setFilterBleScanPhy(mFilterTypeSelected));
         orderTasks.add(OrderTaskAssembler.setFilterRelationship(mRelationshipSelected));
-        MokoSupport.getInstance().sendOrder(orderTasks.toArray(new OrderTask[]{}));
+        orderTasks.add(OrderTaskAssembler.setFilterDuplicateData(duplicateDataSelected));
+        MokoSupport.getInstance().sendOrder(orderTasks.toArray(new OrderTask[0]));
     }
 
     private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
@@ -253,42 +207,32 @@ public class PosBleFixActivity extends PS101BaseActivity implements SeekBar.OnSe
     }
 
     public void onBack(View view) {
-        backHome();
-    }
-
-    @Override
-    public void onBackPressed() {
-        backHome();
-    }
-
-    private void backHome() {
-        setResult(RESULT_OK);
         finish();
     }
 
-    public void onBleFixMechanism(View view) {
+    public void onDuplicateFilter() {
         if (isWindowLocked()) return;
         BottomDialog dialog = new BottomDialog();
-        dialog.setDatas(new ArrayList<>(Arrays.asList(mBleFixMechanismValues)), mBleFixMechanismSelected);
+        dialog.setDatas(new ArrayList<>(Arrays.asList(duplicateDataValues)), duplicateDataSelected);
         dialog.setListener(value -> {
-            mBleFixMechanismSelected = value;
-            mBind.tvBleFixMechanism.setText(mBleFixMechanismValues[value]);
+            duplicateDataSelected = value;
+            mBind.tvFilterDuplicate.setText(duplicateDataValues[value]);
         });
         dialog.show(getSupportFragmentManager());
     }
 
-    public void onScanningType(View view) {
+    public void onFilterType() {
         if (isWindowLocked()) return;
         BottomDialog dialog = new BottomDialog();
-        dialog.setDatas(new ArrayList<>(Arrays.asList(mScanningTypeValues)), mScanningTypeSelected);
+        dialog.setDatas(new ArrayList<>(Arrays.asList(mFilterTypeValues)), mFilterTypeSelected);
         dialog.setListener(value -> {
-            mScanningTypeSelected = value;
-            mBind.tvScanningType.setText(mScanningTypeValues[value]);
+            mFilterTypeSelected = value;
+            mBind.tvFilterType.setText(mFilterTypeValues[value]);
         });
         dialog.show(getSupportFragmentManager());
     }
 
-    public void onFilterRelationship(View view) {
+    public void onFilterRelationship() {
         if (isWindowLocked()) return;
         BottomDialog dialog = new BottomDialog();
         dialog.setDatas(new ArrayList<>(Arrays.asList(mRelationshipValues)), mRelationshipSelected);
@@ -313,7 +257,7 @@ public class PosBleFixActivity extends PS101BaseActivity implements SeekBar.OnSe
 
     public void onFilterByRawData(View view) {
         if (isWindowLocked()) return;
-        Intent intent = new Intent(this, FilterRawDataSwitchActivity.class);
+        Intent intent = new Intent(this, FilterRawDataActivity.class);
         startActivity(intent);
     }
 

@@ -83,7 +83,7 @@
 
                 <View
                     android:id="@+id/line2"
-                    style="@style/lw006_divider_line"
+                    style="@style/divider_line"
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp"
                     app:layout_constraintTop_toBottomOf="@id/cb_fix_on_start" />
@@ -146,7 +146,7 @@
 
                 <View
                     android:id="@+id/line3"
-                    style="@style/lw006_divider_line"
+                    style="@style/divider_line"
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp"
                     app:layout_constraintTop_toBottomOf="@id/cb_fix_in_trip" />
@@ -195,7 +195,7 @@
 
                 <View
                     android:id="@+id/line4"
-                    style="@style/lw006_divider_line"
+                    style="@style/divider_line"
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp"
                     app:layout_constraintTop_toBottomOf="@id/tv3" />
@@ -258,7 +258,7 @@
 
                 <View
                     android:id="@+id/line5"
-                    style="@style/lw006_divider_line"
+                    style="@style/divider_line"
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp"
                     app:layout_constraintTop_toBottomOf="@id/cb_fix_on_end" />
@@ -306,7 +306,7 @@
 
                 <View
                     android:id="@+id/line6"
-                    style="@style/lw006_divider_line"
+                    style="@style/divider_line"
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp"
                     app:layout_constraintTop_toBottomOf="@id/tv5" />
@@ -340,7 +340,7 @@
 
                 <View
                     android:id="@+id/line7"
-                    style="@style/lw006_divider_line"
+                    style="@style/divider_line"
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp"
                     app:layout_constraintTop_toBottomOf="@id/tv6" />
@@ -388,7 +388,7 @@
 
                 <View
                     android:id="@+id/line8"
-                    style="@style/lw006_divider_line"
+                    style="@style/divider_line"
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp"
                     app:layout_constraintTop_toBottomOf="@id/tv7" />
@@ -448,7 +448,7 @@
 
                 <View
                     android:id="@+id/line9"
-                    style="@style/lw006_divider_line"
+                    style="@style/divider_line"
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp"
                     app:layout_constraintTop_toBottomOf="@id/cb_fix_on_stationary_state" />
@@ -497,7 +497,7 @@
 
                 <View
                     android:id="@+id/line10"
-                    style="@style/lw006_divider_line"
+                    style="@style/divider_line"
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp"
                     app:layout_constraintTop_toBottomOf="@id/tv9" />
@@ -557,7 +557,7 @@
 
                 <View
                     android:id="@+id/line11"
-                    style="@style/lw006_divider_line"
+                    style="@style/divider_line"
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp"
                     app:layout_constraintTop_toBottomOf="@id/cb_notify_on_start" />
@@ -576,7 +576,7 @@
 
                 <View
                     android:id="@+id/line12"
-                    style="@style/lw006_divider_line"
+                    style="@style/divider_line"
                     android:layout_width="match_parent"
                     android:layout_height="0.5dp"
                     app:layout_constraintTop_toBottomOf="@id/cb_notify_in_trip" />

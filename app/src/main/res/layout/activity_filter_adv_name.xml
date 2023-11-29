@@ -14,7 +14,7 @@
             android:id="@+id/tv_back"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:drawableStart="@drawable/ps101_ic_back"
+            android:drawableLeft="@drawable/ps101_ic_back"
             android:drawablePadding="6dp"
             android:gravity="center_vertical"
             android:onClick="onBack"
@@ -26,7 +26,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="Filter by MAC"
+            android:text="Filter by ADV Name"
             android:textColor="@color/white_ffffff"
             android:textSize="17sp"
             android:textStyle="bold" />
@@ -49,7 +49,6 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
             android:background="@color/white_ffffff"
             android:orientation="vertical"
             android:paddingBottom="20dp">
@@ -60,15 +59,14 @@
                 android:layout_height="50dp"
                 android:button="@null"
                 android:checked="false"
-                android:drawableEnd="@drawable/selector_cb_btn"
-                android:paddingLeft="12dp"
-                android:paddingRight="12dp"
+                android:drawableRight="@drawable/selector_cb_btn"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
                 android:text="Precise Match"
                 android:textColor="@color/black_333333"
-                android:textSize="15sp"
-                android:textStyle="bold" />
+                android:textSize="15sp"/>
 
-            <View style="@style/lw006_divider_line" />
+            <View style="@style/divider_line" />
 
             <CheckBox
                 android:id="@+id/cb_reverse_filter"
@@ -76,58 +74,53 @@
                 android:layout_height="50dp"
                 android:button="@null"
                 android:checked="false"
-                android:drawableEnd="@drawable/selector_cb_btn"
-                android:paddingLeft="12dp"
-                android:paddingRight="12dp"
+                android:drawableRight="@drawable/selector_cb_btn"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
                 android:text="Reverse Filter"
                 android:textColor="@color/black_333333"
-                android:textSize="15sp"
-                android:textStyle="bold" />
+                android:textSize="15sp" />
 
-            <View style="@style/lw006_divider_line" />
+            <View style="@style/divider_line" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:focusable="true"
-                android:focusableInTouchMode="true"
                 android:padding="10dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Edit MAC Address"
+                    android:text="Edit ADV Name"
                     android:textColor="@color/black_333333"
                     android:textSize="15sp"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="@id/iv_mac_address_add"
+                    app:layout_constraintBottom_toBottomOf="@id/iv_dav_name_add"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/iv_mac_address_add" />
+                    app:layout_constraintTop_toTopOf="@id/iv_dav_name_add" />
 
                 <ImageView
-                    android:id="@+id/iv_mac_address_del"
+                    android:id="@+id/iv_dav_name_del"
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
                     android:onClick="onDel"
                     android:padding="12dp"
                     android:src="@drawable/ps101_ic_del"
-                    app:layout_constraintBottom_toBottomOf="@id/iv_mac_address_add"
+                    app:layout_constraintBottom_toBottomOf="@id/iv_dav_name_add"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/iv_mac_address_add" />
+                    app:layout_constraintTop_toTopOf="@id/iv_dav_name_add" />
 
                 <ImageView
-                    android:id="@+id/iv_mac_address_add"
+                    android:id="@+id/iv_dav_name_add"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:onClick="onAdd"
                     android:padding="12dp"
                     android:src="@drawable/ic_add"
-                    app:layout_constraintRight_toLeftOf="@id/iv_mac_address_del"
+                    app:layout_constraintRight_toLeftOf="@id/iv_dav_name_del"
                     app:layout_constraintTop_toTopOf="parent" />
 
-
                 <LinearLayout
-                    android:id="@+id/ll_mac_address"
+                    android:id="@+id/ll_dav_name"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
@@ -135,7 +128,7 @@
                     android:visibility="visible"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/iv_mac_address_add" />
+                    app:layout_constraintTop_toBottomOf="@id/iv_dav_name_add" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </LinearLayout>
     </ScrollView>

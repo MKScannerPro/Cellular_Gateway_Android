@@ -28,7 +28,7 @@ public class LoadingDialog extends MokoBaseDialog<DialogLoadingBinding> {
 
     @Override
     public int getDialogStyle() {
-        return R.style.LW006CenterDialog;
+        return R.style.CenterDialog;
     }
 
     @Override

@@ -165,7 +165,7 @@
     </LinearLayout>
 
     <View
-        style="@style/lw006_divider_line"
+        style="@style/divider_line"
         android:layout_margin="10dp" />
 
     <androidx.recyclerview.widget.RecyclerView

@@ -17,7 +17,7 @@
         android:textColor="@color/black_333333"
         android:textSize="15sp" />
 
-    <View style="@style/lw006_divider_line" />
+    <View style="@style/divider_line" />
 
     <TextView
         android:id="@+id/tvGpsParams"
@@ -29,7 +29,7 @@
         android:textColor="@color/black_333333"
         android:textSize="15sp" />
 
-    <View style="@style/lw006_divider_line" />
+    <View style="@style/divider_line" />
 
     <TextView
         android:id="@+id/tvAxisParams"
@@ -41,5 +41,5 @@
         android:textColor="@color/black_333333"
         android:textSize="15sp" />
 
-    <View style="@style/lw006_divider_line" />
+    <View style="@style/divider_line" />
 </LinearLayout>

@@ -66,7 +66,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <View
-            style="@style/lw006_divider_line"
+            style="@style/divider_line"
             android:layout_width="0dp"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"

@@ -1,5 +1,6 @@
 package com.moko.ps101m.activity.filter;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -15,7 +16,7 @@ import com.moko.ble.lib.task.OrderTaskResponse;
 import com.moko.ble.lib.utils.MokoUtils;
 import com.moko.ps101m.R;
 import com.moko.ps101m.activity.PS101BaseActivity;
-import com.moko.ps101m.databinding.Ps101mActivityFilterMacBinding;
+import com.moko.ps101m.databinding.ActivityFilterMacBinding;
 import com.moko.ps101m.utils.ToastUtils;
 import com.moko.support.ps101m.MokoSupport;
 import com.moko.support.ps101m.OrderTaskAssembler;
@@ -31,14 +32,14 @@ import java.util.Arrays;
 import java.util.List;
 
 public class FilterMacAddressActivity extends PS101BaseActivity {
-    private Ps101mActivityFilterMacBinding mBind;
+    private ActivityFilterMacBinding mBind;
     private boolean savedParamsError;
     private ArrayList<String> filterMacAddress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mBind = Ps101mActivityFilterMacBinding.inflate(getLayoutInflater());
+        mBind = ActivityFilterMacBinding.inflate(getLayoutInflater());
         setContentView(mBind.getRoot());
         EventBus.getDefault().register(this);
         filterMacAddress = new ArrayList<>();
@@ -60,14 +61,13 @@ public class FilterMacAddressActivity extends PS101BaseActivity {
         });
     }
 
+    @SuppressLint("DefaultLocale")
     @Subscribe(threadMode = ThreadMode.POSTING, priority = 300)
     public void onOrderTaskResponseEvent(OrderTaskResponseEvent event) {
         final String action = event.getAction();
         if (!MokoConstants.ACTION_CURRENT_DATA.equals(action))
             EventBus.getDefault().cancelEventDelivery(event);
         runOnUiThread(() -> {
-            if (MokoConstants.ACTION_ORDER_TIMEOUT.equals(action)) {
-            }
             if (MokoConstants.ACTION_ORDER_FINISH.equals(action)) {
                 dismissSyncProgressDialog();
             }
@@ -80,12 +80,8 @@ public class FilterMacAddressActivity extends PS101BaseActivity {
                         int header = value[0] & 0xFF;// 0xED
                         int flag = value[1] & 0xFF;// read or write
                         int cmd = value[2] & 0xFF;
-                        if (header != 0xED)
-                            return;
                         ParamsKeyEnum configKeyEnum = ParamsKeyEnum.fromParamKey(cmd);
-                        if (configKeyEnum == null) {
-                            return;
-                        }
+                        if (header != 0xED || configKeyEnum == null) return;
                         int length = value[3] & 0xFF;
                         if (flag == 0x01) {
                             // write
@@ -93,23 +89,14 @@ public class FilterMacAddressActivity extends PS101BaseActivity {
                             switch (configKeyEnum) {
                                 case KEY_FILTER_MAC_PRECISE:
                                 case KEY_FILTER_MAC_REVERSE:
-                                    if (result != 1) {
-                                        savedParamsError = true;
-                                    }
+                                    if (result != 1) savedParamsError = true;
                                     break;
                                 case KEY_FILTER_MAC_RULES:
-                                    if (result != 1) {
-                                        savedParamsError = true;
-                                    }
-                                    if (savedParamsError) {
-                                        ToastUtils.showToast(FilterMacAddressActivity.this, "Opps！Save failed. Please check the input characters and try again.");
-                                    } else {
-                                        ToastUtils.showToast(this, "Save Successfully！");
-                                    }
+                                    if (result != 1) savedParamsError = true;
+                                    ToastUtils.showToast(this, !savedParamsError ? "Setup succeed" : "Setup failed");
                                     break;
                             }
-                        }
-                        if (flag == 0x00) {
+                        }else if (flag == 0x00) {
                             // read
                             switch (configKeyEnum) {
                                 case KEY_FILTER_MAC_PRECISE:
@@ -164,6 +151,7 @@ public class FilterMacAddressActivity extends PS101BaseActivity {
         }
     }
 
+    @SuppressLint("DefaultLocale")
     public void onAdd(View view) {
         if (isWindowLocked()) return;
         int count = mBind.llMacAddress.getChildCount();

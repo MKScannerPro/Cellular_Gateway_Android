@@ -105,18 +105,8 @@ public enum ParamsKeyEnum implements Serializable {
 
 
 
-    ////蓝牙扫描过滤参数
-    // 蓝牙扫描PHY选择
-    KEY_FILTER_BLE_SCAN_PHY(0x50),
-    // RSSI过滤规则
-    KEY_FILTER_RSSI(0x51),
-    // 广播内容过滤逻辑
-    KEY_FILTER_RELATIONSHIP(0x52),
-    // 精准过滤MAC开关
     KEY_FILTER_MAC_PRECISE(0x53),
-    // 反向过滤MAC开关
     KEY_FILTER_MAC_REVERSE(0x54),
-    // MAC过滤规则
     KEY_FILTER_MAC_RULES(0x55),
     // 精准过滤ADV Name开关
     KEY_FILTER_NAME_PRECISE(0x56),
@@ -157,11 +147,11 @@ public enum ParamsKeyEnum implements Serializable {
     // iBeacon类型UUID
     KEY_FILTER_IBEACON_UUID(0x68),
     // BXP-Device类型过滤开关
-    KEY_FILTER_BXP_DEVICE(0x69),
+    KEY_FILTER_BXP_DEVICE(0x65),
     // BeaconX Pro-ACC设备过滤开关
-    KEY_FILTER_BXP_ACC(0x6A),
+    KEY_FILTER_BXP_ACC(0x66),
     // BeaconX Pro-T&H设备过滤开关
-    KEY_FILTER_BXP_TH(0x6B),
+    KEY_FILTER_BXP_TH(0x67),
     // BXP-Button类型过滤开关
     KEY_FILTER_BXP_BUTTON_ENABLE(0x6C),
     // BXP-Button类型过滤规则
@@ -227,6 +217,11 @@ public enum ParamsKeyEnum implements Serializable {
     KEY_PERIODIC_SCAN_PERIODIC_REPORT(0x44),
     KEY_UPLOAD_PRIORITY(0x45),
     KEY_DATA_RETENTION_PRIORITY(0x46),
+
+    KEY_FILTER_RSSI(0x50),
+    KEY_FILTER_PHY(0x51),
+    KEY_FILTER_RELATIONSHIP(0x52),
+    KEY_DUPLICATE_DATA_FILTER(0x7A),
 
 
 

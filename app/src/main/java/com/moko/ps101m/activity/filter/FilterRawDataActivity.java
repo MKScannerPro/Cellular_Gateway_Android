@@ -12,9 +12,10 @@ import com.moko.ble.lib.event.ConnectStatusEvent;
 import com.moko.ble.lib.event.OrderTaskResponseEvent;
 import com.moko.ble.lib.task.OrderTask;
 import com.moko.ble.lib.task.OrderTaskResponse;
+import com.moko.ble.lib.utils.MokoUtils;
 import com.moko.ps101m.R;
 import com.moko.ps101m.activity.PS101BaseActivity;
-import com.moko.ps101m.databinding.Ps101mActivityFilterRawDataBinding;
+import com.moko.ps101m.databinding.ActivityFilterRawDataBinding;
 import com.moko.ps101m.utils.ToastUtils;
 import com.moko.support.ps101m.MokoSupport;
 import com.moko.support.ps101m.OrderTaskAssembler;
@@ -26,10 +27,11 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-public class FilterRawDataSwitchActivity extends PS101BaseActivity {
-    private Ps101mActivityFilterRawDataBinding mBind;
+public class FilterRawDataActivity extends PS101BaseActivity {
+    private ActivityFilterRawDataBinding mBind;
     private boolean savedParamsError;
     private boolean isBXPDeviceOpen;
     private boolean isBXPAccOpen;
@@ -38,7 +40,7 @@ public class FilterRawDataSwitchActivity extends PS101BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mBind = Ps101mActivityFilterRawDataBinding.inflate(getLayoutInflater());
+        mBind = ActivityFilterRawDataBinding.inflate(getLayoutInflater());
         setContentView(mBind.getRoot());
         EventBus.getDefault().register(this);
         showSyncingProgressDialog();
@@ -61,8 +63,6 @@ public class FilterRawDataSwitchActivity extends PS101BaseActivity {
         if (!MokoConstants.ACTION_CURRENT_DATA.equals(action))
             EventBus.getDefault().cancelEventDelivery(event);
         runOnUiThread(() -> {
-            if (MokoConstants.ACTION_ORDER_TIMEOUT.equals(action)) {
-            }
             if (MokoConstants.ACTION_ORDER_FINISH.equals(action)) {
                 dismissSyncProgressDialog();
             }
@@ -75,9 +75,8 @@ public class FilterRawDataSwitchActivity extends PS101BaseActivity {
                         int header = value[0] & 0xFF;// 0xED
                         int flag = value[1] & 0xFF;// read or write
                         int cmd = value[2] & 0xFF;
-                        if (header != 0xED) return;
                         ParamsKeyEnum configKeyEnum = ParamsKeyEnum.fromParamKey(cmd);
-                        if (configKeyEnum == null) return;
+                        if (header != 0xED || configKeyEnum == null) return;
                         int length = value[3] & 0xFF;
                         if (flag == 0x01) {
                             // write
@@ -89,34 +88,29 @@ public class FilterRawDataSwitchActivity extends PS101BaseActivity {
                                     if (result != 1) {
                                         savedParamsError = true;
                                     }
-                                    if (savedParamsError) {
-                                        ToastUtils.showToast(FilterRawDataSwitchActivity.this, "Opps！Save failed. Please check the input characters and try again.");
-                                    } else {
-                                        ToastUtils.showToast(this, "Save Successfully！");
-                                    }
+                                    ToastUtils.showToast(this, !savedParamsError ? "Setup succeed" : "Setup failed");
                                     break;
                             }
-                        }
-                        if (flag == 0x00) {
+                        } else if (flag == 0x00) {
                             // read
                             if (configKeyEnum == ParamsKeyEnum.KEY_FILTER_RAW_DATA) {
-                                if (length == 12) {
-                                    dismissSyncProgressDialog();
-                                    mBind.tvFilterByIbeacon.setText(value[4] == 1 ? "ON" : "OFF");
-                                    mBind.tvFilterByUid.setText(value[5] == 1 ? "ON" : "OFF");
-                                    mBind.tvFilterByUrl.setText(value[6] == 1 ? "ON" : "OFF");
-                                    mBind.tvFilterByTlm.setText(value[7] == 1 ? "ON" : "OFF");
-                                    mBind.tvFilterByBxpIbeacon.setText(value[8] == 1 ? "ON" : "OFF");
-                                    mBind.ivFilterByBxpDevice.setImageResource(value[9] == 1 ? R.drawable.ic_checked : R.drawable.ps101_ic_unchecked);
-                                    mBind.ivFilterByBxpAcc.setImageResource(value[10] == 1 ? R.drawable.ic_checked : R.drawable.ps101_ic_unchecked);
-                                    mBind.ivFilterByBxpTh.setImageResource(value[11] == 1 ? R.drawable.ic_checked : R.drawable.ps101_ic_unchecked);
-                                    mBind.tvFilterByBxpButton.setText(value[12] == 1 ? "ON" : "OFF");
-                                    mBind.tvFilterByBxpTag.setText(value[13] == 1 ? "ON" : "OFF");
-                                    mBind.tvFilterByMkPir.setText(value[14] == 1 ? "ON" : "OFF");
-                                    mBind.tvFilterByOther.setText(value[15] == 1 ? "ON" : "OFF");
-                                    isBXPDeviceOpen = value[9] == 1;
-                                    isBXPAccOpen = value[10] == 1;
-                                    isBXPTHOpen = value[11] == 1;
+                                if (length == 2) {
+                                    int data = MokoUtils.toInt(Arrays.copyOfRange(value, 4, value.length));
+                                    mBind.tvFilterByIbeacon.setText((data & 0x01) == 1 ? "ON" : "OFF");
+                                    mBind.tvFilterByUid.setText((data >> 1 & 0x01) == 1 ? "ON" : "OFF");
+                                    mBind.tvFilterByUrl.setText((data >> 2 & 0x01) == 1 ? "ON" : "OFF");
+                                    mBind.tvFilterByTlm.setText((data >> 3 & 0x01) == 1 ? "ON" : "OFF");
+                                    mBind.ivFilterByBxpDevice.setImageResource((data >> 4 & 0x01) == 1 ? R.drawable.ic_checked : R.drawable.ps101_ic_unchecked);
+                                    mBind.ivFilterByBxpAcc.setImageResource((data >> 5 & 0x01) == 1 ? R.drawable.ic_checked : R.drawable.ps101_ic_unchecked);
+                                    mBind.ivFilterByBxpTh.setImageResource((data >> 6 & 0x01) == 1 ? R.drawable.ic_checked : R.drawable.ps101_ic_unchecked);
+                                    mBind.tvFilterByBxpButton.setText((data >> 7 & 0x01) == 1 ? "ON" : "OFF");
+                                    mBind.tvFilterByBxpTag.setText((data >> 8 & 0x01) == 1 ? "ON" : "OFF");
+                                    mBind.tvFilterByPir.setText((data >> 9 & 0x01) == 1 ? "ON" : "OFF");
+                                    mBind.tvFilterByMkTof.setText((data >> 10 & 0x01) == 1 ? "ON" : "OFF");
+                                    mBind.tvFilterByOther.setText((data >> 11 & 0x01) == 1 ? "ON" : "OFF");
+                                    isBXPDeviceOpen = (data >> 4 & 0x01) == 1;
+                                    isBXPAccOpen = (data >> 5 & 0x01) == 1;
+                                    isBXPTHOpen = (data >> 6 & 0x01) == 1;
                                 }
                             }
                         }
@@ -136,34 +130,26 @@ public class FilterRawDataSwitchActivity extends PS101BaseActivity {
         finish();
     }
 
-    public void onFilterByIBeacon(View view) {
+    private void startActivity(Class<?> clz) {
         if (isWindowLocked()) return;
-        Intent i = new Intent(this, FilterIBeaconActivity.class);
-        launcher.launch(i);
+        Intent intent = new Intent(this, clz);
+        launcher.launch(intent);
+    }
+
+    public void onFilterByIBeacon(View view) {
+        startActivity(FilterIBeaconActivity.class);
     }
 
     public void onFilterByUid(View view) {
-        if (isWindowLocked()) return;
-        Intent i = new Intent(this, FilterUIDActivity.class);
-        launcher.launch(i);
+        startActivity(FilterUIDActivity.class);
     }
 
     public void onFilterByUrl(View view) {
-        if (isWindowLocked()) return;
-        Intent i = new Intent(this, FilterUrlActivity.class);
-        launcher.launch(i);
+        startActivity(FilterUrlActivity.class);
     }
 
     public void onFilterByTlm(View view) {
-        if (isWindowLocked()) return;
-        Intent i = new Intent(this, FilterTLMActivity.class);
-        launcher.launch(i);
-    }
-
-    public void onFilterByBXPiBeacon(View view) {
-        if (isWindowLocked()) return;
-        Intent i = new Intent(this, FilterBXPIBeaconActivity.class);
-        launcher.launch(i);
+        startActivity(FilterTLMActivity.class);
     }
 
     public void onFilterByBXPDevice(View view) {
@@ -200,31 +186,23 @@ public class FilterRawDataSwitchActivity extends PS101BaseActivity {
     }
 
     public void onFilterByBXPButton(View view) {
-        if (isWindowLocked()) return;
-        Intent i = new Intent(this, FilterBXPButtonActivity.class);
-        launcher.launch(i);
+        startActivity(FilterBXPButtonActivity.class);
     }
 
     public void onFilterByBXPTag(View view) {
-        if (isWindowLocked()) return;
-        Intent i = new Intent(this, FilterBXPTagIdActivity.class);
-        launcher.launch(i);
+        startActivity(FilterBXPTagIdActivity.class);
     }
 
-    public void onFilterByMkPir(View view) {
-        if (isWindowLocked()) return;
-        Intent i = new Intent(this, FilterMkPirActivity.class);
-        launcher.launch(i);
+    public void onFilterByPir(View view) {
+        startActivity(FilterMkPirActivity.class);
     }
 
     public void onFilterByOther(View view) {
-        if (isWindowLocked()) return;
-        Intent i = new Intent(this, FilterOtherActivity.class);
-        launcher.launch(i);
+        startActivity(FilterOtherActivity.class);
     }
 
     private final ActivityResultLauncher<Intent> launcher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
         showSyncingProgressDialog();
-        mBind.tvFilterByMkPir.postDelayed(() -> MokoSupport.getInstance().sendOrder(OrderTaskAssembler.getFilterRawData()), 200);
+        mBind.tvFilterByPir.postDelayed(() -> MokoSupport.getInstance().sendOrder(OrderTaskAssembler.getFilterRawData()), 200);
     });
 }

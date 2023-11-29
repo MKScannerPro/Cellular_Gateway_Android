@@ -393,13 +393,19 @@ public class OrderTaskAssembler {
 
     public static OrderTask getFilterBleScanPhy() {
         ParamsReadTask task = new ParamsReadTask();
-        task.setData(ParamsKeyEnum.KEY_FILTER_BLE_SCAN_PHY);
+        task.setData(ParamsKeyEnum.KEY_FILTER_PHY);
         return task;
     }
 
     public static OrderTask getFilterRelationship() {
         ParamsReadTask task = new ParamsReadTask();
         task.setData(ParamsKeyEnum.KEY_FILTER_RELATIONSHIP);
+        return task;
+    }
+
+    public static OrderTask getFilterDuplicateData() {
+        ParamsReadTask task = new ParamsReadTask();
+        task.setData(ParamsKeyEnum.KEY_DUPLICATE_DATA_FILTER);
         return task;
     }
 
@@ -1390,9 +1396,15 @@ public class OrderTaskAssembler {
         return task;
     }
 
-    public static OrderTask setFilterRelationship(@IntRange(from = 0, to = 6) int relationship) {
+    public static OrderTask setFilterRelationship(@IntRange(from = 0, to = 7) int relationship) {
         ParamsWriteTask task = new ParamsWriteTask();
         task.setFilterRelationship(relationship);
+        return task;
+    }
+
+    public static OrderTask setFilterDuplicateData(@IntRange(from = 0, to = 3) int filterDuplicateData) {
+        ParamsWriteTask task = new ParamsWriteTask();
+        task.setFilterDuplicateData(filterDuplicateData);
         return task;
     }
 

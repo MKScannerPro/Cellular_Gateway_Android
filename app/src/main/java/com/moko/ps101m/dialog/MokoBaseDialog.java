@@ -25,7 +25,7 @@ public abstract class MokoBaseDialog<VM extends ViewBinding> extends DialogFragm
 
     private static final float DEFAULT_DIM = 0.2f;
     private static final int DEFAULT_GRAVITY = Gravity.BOTTOM;
-    private static final int DEFAULT_STYLE = R.style.LW006BottomDialog;
+    private static final int DEFAULT_STYLE = R.style.BottomDialog;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

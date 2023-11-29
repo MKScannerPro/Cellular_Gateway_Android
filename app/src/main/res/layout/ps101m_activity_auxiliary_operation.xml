@@ -68,7 +68,7 @@
             android:textStyle="bold"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <View style="@style/lw006_divider_line" />
+        <View style="@style/divider_line" />
 
         <TextView
             android:id="@+id/tv_man_down_detection"
@@ -82,7 +82,7 @@
             android:textSize="15sp"
             android:textStyle="bold" />
 
-        <View style="@style/lw006_divider_line" />
+        <View style="@style/divider_line" />
 
         <TextView
             android:id="@+id/tvAlarmFunction"
@@ -95,7 +95,7 @@
             android:textColor="@color/black_333333"
             android:textSize="15sp"
             android:textStyle="bold" />
-        <View style="@style/lw006_divider_line" />
+        <View style="@style/divider_line" />
 
         <TextView
             android:id="@+id/tvAxisDataReport"

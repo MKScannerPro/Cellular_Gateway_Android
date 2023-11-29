@@ -1051,22 +1051,31 @@ public class ParamsWriteTask extends OrderTask {
         data = new byte[]{
                 (byte) 0xED,
                 (byte) 0x01,
-                (byte) ParamsKeyEnum.KEY_FILTER_BLE_SCAN_PHY.getParamsKey(),
+                (byte) ParamsKeyEnum.KEY_FILTER_PHY.getParamsKey(),
                 (byte) 0x01,
                 (byte) type
         };
         response.responseValue = data;
     }
 
-    public void setFilterRelationship(@IntRange(from = 0, to = 6) int relationship) {
-        data = new byte[]{
+    public void setFilterRelationship(@IntRange(from = 0, to = 7) int relationship) {
+        response.responseValue = data = new byte[]{
                 (byte) 0xED,
                 (byte) 0x01,
                 (byte) ParamsKeyEnum.KEY_FILTER_RELATIONSHIP.getParamsKey(),
                 (byte) 0x01,
                 (byte) relationship
         };
-        response.responseValue = data;
+    }
+
+    public void setFilterDuplicateData(@IntRange(from = 0, to = 3) int filterDuplicateData) {
+        response.responseValue = data = new byte[]{
+                (byte) 0xED,
+                (byte) 0x01,
+                (byte) ParamsKeyEnum.KEY_DUPLICATE_DATA_FILTER.getParamsKey(),
+                (byte) 0x01,
+                (byte) filterDuplicateData
+        };
     }
 
     public void setFilterMacPrecise(@IntRange(from = 0, to = 1) int enable) {

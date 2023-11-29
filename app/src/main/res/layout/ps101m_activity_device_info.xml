@@ -45,7 +45,7 @@
         android:background="@color/white_ffffff"
         android:orientation="vertical">
 
-        <View style="@style/lw006_divider_line" />
+        <View style="@style/divider_line" />
 
         <RadioGroup
             android:id="@+id/rg_options"

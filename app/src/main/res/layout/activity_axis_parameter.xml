@@ -93,7 +93,7 @@
             app:layout_constraintTop_toTopOf="@id/et_wakeup_threshold" />
 
         <View
-            style="@style/lw006_divider_line"
+            style="@style/divider_line"
             android:layout_width="0dp"
             android:layout_marginTop="10dp"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -142,7 +142,7 @@
             app:layout_constraintTop_toTopOf="@id/et_wakeup_duration" />
 
         <View
-            style="@style/lw006_divider_line"
+            style="@style/divider_line"
             android:layout_width="0dp"
             android:layout_marginTop="10dp"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -190,7 +190,7 @@
             app:layout_constraintTop_toTopOf="@id/et_motion_threshold" />
 
         <View
-            style="@style/lw006_divider_line"
+            style="@style/divider_line"
             android:layout_width="0dp"
             android:layout_marginTop="10dp"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -237,7 +237,7 @@
             app:layout_constraintTop_toTopOf="@id/et_motion_duration" />
 
         <View
-            style="@style/lw006_divider_line"
+            style="@style/divider_line"
             android:layout_width="0dp"
             android:layout_marginTop="10dp"
             app:layout_constraintLeft_toLeftOf="parent"
