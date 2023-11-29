@@ -13,7 +13,7 @@ import com.moko.ble.lib.event.ConnectStatusEvent;
 import com.moko.ble.lib.event.OrderTaskResponseEvent;
 import com.moko.ble.lib.task.OrderTaskResponse;
 import com.moko.ps101m.activity.PS101BaseActivity;
-import com.moko.ps101m.databinding.Ps101mActivityDeviceModeBinding;
+import com.moko.ps101m.databinding.ActivityScanReportModeBinding;
 import com.moko.ps101m.dialog.BottomDialog;
 import com.moko.ps101m.utils.ToastUtils;
 import com.moko.support.ps101m.MokoSupport;
@@ -28,17 +28,17 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class DeviceModeActivity extends PS101BaseActivity {
-    private Ps101mActivityDeviceModeBinding mBind;
-    private boolean mReceiverTag = false;
-    private boolean savedParamsError;
-    private final String[] mValues = {"Standby Mode", "Timing Mode", "Periodic Mode", "Motion Mode"};
+public class ScanReportModeActivity extends PS101BaseActivity {
+    private ActivityScanReportModeBinding mBind;
+    private boolean mReceiverTag;
+    private final String[] mValues = {"turn off scan", "Real time scan& immediate report", "real time scan & periodic report",
+            "periodic scan& immediate report", "periodic scan & periodic report"};
     private int mSelected;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mBind = Ps101mActivityDeviceModeBinding.inflate(getLayoutInflater());
+        mBind = ActivityScanReportModeBinding.inflate(getLayoutInflater());
         setContentView(mBind.getRoot());
         EventBus.getDefault().register(this);
         // 注册广播接收器
@@ -47,10 +47,28 @@ public class DeviceModeActivity extends PS101BaseActivity {
         registerReceiver(mReceiver, filter);
         mReceiverTag = true;
         showSyncingProgressDialog();
-        MokoSupport.getInstance().sendOrder(OrderTaskAssembler.getDeviceMode());
-        mBind.tvStandbyMode.setOnClickListener(v -> {
+        MokoSupport.getInstance().sendOrder(OrderTaskAssembler.getScanReportMode());
+        initListener();
+    }
+
+    private void initListener() {
+        mBind.tvModeSelection.setOnClickListener(v -> selectDeviceMode());
+        mBind.ivSave.setOnClickListener(v -> {
             if (isWindowLocked()) return;
-            startActivity(new Intent(this, StandbyModeActivity.class));
+            showSyncingProgressDialog();
+            MokoSupport.getInstance().sendOrder(OrderTaskAssembler.setScanReportMode(mSelected));
+        });
+        mBind.tvRealScanPeriodicReport.setOnClickListener(v -> {
+            if (isWindowLocked()) return;
+            startActivity(new Intent(this, RealScanPeriodicReportActivity.class));
+        });
+        mBind.tvPeriodicScanImmediateReport.setOnClickListener(v -> {
+            if (isWindowLocked()) return;
+            startActivity(new Intent(this, PeriodicScanImmediateReportActivity.class));
+        });
+        mBind.tvPeriodicScanPeriodicReport.setOnClickListener(v -> {
+            if (isWindowLocked()) return;
+            startActivity(new Intent(this, PeriodicScanPeriodicReportActivity.class));
         });
     }
 
@@ -82,30 +100,21 @@ public class DeviceModeActivity extends PS101BaseActivity {
                         int header = value[0] & 0xFF;// 0xED
                         int flag = value[1] & 0xFF;// read or write
                         int cmd = value[2] & 0xFF;
-                        if (header != 0xED) return;
                         ParamsKeyEnum configKeyEnum = ParamsKeyEnum.fromParamKey(cmd);
-                        if (configKeyEnum == null) return;
+                        if (header != 0xED || configKeyEnum == null) return;
                         int length = value[3] & 0xFF;
                         if (flag == 0x01) {
                             // write
                             int result = value[4] & 0xFF;
-                            if (configKeyEnum == ParamsKeyEnum.KEY_DEVICE_MODE) {
-                                if (result != 1) {
-                                    savedParamsError = true;
-                                }
-                                if (savedParamsError) {
-                                    ToastUtils.showToast(this, "Opps！Save failed. Please check the input characters and try again.");
-                                } else {
-                                    ToastUtils.showToast(this, "Save Successfully！");
-                                }
+                            if (configKeyEnum == ParamsKeyEnum.KEY_SCAN_REPORT_MODE) {
+                                ToastUtils.showToast(this, result == 1 ? "Setup succeed" : "Setup failed");
                             }
-                        }
-                        if (flag == 0x00) {
+                        } else if (flag == 0x00) {
                             // read
-                            if (configKeyEnum == ParamsKeyEnum.KEY_DEVICE_MODE) {
+                            if (configKeyEnum == ParamsKeyEnum.KEY_SCAN_REPORT_MODE) {
                                 if (length > 0) {
                                     mSelected = value[4] & 0xff;
-                                    mBind.tvDeviceMode.setText(mValues[mSelected]);
+                                    mBind.tvModeSelection.setText(mValues[mSelected]);
                                 }
                             }
                         }
@@ -116,7 +125,6 @@ public class DeviceModeActivity extends PS101BaseActivity {
     }
 
     private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
-
         @Override
         public void onReceive(Context context, Intent intent) {
             if (intent != null) {
@@ -147,32 +155,14 @@ public class DeviceModeActivity extends PS101BaseActivity {
         finish();
     }
 
-    public void selectDeviceMode(View view) {
+    private void selectDeviceMode() {
         if (isWindowLocked()) return;
         BottomDialog dialog = new BottomDialog();
         dialog.setDatas(new ArrayList<>(Arrays.asList(mValues)), mSelected);
         dialog.setListener(value -> {
             mSelected = value;
-            mBind.tvDeviceMode.setText(mValues[value]);
-            savedParamsError = false;
-            showSyncingProgressDialog();
-            MokoSupport.getInstance().sendOrder(OrderTaskAssembler.setDeviceMode(value));
+            mBind.tvModeSelection.setText(mValues[value]);
         });
         dialog.show(getSupportFragmentManager());
-    }
-
-    public void onTimingMode(View view) {
-        if (isWindowLocked()) return;
-        startActivity(new Intent(this, TimingModeActivity.class));
-    }
-
-    public void onPeriodicMode(View view) {
-        if (isWindowLocked()) return;
-        startActivity(new Intent(this, PeriodicModeActivity.class));
-    }
-
-    public void onMotionMode(View view) {
-        if (isWindowLocked()) return;
-        startActivity(new Intent(this, MotionModeActivity.class));
     }
 }

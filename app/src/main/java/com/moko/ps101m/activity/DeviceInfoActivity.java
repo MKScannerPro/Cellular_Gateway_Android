@@ -31,7 +31,7 @@ import com.moko.ps101m.activity.device.SystemInfoActivity;
 import com.moko.ps101m.activity.setting.AuxiliaryOperationActivity;
 import com.moko.ps101m.activity.setting.AxisParameterActivity;
 import com.moko.ps101m.activity.setting.BleSettingsActivity;
-import com.moko.ps101m.activity.setting.DeviceModeActivity;
+import com.moko.ps101m.activity.setting.ScanReportModeActivity;
 import com.moko.ps101m.databinding.Ps101mActivityDeviceInfoBinding;
 import com.moko.ps101m.dialog.AlertMessageDialog;
 import com.moko.ps101m.dialog.ChangePasswordDialog;
@@ -60,8 +60,8 @@ public class DeviceInfoActivity extends PS101BaseActivity implements RadioGroup.
     private FragmentManager fragmentManager;
     private NetworkFragment networkFragment;
     private PositionFragment posFragment;
-    private ScannerFragment generalFragment;
-    private SettingsFragment deviceFragment;
+    private ScannerFragment scannerFragment;
+    private SettingsFragment settingsFragment;
     private boolean mReceiverTag;
     private int disConnectType;
     private boolean savedParamsError;
@@ -97,17 +97,17 @@ public class DeviceInfoActivity extends PS101BaseActivity implements RadioGroup.
     private void initFragment() {
         networkFragment = NetworkFragment.newInstance();
         posFragment = PositionFragment.newInstance();
-        generalFragment = ScannerFragment.newInstance();
-        deviceFragment = SettingsFragment.newInstance();
+        scannerFragment = ScannerFragment.newInstance();
+        settingsFragment = SettingsFragment.newInstance();
         fragmentManager.beginTransaction()
                 .add(R.id.frame_container, networkFragment)
                 .add(R.id.frame_container, posFragment)
-                .add(R.id.frame_container, generalFragment)
-                .add(R.id.frame_container, deviceFragment)
+                .add(R.id.frame_container, scannerFragment)
+                .add(R.id.frame_container, settingsFragment)
                 .show(networkFragment)
                 .hide(posFragment)
-                .hide(generalFragment)
-                .hide(deviceFragment)
+                .hide(scannerFragment)
+                .hide(settingsFragment)
                 .commit();
         mBind.tvTitle.setText("Network");
     }
@@ -180,9 +180,9 @@ public class DeviceInfoActivity extends PS101BaseActivity implements RadioGroup.
                                         savedParamsError = true;
                                     }
                                     if (savedParamsError) {
-                                        ToastUtils.showToast(this, "Opps！Save failed. Please check the input characters and try again.");
+                                        ToastUtils.showToast(this, "Setup failed");
                                     } else {
-                                        ToastUtils.showToast(this, "Save Successfully！");
+                                        ToastUtils.showToast(this, "Setup succeed");
                                     }
                                     break;
                             }
@@ -202,42 +202,40 @@ public class DeviceInfoActivity extends PS101BaseActivity implements RadioGroup.
                                     }
                                     break;
 
-                                case KEY_HEARTBEAT_INTERVAL:
-                                    if (length == 2) {
-                                        int interval = MokoUtils.toInt(Arrays.copyOfRange(value, 4, value.length));
-                                        generalFragment.setHeartbeatInterval(interval);
+                                case KEY_SCAN_REPORT_ENABLE:
+                                    if (length == 1) {
+                                        scannerFragment.setModeSwitch(value[4] & 0xff);
                                     }
                                     break;
 
-                                case KEY_TIME_ZONE:
+                                case KEY_UPLOAD_PRIORITY:
                                     if (length > 0) {
-                                        int timeZone = value[4];
-                                        deviceFragment.setTimeZone(timeZone);
+                                        scannerFragment.setUpLoadPriority(value[4] & 0xff);
                                     }
                                     break;
                                 case KEY_LOW_POWER_PAYLOAD_ENABLE:
                                     if (length > 0) {
                                         int enable = value[4] & 0xFF;
-                                        deviceFragment.setLowPowerPayload(enable);
+                                        settingsFragment.setLowPowerPayload(enable);
                                     }
                                     break;
 
                                 case KEY_LOW_POWER_PERCENT:
                                     if (length > 0) {
                                         int lowPower = value[4] & 0xFF;
-                                        deviceFragment.setLowPower(lowPower);
+                                        settingsFragment.setLowPower(lowPower);
                                     }
                                     break;
 
                                 case KEY_BUZZER_SOUND_CHOOSE:
                                     if (length == 1) {
-                                        deviceFragment.setBuzzerSound(value[4] & 0xff);
+                                        settingsFragment.setBuzzerSound(value[4] & 0xff);
                                     }
                                     break;
 
                                 case KEY_VIBRATION_INTENSITY:
                                     if (length == 1) {
-                                        deviceFragment.setVibrationIntensity(value[4] & 0xff);
+                                        settingsFragment.setVibrationIntensity(value[4] & 0xff);
                                     }
                                     break;
                             }
@@ -346,8 +344,8 @@ public class DeviceInfoActivity extends PS101BaseActivity implements RadioGroup.
         fragmentManager.beginTransaction()
                 .hide(networkFragment)
                 .hide(posFragment)
-                .hide(generalFragment)
-                .show(deviceFragment)
+                .hide(scannerFragment)
+                .show(settingsFragment)
                 .commit();
         showSyncingProgressDialog();
         List<OrderTask> orderTasks = new ArrayList<>(8);
@@ -365,11 +363,14 @@ public class DeviceInfoActivity extends PS101BaseActivity implements RadioGroup.
         fragmentManager.beginTransaction()
                 .hide(networkFragment)
                 .hide(posFragment)
-                .show(generalFragment)
-                .hide(deviceFragment)
+                .show(scannerFragment)
+                .hide(settingsFragment)
                 .commit();
         showSyncingProgressDialog();
-        MokoSupport.getInstance().sendOrder(OrderTaskAssembler.getHeartBeatInterval());
+        List<OrderTask> orderTasks = new ArrayList<>(4);
+        orderTasks.add(OrderTaskAssembler.getScanReportEnable());
+        orderTasks.add(OrderTaskAssembler.getUploadPriority());
+        MokoSupport.getInstance().sendOrder(orderTasks.toArray(new OrderTask[0]));
     }
 
     private void showPosAndGetData() {
@@ -377,8 +378,8 @@ public class DeviceInfoActivity extends PS101BaseActivity implements RadioGroup.
         fragmentManager.beginTransaction()
                 .hide(networkFragment)
                 .show(posFragment)
-                .hide(generalFragment)
-                .hide(deviceFragment)
+                .hide(scannerFragment)
+                .hide(settingsFragment)
                 .commit();
     }
 
@@ -387,8 +388,8 @@ public class DeviceInfoActivity extends PS101BaseActivity implements RadioGroup.
         fragmentManager.beginTransaction()
                 .show(networkFragment)
                 .hide(posFragment)
-                .hide(generalFragment)
-                .hide(deviceFragment)
+                .hide(scannerFragment)
+                .hide(settingsFragment)
                 .commit();
         showSyncingProgressDialog();
         List<OrderTask> orderTasks = new ArrayList<>();
@@ -428,7 +429,7 @@ public class DeviceInfoActivity extends PS101BaseActivity implements RadioGroup.
 
     public void onDeviceMode(View view) {
         if (isWindowLocked()) return;
-        Intent intent = new Intent(this, DeviceModeActivity.class);
+        Intent intent = new Intent(this, ScanReportModeActivity.class);
         startActivity(intent);
     }
 
@@ -462,27 +463,27 @@ public class DeviceInfoActivity extends PS101BaseActivity implements RadioGroup.
 
     public void selectTimeZone(View view) {
         if (isWindowLocked()) return;
-        deviceFragment.showTimeZoneDialog();
+        settingsFragment.showTimeZoneDialog();
     }
 
     public void onLowPowerPayload(View view) {
         if (isWindowLocked()) return;
-        deviceFragment.changeLowPowerPayload();
+        settingsFragment.changeLowPowerPayload();
     }
 
     public void onBuzzer(View view) {
         if (isWindowLocked()) return;
-        deviceFragment.showBuzzerDialog();
+        settingsFragment.showBuzzerDialog();
     }
 
     public void onVibration(View view) {
         if (isWindowLocked()) return;
-        deviceFragment.showVibrationDialog();
+        settingsFragment.showVibrationDialog();
     }
 
     public void selectLowPowerPrompt(View view) {
         if (isWindowLocked()) return;
-        deviceFragment.showLowPowerDialog();
+        settingsFragment.showLowPowerDialog();
     }
 
     public void onDeviceInfo(View view) {

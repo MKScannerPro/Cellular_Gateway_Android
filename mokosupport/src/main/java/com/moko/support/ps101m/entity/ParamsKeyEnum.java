@@ -23,7 +23,6 @@ public enum ParamsKeyEnum implements Serializable {
     // 厂家信息
     KEY_MANUFACTURER(0x1A),
     // 工作模式选择
-    KEY_DEVICE_MODE(0x1B),
     // 关机信息上报
     KEY_SHUTDOWN_PAYLOAD_ENABLE(0x1C),
     //按键关机
@@ -70,6 +69,7 @@ public enum ParamsKeyEnum implements Serializable {
     KEY_ADV_NAME(0x34),
     //广播间隔
     KEY_ADV_INTERVAL(0x35),
+    
 
 
     //// 模式相关参数
@@ -78,7 +78,6 @@ public enum ParamsKeyEnum implements Serializable {
     // 定期模式定位策略
     KEY_PERIODIC_MODE_POS_STRATEGY(0x40),
     // 定期模式上报间隔
-    KEY_PERIODIC_MODE_REPORT_INTERVAL(0x41),
     // 定时模式定位策略
     KEY_TIME_MODE_POS_STRATEGY(0x42),
     // 定时模式时间点
@@ -220,6 +219,15 @@ public enum ParamsKeyEnum implements Serializable {
     KEY_MOTION_FIX_INTERVAL_WHEN_STATIONARY(0x9A),
     KEY_GPS_TIMEOUT(0x9B),
     KEY_GPS_PDOP(0x9C),
+
+    KEY_SCAN_REPORT_MODE(0x40),
+    KEY_SCAN_REPORT_ENABLE(0x41),
+    KEY_REAL_SCAN_PERIODIC_REPORT_INTERVAL(0x42),
+    KEY_PERIODIC_SCAN_IMMEDIATE_REPORT(0x43),
+    KEY_PERIODIC_SCAN_PERIODIC_REPORT(0x44),
+    KEY_UPLOAD_PRIORITY(0x45),
+    KEY_DATA_RETENTION_PRIORITY(0x46),
+
 
 
 

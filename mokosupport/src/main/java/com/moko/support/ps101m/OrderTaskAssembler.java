@@ -65,12 +65,6 @@ public class OrderTaskAssembler {
         return task;
     }
 
-    public static OrderTask getDeviceMode() {
-        ParamsReadTask task = new ParamsReadTask();
-        task.setData(ParamsKeyEnum.KEY_DEVICE_MODE);
-        return task;
-    }
-
     public static OrderTask getIndicatorStatus() {
         ParamsReadTask task = new ParamsReadTask();
         task.setData(ParamsKeyEnum.KEY_INDICATOR_STATUS);
@@ -198,9 +192,27 @@ public class OrderTaskAssembler {
         return task;
     }
 
-    public static OrderTask getPeriodicReportInterval() {
+    public static OrderTask getRealScanPeriodicReportInterval() {
         ParamsReadTask task = new ParamsReadTask();
-        task.setData(ParamsKeyEnum.KEY_PERIODIC_MODE_REPORT_INTERVAL);
+        task.setData(ParamsKeyEnum.KEY_REAL_SCAN_PERIODIC_REPORT_INTERVAL);
+        return task;
+    }
+
+    public static OrderTask getPeriodicScanImmediateReport() {
+        ParamsReadTask task = new ParamsReadTask();
+        task.setData(ParamsKeyEnum.KEY_PERIODIC_SCAN_IMMEDIATE_REPORT);
+        return task;
+    }
+
+    public static OrderTask getPeriodicScanPeriodicReport() {
+        ParamsReadTask task = new ParamsReadTask();
+        task.setData(ParamsKeyEnum.KEY_PERIODIC_SCAN_PERIODIC_REPORT);
+        return task;
+    }
+
+    public static OrderTask getDataRetentionPriority() {
+        ParamsReadTask task = new ParamsReadTask();
+        task.setData(ParamsKeyEnum.KEY_DATA_RETENTION_PRIORITY);
         return task;
     }
 
@@ -763,6 +775,24 @@ public class OrderTaskAssembler {
         return task;
     }
 
+    public static OrderTask getScanReportEnable() {
+        ParamsReadTask task = new ParamsReadTask();
+        task.setData(ParamsKeyEnum.KEY_SCAN_REPORT_ENABLE);
+        return task;
+    }
+
+    public static OrderTask getScanReportMode() {
+        ParamsReadTask task = new ParamsReadTask();
+        task.setData(ParamsKeyEnum.KEY_SCAN_REPORT_MODE);
+        return task;
+    }
+
+    public static OrderTask getUploadPriority() {
+        ParamsReadTask task = new ParamsReadTask();
+        task.setData(ParamsKeyEnum.KEY_UPLOAD_PRIORITY);
+        return task;
+    }
+
     public static OrderTask getMQTTHost() {
         ParamsReadTask task = new ParamsReadTask();
         task.setData(ParamsKeyEnum.KEY_MQTT_HOST);
@@ -995,6 +1025,24 @@ public class OrderTaskAssembler {
         return task;
     }
 
+    public static OrderTask setScanReportEnable(@IntRange(from = 0, to = 1) int enable) {
+        ParamsWriteTask task = new ParamsWriteTask();
+        task.setScanReportEnable(enable);
+        return task;
+    }
+
+    public static OrderTask setScanReportMode(@IntRange(from = 0,to = 4) int mode){
+        ParamsWriteTask task = new ParamsWriteTask();
+        task.setScanReportMode(mode);
+        return task;
+    }
+
+    public static OrderTask setUploadPriority(@IntRange(from = 0, to = 1) int priority) {
+        ParamsWriteTask task = new ParamsWriteTask();
+        task.setUploadPriority(priority);
+        return task;
+    }
+
     public static OrderTask setCA(@Nullable File file) throws Exception {
         ParamsWriteTask task = new ParamsWriteTask();
         task.setFile(ParamsKeyEnum.KEY_MQTT_CA, file);
@@ -1012,6 +1060,7 @@ public class OrderTaskAssembler {
         task.setFile(ParamsKeyEnum.KEY_MQTT_CLIENT_KEY, file);
         return task;
     }
+
 
     public static OrderTask setPassword(String password) {
         SetPasswordTask task = new SetPasswordTask();
@@ -1058,12 +1107,6 @@ public class OrderTaskAssembler {
     public static OrderTask setVibrationIntensity(@IntRange(from = 0, to = 100) int intensity) {
         ParamsWriteTask task = new ParamsWriteTask();
         task.setVibrationIntensity(intensity);
-        return task;
-    }
-
-    public static OrderTask setDeviceMode(@IntRange(from = 0, to = 3) int mode) {
-        ParamsWriteTask task = new ParamsWriteTask();
-        task.setDeviceMode(mode);
         return task;
     }
 
@@ -1139,9 +1182,30 @@ public class OrderTaskAssembler {
         return task;
     }
 
-    public static OrderTask setPeriodicReportInterval(@IntRange(from = 1, to = 14400) int interval) {
+    public static OrderTask setRealScanPeriodicReportInterval(@IntRange(from = 600, to = 86400) int interval) {
         ParamsWriteTask task = new ParamsWriteTask();
-        task.setPeriodicReportInterval(interval);
+        task.setRealScanPeriodicReportInterval(interval);
+        return task;
+    }
+
+    public static OrderTask setPeriodicScanImmediateReport(@IntRange(from = 3, to = 3600) int duration,
+                                                       @IntRange(from = 600, to = 86400) int interval) {
+        ParamsWriteTask task = new ParamsWriteTask();
+        task.setPeriodicScanImmediateReport(duration, interval);
+        return task;
+    }
+
+    public static OrderTask setPeriodicScanPeriodicReport(@IntRange(from = 3, to = 3600) int duration,
+                                              @IntRange(from = 600, to = 86400) int interval,
+                                              @IntRange(from = 600, to = 86400) int reportInterval) {
+        ParamsWriteTask task = new ParamsWriteTask();
+        task.setPeriodicScanPeriodicReport(duration, interval, reportInterval);
+        return task;
+    }
+
+    public static OrderTask setDataRetentionPriority(@IntRange(from = 0, to = 1) int priority) {
+        ParamsWriteTask task = new ParamsWriteTask();
+        task.setDataRetentionPriority(priority);
         return task;
     }
 
@@ -1257,7 +1321,7 @@ public class OrderTaskAssembler {
     public static OrderTask setMotionFixIntervalTrip(@IntRange(from = 10, to = 86400) int interval) {
         ParamsWriteTask task = new ParamsWriteTask();
         task.setMotionFixIntervalTrip(interval);
-        return  task;
+        return task;
     }
 
     public static OrderTask setMotionFixEnableStop(@IntRange(from = 0, to = 1) int enable) {

@@ -6,14 +6,17 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.text.style.TtsSpan;
 import android.view.View;
 
 import com.moko.ble.lib.MokoConstants;
 import com.moko.ble.lib.event.ConnectStatusEvent;
 import com.moko.ble.lib.event.OrderTaskResponseEvent;
 import com.moko.ble.lib.task.OrderTaskResponse;
+import com.moko.ble.lib.utils.MokoUtils;
 import com.moko.ps101m.activity.PS101BaseActivity;
-import com.moko.ps101m.databinding.Ps101mActivityStandbyModeBinding;
+import com.moko.ps101m.databinding.ActivityPeriodicScanImmediateReportBinding;
 import com.moko.ps101m.dialog.BottomDialog;
 import com.moko.ps101m.utils.ToastUtils;
 import com.moko.support.ps101m.MokoSupport;
@@ -30,19 +33,17 @@ import java.util.Arrays;
 
 /**
  * @author: jun.liu
- * @date: 2023/6/7 19:54
+ * @date: 2023/11/29 14:54
  * @des:
  */
-public class StandbyModeActivity extends PS101BaseActivity {
-    private Ps101mActivityStandbyModeBinding mBind;
+public class PeriodicScanImmediateReportActivity extends PS101BaseActivity {
+    private ActivityPeriodicScanImmediateReportBinding mBind;
     private boolean mReceiverTag = false;
-    private int mSelected;
-    private final String[] mValues = {"WIFI", "BLE", "GPS", "WIFI+GPS", "BLE+GPS", "WIFI+BLE", "WIFI+BLE+GPS"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mBind = Ps101mActivityStandbyModeBinding.inflate(getLayoutInflater());
+        mBind = ActivityPeriodicScanImmediateReportBinding.inflate(getLayoutInflater());
         setContentView(mBind.getRoot());
         EventBus.getDefault().register(this);
         // 注册广播接收器
@@ -51,17 +52,7 @@ public class StandbyModeActivity extends PS101BaseActivity {
         registerReceiver(mReceiver, filter);
         mReceiverTag = true;
         showSyncingProgressDialog();
-        MokoSupport.getInstance().sendOrder(OrderTaskAssembler.getStandbyPosStrategy());
-        mBind.tvStandbyPosStrategy.setOnClickListener(v -> {
-            if (isWindowLocked()) return;
-            BottomDialog dialog = new BottomDialog();
-            dialog.setDatas(new ArrayList<>(Arrays.asList(mValues)), mSelected);
-            dialog.setListener(value -> {
-                mSelected = value;
-                mBind.tvStandbyPosStrategy.setText(mValues[value]);
-            });
-            dialog.show(getSupportFragmentManager());
-        });
+        MokoSupport.getInstance().sendOrder(OrderTaskAssembler.getPeriodicScanImmediateReport());
     }
 
     @Subscribe(threadMode = ThreadMode.POSTING, priority = 300)
@@ -92,27 +83,25 @@ public class StandbyModeActivity extends PS101BaseActivity {
                         int header = value[0] & 0xFF;// 0xED
                         int flag = value[1] & 0xFF;// read or write
                         int cmd = value[2] & 0xFF;
-                        if (header != 0xED) return;
                         ParamsKeyEnum configKeyEnum = ParamsKeyEnum.fromParamKey(cmd);
-                        if (configKeyEnum == null) return;
+                        if (header != 0xED || configKeyEnum == null) return;
                         int length = value[3] & 0xFF;
                         if (flag == 0x01) {
                             // write
-                            if (configKeyEnum == ParamsKeyEnum.KEY_STANDBY_MODE_POS_STRATEGY) {
+                            if (configKeyEnum == ParamsKeyEnum.KEY_PERIODIC_SCAN_IMMEDIATE_REPORT) {
                                 int result = value[4] & 0xFF;
-                                if (result == 1) {
-                                    ToastUtils.showToast(this, "Save Successfully！");
-                                } else {
-                                    ToastUtils.showToast(this, "Opps！Save failed. Please check the input characters and try again.");
-                                }
+                                ToastUtils.showToast(this, result == 1 ? "Setup succeed" : "Setup failed");
                             }
-                        }
-                        if (flag == 0x00) {
+                        } else if (flag == 0x00) {
                             // read
-                            if (configKeyEnum == ParamsKeyEnum.KEY_STANDBY_MODE_POS_STRATEGY) {
-                                if (length > 0) {
-                                    mSelected = value[4] & 0xFF;
-                                    mBind.tvStandbyPosStrategy.setText(mValues[mSelected]);
+                            if (configKeyEnum == ParamsKeyEnum.KEY_PERIODIC_SCAN_IMMEDIATE_REPORT) {
+                                if (length == 6) {
+                                    int duration = MokoUtils.toInt(Arrays.copyOfRange(value, 4, 6));
+                                    int interval = MokoUtils.toInt(Arrays.copyOfRange(value, 6, value.length));
+                                    mBind.etScanDuration.setText(String.valueOf(duration));
+                                    mBind.etScanDuration.setSelection(mBind.etScanDuration.getText().length());
+                                    mBind.etScanInetval.setText(String.valueOf(interval));
+                                    mBind.etScanInetval.setSelection(mBind.etScanInetval.getText().length());
                                 }
                             }
                         }
@@ -124,8 +113,27 @@ public class StandbyModeActivity extends PS101BaseActivity {
 
     public void onSave(View view) {
         if (isWindowLocked()) return;
-        showSyncingProgressDialog();
-        MokoSupport.getInstance().sendOrder(OrderTaskAssembler.setStandbyPosStrategy(mSelected));
+        if (isValid()) {
+            int duration = Integer.parseInt(mBind.etScanDuration.getText().toString());
+            int interval = Integer.parseInt(mBind.etScanInetval.getText().toString());
+            if (interval < duration) {
+                ToastUtils.showToast(this, "Bluetooth scan interval shouldn't be less than Bluetooth scan duration");
+                return;
+            }
+            showSyncingProgressDialog();
+            MokoSupport.getInstance().sendOrder(OrderTaskAssembler.setPeriodicScanImmediateReport(duration, interval));
+        } else {
+            ToastUtils.showToast(this, "Para error!");
+        }
+    }
+
+    private boolean isValid() {
+        if (TextUtils.isEmpty(mBind.etScanDuration.getText())) return false;
+        int duration = Integer.parseInt(mBind.etScanDuration.getText().toString());
+        if (duration < 3 || duration > 3600) return false;
+        if (TextUtils.isEmpty(mBind.etScanInetval.getText())) return false;
+        int interval = Integer.parseInt(mBind.etScanInetval.getText().toString());
+        return interval >= 600 && interval <= 86400;
     }
 
     private final BroadcastReceiver mReceiver = new BroadcastReceiver() {

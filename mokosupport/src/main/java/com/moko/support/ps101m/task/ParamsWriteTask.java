@@ -289,6 +289,36 @@ public class ParamsWriteTask extends OrderTask {
         }
     }
 
+    public void setScanReportEnable(@IntRange(from = 0, to = 1) int enable) {
+        response.responseValue = data = new byte[]{
+                (byte) 0xED,
+                (byte) 0x01,
+                (byte) ParamsKeyEnum.KEY_SCAN_REPORT_ENABLE.getParamsKey(),
+                (byte) 0x01,
+                (byte) enable
+        };
+    }
+
+    public void setScanReportMode(@IntRange(from = 0, to = 4) int mode) {
+        response.responseValue = data = new byte[]{
+                (byte) 0xED,
+                (byte) 0x01,
+                (byte) ParamsKeyEnum.KEY_SCAN_REPORT_MODE.getParamsKey(),
+                (byte) 0x01,
+                (byte) mode
+        };
+    }
+
+    public void setUploadPriority(@IntRange(from = 0, to = 1) int priority) {
+        response.responseValue = data = new byte[]{
+                (byte) 0xED,
+                (byte) 0x01,
+                (byte) ParamsKeyEnum.KEY_UPLOAD_PRIORITY.getParamsKey(),
+                (byte) 0x01,
+                (byte) priority
+        };
+    }
+
     public void setMQTTConnectMode(@IntRange(from = 0, to = 3) int mode) {
         response.responseValue = data = new byte[]{
                 (byte) 0xED,
@@ -434,17 +464,6 @@ public class ParamsWriteTask extends OrderTask {
                 (byte) 0x01,
                 (byte) intensity
         };
-    }
-
-    public void setDeviceMode(@IntRange(from = 0, to = 3) int mode) {
-        data = new byte[]{
-                (byte) 0xED,
-                (byte) 0x01,
-                (byte) ParamsKeyEnum.KEY_DEVICE_MODE.getParamsKey(),
-                (byte) 0x01,
-                (byte) mode
-        };
-        response.responseValue = data;
     }
 
     public void setIndicatorStatus(int status) {
@@ -625,17 +644,70 @@ public class ParamsWriteTask extends OrderTask {
         response.responseValue = data;
     }
 
-    public void setPeriodicReportInterval(@IntRange(from = 1, to = 14400) int interval) {
-        byte[] intervalBytes = MokoUtils.toByteArray(interval, 2);
-        data = new byte[]{
+    public void setRealScanPeriodicReportInterval(@IntRange(from = 600, to = 86400) int interval) {
+        byte[] intervalBytes = MokoUtils.toByteArray(interval, 4);
+        response.responseValue = data = new byte[]{
                 (byte) 0xED,
                 (byte) 0x01,
-                (byte) ParamsKeyEnum.KEY_PERIODIC_MODE_REPORT_INTERVAL.getParamsKey(),
-                (byte) 0x02,
+                (byte) ParamsKeyEnum.KEY_REAL_SCAN_PERIODIC_REPORT_INTERVAL.getParamsKey(),
+                (byte) 0x04,
                 intervalBytes[0],
                 intervalBytes[1],
+                intervalBytes[2],
+                intervalBytes[3]
         };
-        response.responseValue = data;
+    }
+
+    public void setPeriodicScanImmediateReport(@IntRange(from = 3, to = 3600) int duration,
+                                               @IntRange(from = 600, to = 86400) int interval) {
+        byte[] intervalBytes = MokoUtils.toByteArray(interval, 4);
+        byte[] durationBytes = MokoUtils.toByteArray(duration, 2);
+        response.responseValue = data = new byte[]{
+                (byte) 0xED,
+                (byte) 0x01,
+                (byte) ParamsKeyEnum.KEY_PERIODIC_SCAN_IMMEDIATE_REPORT.getParamsKey(),
+                (byte) 0x06,
+                durationBytes[0],
+                durationBytes[1],
+                intervalBytes[0],
+                intervalBytes[1],
+                intervalBytes[2],
+                intervalBytes[3]
+        };
+    }
+
+    public void setPeriodicScanPeriodicReport(@IntRange(from = 3, to = 3600) int duration,
+                                              @IntRange(from = 600, to = 86400) int interval,
+                                              @IntRange(from = 600, to = 86400) int reportInterval) {
+        byte[] durationBytes = MokoUtils.toByteArray(duration, 2);
+        byte[] intervalBytes = MokoUtils.toByteArray(interval, 4);
+        byte[] reportIntervalBytes = MokoUtils.toByteArray(reportInterval, 4);
+        response.responseValue = data = new byte[]{
+                (byte) 0xED,
+                (byte) 0x01,
+                (byte) ParamsKeyEnum.KEY_PERIODIC_SCAN_PERIODIC_REPORT.getParamsKey(),
+                (byte) 10,
+                durationBytes[0],
+                durationBytes[1],
+                intervalBytes[0],
+                intervalBytes[1],
+                intervalBytes[2],
+                intervalBytes[3],
+                reportIntervalBytes[0],
+                reportIntervalBytes[1],
+                reportIntervalBytes[2],
+                reportIntervalBytes[3]
+        };
+    }
+
+    public void setDataRetentionPriority(@IntRange(from = 0, to = 1) int priority) {
+        response.responseValue = data = new byte[]{
+                (byte) 0xED,
+                (byte) 0x01,
+                (byte) ParamsKeyEnum.KEY_DATA_RETENTION_PRIORITY.getParamsKey(),
+                (byte) 0x01,
+                (byte) priority
+        };
     }
 
     public void setTimePosStrategy(@IntRange(from = 0, to = 6) int strategy) {
@@ -1601,7 +1673,7 @@ public class ParamsWriteTask extends OrderTask {
 
     public void setGPSTimeout(@IntRange(from = 60, to = 600) int timeout) {
         byte[] timeoutBytes = MokoUtils.toByteArray(timeout, 2);
-        response.responseValue =data = new byte[]{
+        response.responseValue = data = new byte[]{
                 (byte) 0xED,
                 (byte) 0x01,
                 (byte) ParamsKeyEnum.KEY_GPS_TIMEOUT.getParamsKey(),
@@ -1613,7 +1685,7 @@ public class ParamsWriteTask extends OrderTask {
 
 
     public void setGPSPDOP(@IntRange(from = 25, to = 100) int limit) {
-        response.responseValue =data = new byte[]{
+        response.responseValue = data = new byte[]{
                 (byte) 0xED,
                 (byte) 0x01,
                 (byte) ParamsKeyEnum.KEY_GPS_PDOP.getParamsKey(),

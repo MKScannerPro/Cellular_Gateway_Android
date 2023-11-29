@@ -228,7 +228,7 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:background="@color/white_ffffff"
-            android:drawableRight="@drawable/ps101_ic_arrow_right"
+            android:drawableRight="@drawable/ic_arrow_right"
             android:gravity="center_vertical"
             android:onClick="onChangePassword"
             android:text="Change Password"

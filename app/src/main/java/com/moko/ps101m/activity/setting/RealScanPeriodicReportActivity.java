@@ -12,12 +12,10 @@ import android.view.View;
 import com.moko.ble.lib.MokoConstants;
 import com.moko.ble.lib.event.ConnectStatusEvent;
 import com.moko.ble.lib.event.OrderTaskResponseEvent;
-import com.moko.ble.lib.task.OrderTask;
 import com.moko.ble.lib.task.OrderTaskResponse;
 import com.moko.ble.lib.utils.MokoUtils;
 import com.moko.ps101m.activity.PS101BaseActivity;
-import com.moko.ps101m.databinding.Ps101mActivityPeriodicModeBinding;
-import com.moko.ps101m.dialog.BottomDialog;
+import com.moko.ps101m.databinding.ActivityRealScanPeriodicReportBinding;
 import com.moko.ps101m.utils.ToastUtils;
 import com.moko.support.ps101m.MokoSupport;
 import com.moko.support.ps101m.OrderTaskAssembler;
@@ -28,21 +26,16 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
-public class PeriodicModeActivity extends PS101BaseActivity {
-    private Ps101mActivityPeriodicModeBinding mBind;
+public class RealScanPeriodicReportActivity extends PS101BaseActivity {
+    private ActivityRealScanPeriodicReportBinding mBind;
     private boolean mReceiverTag = false;
-    private boolean savedParamsError;
-    private final String[] mValues = {"WIFI", "BLE", "GPS", "WIFI+GPS", "BLE+GPS", "WIFI+BLE", "WIFI+BLE+GPS"};
-    private int mSelected;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mBind = Ps101mActivityPeriodicModeBinding.inflate(getLayoutInflater());
+        mBind = ActivityRealScanPeriodicReportBinding.inflate(getLayoutInflater());
         setContentView(mBind.getRoot());
         EventBus.getDefault().register(this);
         // 注册广播接收器
@@ -51,10 +44,7 @@ public class PeriodicModeActivity extends PS101BaseActivity {
         registerReceiver(mReceiver, filter);
         mReceiverTag = true;
         showSyncingProgressDialog();
-        List<OrderTask> orderTasks = new ArrayList<>();
-        orderTasks.add(OrderTaskAssembler.getPeriodicPosStrategy());
-        orderTasks.add(OrderTaskAssembler.getPeriodicReportInterval());
-        MokoSupport.getInstance().sendOrder(orderTasks.toArray(new OrderTask[]{}));
+        MokoSupport.getInstance().sendOrder(OrderTaskAssembler.getRealScanPeriodicReportInterval());
     }
 
     @Subscribe(threadMode = ThreadMode.POSTING, priority = 300)
@@ -85,48 +75,24 @@ public class PeriodicModeActivity extends PS101BaseActivity {
                         int header = value[0] & 0xFF;// 0xED
                         int flag = value[1] & 0xFF;// read or write
                         int cmd = value[2] & 0xFF;
-                        if (header != 0xED) return;
                         ParamsKeyEnum configKeyEnum = ParamsKeyEnum.fromParamKey(cmd);
-                        if (configKeyEnum == null) return;
+                        if (header != 0xED || configKeyEnum == null) return;
                         int length = value[3] & 0xFF;
                         if (flag == 0x01) {
                             // write
                             int result = value[4] & 0xFF;
-                            switch (configKeyEnum) {
-                                case KEY_PERIODIC_MODE_POS_STRATEGY:
-                                    if (result != 1) {
-                                        savedParamsError = true;
-                                    }
-                                    break;
-                                case KEY_PERIODIC_MODE_REPORT_INTERVAL:
-                                    if (result != 1) {
-                                        savedParamsError = true;
-                                    }
-                                    if (savedParamsError) {
-                                        ToastUtils.showToast(PeriodicModeActivity.this, "Opps！Save failed. Please check the input characters and try again.");
-                                    } else {
-                                        ToastUtils.showToast(this, "Save Successfully！");
-                                    }
-                                    break;
+                            if (configKeyEnum == ParamsKeyEnum.KEY_REAL_SCAN_PERIODIC_REPORT_INTERVAL) {
+                                ToastUtils.showToast(this, result == 1 ? "Setup succeed" : "Setup failed");
                             }
-                        }
-                        if (flag == 0x00) {
+                        } else if (flag == 0x00) {
                             // read
-                            switch (configKeyEnum) {
-                                case KEY_PERIODIC_MODE_POS_STRATEGY:
-                                    if (length > 0) {
-                                        mSelected = value[4] & 0xFF;
-                                        mBind.tvPeriodicPosStrategy.setText(mValues[mSelected]);
-                                    }
-                                    break;
-                                case KEY_PERIODIC_MODE_REPORT_INTERVAL:
-                                    if (length > 0) {
-                                        byte[] intervalBytes = Arrays.copyOfRange(value, 4, 4 + length);
-                                        int interval = MokoUtils.toInt(intervalBytes);
-                                        mBind.etReportInterval.setText(String.valueOf(interval));
-                                        mBind.etReportInterval.setSelection(mBind.etReportInterval.getText().length());
-                                    }
-                                    break;
+                            if (configKeyEnum == ParamsKeyEnum.KEY_REAL_SCAN_PERIODIC_REPORT_INTERVAL) {
+                                if (length > 0) {
+                                    byte[] intervalBytes = Arrays.copyOfRange(value, 4, 4 + length);
+                                    int interval = MokoUtils.toInt(intervalBytes);
+                                    mBind.etReportInterval.setText(String.valueOf(interval));
+                                    mBind.etReportInterval.setSelection(mBind.etReportInterval.getText().length());
+                                }
                             }
                         }
                     }
@@ -136,7 +102,6 @@ public class PeriodicModeActivity extends PS101BaseActivity {
     }
 
     private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
-
         @Override
         public void onReceive(Context context, Intent intent) {
             if (intent != null) {
@@ -167,17 +132,6 @@ public class PeriodicModeActivity extends PS101BaseActivity {
         finish();
     }
 
-    public void selectPosStrategy(View view) {
-        if (isWindowLocked()) return;
-        BottomDialog dialog = new BottomDialog();
-        dialog.setDatas(new ArrayList<>(Arrays.asList(mValues)), mSelected);
-        dialog.setListener(value -> {
-            mSelected = value;
-            mBind.tvPeriodicPosStrategy.setText(mValues[value]);
-        });
-        dialog.show(getSupportFragmentManager());
-    }
-
     public void onSave(View view) {
         if (TextUtils.isEmpty(mBind.etReportInterval.getText())) {
             ToastUtils.showToast(this, "Para error!");
@@ -185,15 +139,11 @@ public class PeriodicModeActivity extends PS101BaseActivity {
         }
         final String intervalStr = mBind.etReportInterval.getText().toString();
         final int interval = Integer.parseInt(intervalStr);
-        if (interval < 1 || interval > 14400) {
+        if (interval < 600 || interval > 86400) {
             ToastUtils.showToast(this, "Para error!");
             return;
         }
-        savedParamsError = false;
         showSyncingProgressDialog();
-        List<OrderTask> orderTasks = new ArrayList<>();
-        orderTasks.add(OrderTaskAssembler.setPeriodicPosStrategy(mSelected));
-        orderTasks.add(OrderTaskAssembler.setPeriodicReportInterval(interval));
-        MokoSupport.getInstance().sendOrder(orderTasks.toArray(new OrderTask[]{}));
+        MokoSupport.getInstance().sendOrder(OrderTaskAssembler.setRealScanPeriodicReportInterval(interval));
     }
 }
