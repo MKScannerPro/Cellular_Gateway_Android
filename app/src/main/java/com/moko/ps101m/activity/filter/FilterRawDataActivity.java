@@ -190,11 +190,15 @@ public class FilterRawDataActivity extends PS101BaseActivity {
     }
 
     public void onFilterByBXPTag(View view) {
-        startActivity(FilterBXPTagIdActivity.class);
+        startActivity(FilterBXPTagActivity.class);
     }
 
     public void onFilterByPir(View view) {
         startActivity(FilterMkPirActivity.class);
+    }
+
+    public void onFilterByMkTof(View view){
+        startActivity(FilterMkTofActivity.class);
     }
 
     public void onFilterByOther(View view) {

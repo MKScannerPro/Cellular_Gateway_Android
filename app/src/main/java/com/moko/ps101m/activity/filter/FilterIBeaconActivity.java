@@ -11,7 +11,7 @@ import com.moko.ble.lib.task.OrderTask;
 import com.moko.ble.lib.task.OrderTaskResponse;
 import com.moko.ble.lib.utils.MokoUtils;
 import com.moko.ps101m.activity.PS101BaseActivity;
-import com.moko.ps101m.databinding.Ps101mActivityFilterIbeaconBinding;
+import com.moko.ps101m.databinding.ActivityFilterIbeaconBinding;
 import com.moko.ps101m.utils.ToastUtils;
 import com.moko.support.ps101m.MokoSupport;
 import com.moko.support.ps101m.OrderTaskAssembler;
@@ -27,13 +27,13 @@ import java.util.Arrays;
 import java.util.List;
 
 public class FilterIBeaconActivity extends PS101BaseActivity {
-    private Ps101mActivityFilterIbeaconBinding mBind;
+    private ActivityFilterIbeaconBinding mBind;
     private boolean savedParamsError;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mBind = Ps101mActivityFilterIbeaconBinding.inflate(getLayoutInflater());
+        mBind = ActivityFilterIbeaconBinding.inflate(getLayoutInflater());
         setContentView(mBind.getRoot());
         EventBus.getDefault().register(this);
 
@@ -62,9 +62,7 @@ public class FilterIBeaconActivity extends PS101BaseActivity {
         if (!MokoConstants.ACTION_CURRENT_DATA.equals(action))
             EventBus.getDefault().cancelEventDelivery(event);
         runOnUiThread(() -> {
-            if (MokoConstants.ACTION_ORDER_TIMEOUT.equals(action)) {
-            }
-            if (MokoConstants.ACTION_ORDER_FINISH.equals(action)) {
+            if (MokoConstants.ACTION_ORDER_FINISH.equals(action) || MokoConstants.ACTION_ORDER_TIMEOUT.equals(action)) {
                 dismissSyncProgressDialog();
             }
             if (MokoConstants.ACTION_ORDER_RESULT.equals(action)) {
@@ -76,9 +74,8 @@ public class FilterIBeaconActivity extends PS101BaseActivity {
                         int header = value[0] & 0xFF;// 0xED
                         int flag = value[1] & 0xFF;// read or write
                         int cmd = value[2] & 0xFF;
-                        if (header != 0xED) return;
                         ParamsKeyEnum configKeyEnum = ParamsKeyEnum.fromParamKey(cmd);
-                        if (configKeyEnum == null) return;
+                        if (header != 0xED || configKeyEnum == null) return;
                         int length = value[3] & 0xFF;
                         if (flag == 0x01) {
                             // write
@@ -95,15 +92,10 @@ public class FilterIBeaconActivity extends PS101BaseActivity {
                                     if (result != 1) {
                                         savedParamsError = true;
                                     }
-                                    if (savedParamsError) {
-                                        ToastUtils.showToast(FilterIBeaconActivity.this, "Opps！Save failed. Please check the input characters and try again.");
-                                    } else {
-                                        ToastUtils.showToast(this, "Save Successfully！");
-                                    }
+                                    ToastUtils.showToast(this, !savedParamsError ? "Setup succeed" : "Setup failed");
                                     break;
                             }
-                        }
-                        if (flag == 0x00) {
+                        } else if (flag == 0x00) {
                             // read
                             switch (configKeyEnum) {
                                 case KEY_FILTER_IBEACON_UUID:
@@ -161,9 +153,7 @@ public class FilterIBeaconActivity extends PS101BaseActivity {
         if (!TextUtils.isEmpty(mBind.etIbeaconUuid.getText())) {
             String uuid = mBind.etIbeaconUuid.getText().toString();
             int length = uuid.length();
-            if (length % 2 != 0) {
-                return false;
-            }
+            if (length % 2 != 0) return false;
         }
         if (!TextUtils.isEmpty(mBind.etIbeaconMajorMin.getText()) && !TextUtils.isEmpty(mBind.etIbeaconMajorMax.getText())) {
             String majorMin = mBind.etIbeaconMajorMin.getText().toString();

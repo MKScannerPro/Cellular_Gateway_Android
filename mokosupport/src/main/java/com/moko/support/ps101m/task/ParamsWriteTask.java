@@ -14,6 +14,7 @@ import com.moko.support.ps101m.entity.ParamsKeyEnum;
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.ArrayList;
+import java.util.List;
 
 public class ParamsWriteTask extends OrderTask {
     public byte[] data;
@@ -1470,21 +1471,14 @@ public class ParamsWriteTask extends OrderTask {
         response.responseValue = data;
     }
 
-    public void setFilterBXPButtonRules(@IntRange(from = 0, to = 1) int singleEnable,
-                                        @IntRange(from = 0, to = 1) int doubleEnable,
-                                        @IntRange(from = 0, to = 1) int longEnable,
-                                        @IntRange(from = 0, to = 1) int abnormalEnable) {
-        data = new byte[]{
+    public void setFilterBXPButtonRules(int enable) {
+        response.responseValue = data = new byte[]{
                 (byte) 0xED,
                 (byte) 0x01,
                 (byte) ParamsKeyEnum.KEY_FILTER_BXP_BUTTON_RULES.getParamsKey(),
-                (byte) 0x04,
-                (byte) singleEnable,
-                (byte) doubleEnable,
-                (byte) longEnable,
-                (byte) abnormalEnable,
+                (byte) 0x01,
+                (byte) enable
         };
-        response.responseValue = data;
     }
 
     public void setFilterEddystoneUIDEnable(@IntRange(from = 0, to = 1) int enable) {
@@ -1635,6 +1629,51 @@ public class ParamsWriteTask extends OrderTask {
         response.responseValue = data;
     }
 
+    public void setFilterMkTofEnable(@IntRange(from = 0, to = 1) int enable) {
+        data = new byte[]{
+                (byte) 0xED,
+                (byte) 0x01,
+                (byte) ParamsKeyEnum.KEY_FILTER_MK_TOF_ENABLE.getParamsKey(),
+                (byte) 0x01,
+                (byte) enable
+        };
+        response.responseValue = data;
+    }
+
+    public void setFilterMkTofRules(List<String> filterTofRules) {
+        if (filterTofRules == null || filterTofRules.size() == 0) {
+            data = new byte[]{
+                    (byte) 0xED,
+                    (byte) 0x01,
+                    (byte) ParamsKeyEnum.KEY_FILTER_MK_TOF_RULES.getParamsKey(),
+                    (byte) 0x00
+            };
+        } else {
+            int length = 0;
+            for (String mac : filterTofRules) {
+                length += 1;
+                length += mac.length() / 2;
+            }
+            data = new byte[4 + length];
+            data[0] = (byte) 0xED;
+            data[1] = (byte) 0x01;
+            data[2] = (byte) ParamsKeyEnum.KEY_FILTER_MK_TOF_RULES.getParamsKey();
+            data[3] = (byte) length;
+            int index = 0;
+            for (int i = 0, size = filterTofRules.size(); i < size; i++) {
+                String mac = filterTofRules.get(i);
+                byte[] tofBytes = MokoUtils.hex2bytes(mac);
+                int l = tofBytes.length;
+                data[4 + index] = (byte) l;
+                index++;
+                for (int j = 0; j < l; j++, index++) {
+                    data[4 + index] = tofBytes[j];
+                }
+            }
+        }
+        response.responseValue = data;
+    }
+
     public void setFilterOtherRelationship(@IntRange(from = 0, to = 5) int relationship) {
         data = new byte[]{
                 (byte) 0xED,
@@ -1668,6 +1707,176 @@ public class ParamsWriteTask extends OrderTask {
             int index = 0;
             for (int i = 0, size = filterOtherRules.size(); i < size; i++) {
                 String rule = filterOtherRules.get(i);
+                byte[] ruleBytes = MokoUtils.hex2bytes(rule);
+                int l = ruleBytes.length;
+                data[4 + index] = (byte) l;
+                index++;
+                for (int j = 0; j < l; j++, index++) {
+                    data[4 + index] = ruleBytes[j];
+                }
+            }
+        }
+        response.responseValue = data;
+    }
+
+    public void setIBeaconPayload(int payload) {
+        response.responseValue = data = new byte[]{
+                (byte) 0xED,
+                (byte) 0x01,
+                (byte) ParamsKeyEnum.KEY_IBEACON_PAYLOAD.getParamsKey(),
+                (byte) 0x01,
+                (byte) payload
+        };
+    }
+
+    public void setEddystoneUidPayload(int payload) {
+        response.responseValue = data = new byte[]{
+                (byte) 0xED,
+                (byte) 0x01,
+                (byte) ParamsKeyEnum.KEY_EDDYSTONE_UID_PAYLOAD.getParamsKey(),
+                (byte) 0x01,
+                (byte) payload
+        };
+    }
+
+    public void setEddystoneUrlPayload(int payload) {
+        response.responseValue = data = new byte[]{
+                (byte) 0xED,
+                (byte) 0x01,
+                (byte) ParamsKeyEnum.KEY_EDDYSTONE_URL_PAYLOAD.getParamsKey(),
+                (byte) 0x01,
+                (byte) payload
+        };
+    }
+
+    public void setEddystoneTlmPayload(int payload) {
+        byte[] bytes = MokoUtils.toByteArray(payload, 2);
+        response.responseValue = data = new byte[]{
+                (byte) 0xED,
+                (byte) 0x01,
+                (byte) ParamsKeyEnum.KEY_EDDYSTONE_TLM_PAYLOAD.getParamsKey(),
+                (byte) 0x02,
+                bytes[0],
+                bytes[1]
+        };
+    }
+
+    public void setBxpDeviceInfoPayload(int payload) {
+        byte[] bytes = MokoUtils.toByteArray(payload, 2);
+        response.responseValue = data = new byte[]{
+                (byte) 0xED,
+                (byte) 0x01,
+                (byte) ParamsKeyEnum.KEY_BXP_DEVICE_INFO_PAYLOAD.getParamsKey(),
+                (byte) 0x02,
+                bytes[0],
+                bytes[1]
+        };
+    }
+
+    public void setBxpAccPayload(int payload) {
+        byte[] bytes = MokoUtils.toByteArray(payload, 2);
+        response.responseValue = data = new byte[]{
+                (byte) 0xED,
+                (byte) 0x01,
+                (byte) ParamsKeyEnum.KEY_BXP_ACC_PAYLOAD.getParamsKey(),
+                (byte) 0x02,
+                bytes[0],
+                bytes[1]
+        };
+    }
+
+    public void setBxpThPayload(int payload) {
+        byte[] bytes = MokoUtils.toByteArray(payload, 2);
+        response.responseValue = data = new byte[]{
+                (byte) 0xED,
+                (byte) 0x01,
+                (byte) ParamsKeyEnum.KEY_BXP_TH_PAYLOAD.getParamsKey(),
+                (byte) 0x02,
+                bytes[0],
+                bytes[1]
+        };
+    }
+
+    public void setBxpTagPayload(int payload) {
+        byte[] bytes = MokoUtils.toByteArray(payload, 2);
+        response.responseValue = data = new byte[]{
+                (byte) 0xED,
+                (byte) 0x01,
+                (byte) ParamsKeyEnum.KEY_BXP_TAG_PAYLOAD.getParamsKey(),
+                (byte) 0x02,
+                bytes[0],
+                bytes[1]
+        };
+    }
+
+    public void setBxpButtonPayload(int payload) {
+        byte[] bytes = MokoUtils.toByteArray(payload, 4);
+        response.responseValue = data = new byte[]{
+                (byte) 0xED,
+                (byte) 0x01,
+                (byte) ParamsKeyEnum.KEY_BXP_BUTTON_PAYLOAD.getParamsKey(),
+                (byte) 0x04,
+                bytes[0],
+                bytes[1],
+                bytes[2],
+                bytes[3]
+        };
+    }
+
+    public void setPirPayload(int payload) {
+        byte[] bytes = MokoUtils.toByteArray(payload, 2);
+        response.responseValue = data = new byte[]{
+                (byte) 0xED,
+                (byte) 0x01,
+                (byte) ParamsKeyEnum.KEY_PIR_PAYLOAD.getParamsKey(),
+                (byte) 0x02,
+                bytes[0],
+                bytes[1]
+        };
+    }
+
+    public void setTofPayload(int payload) {
+        response.responseValue = data = new byte[]{
+                (byte) 0xED,
+                (byte) 0x01,
+                (byte) ParamsKeyEnum.KEY_TOF_PAYLOAD.getParamsKey(),
+                (byte) 0x01,
+                (byte) payload
+        };
+    }
+
+    public void setOtherPayload(int payload) {
+        response.responseValue = data = new byte[]{
+                (byte) 0xED,
+                (byte) 0x01,
+                (byte) ParamsKeyEnum.KEY_OTHER_PAYLOAD.getParamsKey(),
+                (byte) 0x01,
+                (byte) payload
+        };
+    }
+
+    public void setOtherPayloadData(List<String> otherRules) {
+        if (otherRules == null || otherRules.size() == 0) {
+            data = new byte[]{
+                    (byte) 0xED,
+                    (byte) 0x01,
+                    (byte) ParamsKeyEnum.KEY_OTHER_PAYLOAD_DATA.getParamsKey(),
+                    (byte) 0x00
+            };
+        } else {
+            int length = 0;
+            for (String other : otherRules) {
+                length += 1;
+                length += other.length() / 2;
+            }
+            data = new byte[4 + length];
+            data[0] = (byte) 0xED;
+            data[1] = (byte) 0x01;
+            data[2] = (byte) ParamsKeyEnum.KEY_OTHER_PAYLOAD_DATA.getParamsKey();
+            data[3] = (byte) length;
+            int index = 0;
+            for (int i = 0, size = otherRules.size(); i < size; i++) {
+                String rule = otherRules.get(i);
                 byte[] ruleBytes = MokoUtils.hex2bytes(rule);
                 int l = ruleBytes.length;
                 data[4 + index] = (byte) l;

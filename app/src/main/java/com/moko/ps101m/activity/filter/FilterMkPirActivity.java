@@ -12,7 +12,7 @@ import com.moko.ble.lib.task.OrderTask;
 import com.moko.ble.lib.task.OrderTaskResponse;
 import com.moko.ble.lib.utils.MokoUtils;
 import com.moko.ps101m.activity.PS101BaseActivity;
-import com.moko.ps101m.databinding.Ps101mActivityFilterMkpirBinding;
+import com.moko.ps101m.databinding.ActivityFilterMkpirBinding;
 import com.moko.ps101m.dialog.BottomDialog;
 import com.moko.ps101m.utils.ToastUtils;
 import com.moko.support.ps101m.MokoSupport;
@@ -34,7 +34,7 @@ import java.util.List;
  * @des:
  */
 public class FilterMkPirActivity extends PS101BaseActivity {
-    private Ps101mActivityFilterMkpirBinding mBind;
+    private ActivityFilterMkpirBinding mBind;
     private final String[] detectionStatusArray = {"No motion detected", "Motion detected", "All"};
     private final String[] sensorSensitivityArray = {"Low", "Medium", "High", "All"};
     private final String[] doorStatusArray = {"Close", "Open", "All"};
@@ -53,16 +53,16 @@ public class FilterMkPirActivity extends PS101BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mBind = Ps101mActivityFilterMkpirBinding.inflate(getLayoutInflater());
+        mBind = ActivityFilterMkpirBinding.inflate(getLayoutInflater());
         setContentView(mBind.getRoot());
         EventBus.getDefault().register(this);
         showSyncingProgressDialog();
         List<OrderTask> orderTasks = new ArrayList<>(8);
         orderTasks.add(OrderTaskAssembler.getMkPirEnable());
-        orderTasks.add(OrderTaskAssembler.getMkPirSensorDetectionStatus());
-        orderTasks.add(OrderTaskAssembler.getMkPirSensorSensitivity());
-        orderTasks.add(OrderTaskAssembler.getMkPirDoorStatus());
         orderTasks.add(OrderTaskAssembler.getMkPirDelayResStatus());
+        orderTasks.add(OrderTaskAssembler.getMkPirDoorStatus());
+        orderTasks.add(OrderTaskAssembler.getMkPirSensorSensitivity());
+        orderTasks.add(OrderTaskAssembler.getMkPirSensorDetectionStatus());
         orderTasks.add(OrderTaskAssembler.getMkPirMajor());
         orderTasks.add(OrderTaskAssembler.getMkPirMinor());
         MokoSupport.getInstance().sendOrder(orderTasks.toArray(new OrderTask[]{}));
@@ -108,9 +108,8 @@ public class FilterMkPirActivity extends PS101BaseActivity {
                         int header = value[0] & 0xFF;// 0xED
                         int flag = value[1] & 0xFF;// read or write
                         int cmd = value[2] & 0xFF;
-                        if (header != 0xED) return;
                         ParamsKeyEnum configKeyEnum = ParamsKeyEnum.fromParamKey(cmd);
-                        if (configKeyEnum == null) return;
+                        if (header != 0xED || configKeyEnum == null) return;
                         int length = value[3] & 0xFF;
                         if (flag == 0x01) {
                             // write
@@ -143,14 +142,13 @@ public class FilterMkPirActivity extends PS101BaseActivity {
                                 case KEY_FILTER_MK_PIR_MINOR:
                                     if (mkPirEnableFlag == 1 && detectionStatusFlag == 1 && sensorSensitivityFlag == 1 &&
                                             doorStatusFlag == 1 && delayResStatusFlag == 1 && majorFlag == 1 && result == 1) {
-                                        ToastUtils.showToast(this, "Save Successfully！");
+                                        ToastUtils.showToast(this, "Setup succeed");
                                     } else {
-                                        ToastUtils.showToast(this, "Opps！Save failed. Please check the input characters and try again.");
+                                        ToastUtils.showToast(this, "Setup failed");
                                     }
                                     break;
                             }
-                        }
-                        if (flag == 0x00) {
+                        } else if (flag == 0x00) {
                             // read
                             switch (configKeyEnum) {
                                 case KEY_FILTER_MK_PIR_ENABLE:

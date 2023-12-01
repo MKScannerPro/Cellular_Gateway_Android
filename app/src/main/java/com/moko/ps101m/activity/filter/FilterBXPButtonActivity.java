@@ -9,7 +9,7 @@ import com.moko.ble.lib.event.OrderTaskResponseEvent;
 import com.moko.ble.lib.task.OrderTask;
 import com.moko.ble.lib.task.OrderTaskResponse;
 import com.moko.ps101m.activity.PS101BaseActivity;
-import com.moko.ps101m.databinding.Ps101mActivityFilterBxpButtonBinding;
+import com.moko.ps101m.databinding.ActivityFilterBxpButtonBinding;
 import com.moko.ps101m.utils.ToastUtils;
 import com.moko.support.ps101m.MokoSupport;
 import com.moko.support.ps101m.OrderTaskAssembler;
@@ -24,13 +24,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FilterBXPButtonActivity extends PS101BaseActivity {
-    private Ps101mActivityFilterBxpButtonBinding mBind;
+    private ActivityFilterBxpButtonBinding mBind;
     private boolean savedParamsError;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mBind = Ps101mActivityFilterBxpButtonBinding.inflate(getLayoutInflater());
+        mBind = ActivityFilterBxpButtonBinding.inflate(getLayoutInflater());
         setContentView(mBind.getRoot());
         EventBus.getDefault().register(this);
         showSyncingProgressDialog();
@@ -57,6 +57,7 @@ public class FilterBXPButtonActivity extends PS101BaseActivity {
             EventBus.getDefault().cancelEventDelivery(event);
         runOnUiThread(() -> {
             if (MokoConstants.ACTION_ORDER_TIMEOUT.equals(action)) {
+                dismissSyncProgressDialog();
             }
             if (MokoConstants.ACTION_ORDER_FINISH.equals(action)) {
                 dismissSyncProgressDialog();
@@ -70,9 +71,8 @@ public class FilterBXPButtonActivity extends PS101BaseActivity {
                         int header = value[0] & 0xFF;// 0xED
                         int flag = value[1] & 0xFF;// read or write
                         int cmd = value[2] & 0xFF;
-                        if (header != 0xED) return;
                         ParamsKeyEnum configKeyEnum = ParamsKeyEnum.fromParamKey(cmd);
-                        if (configKeyEnum == null) return;
+                        if (header != 0xED || configKeyEnum == null) return;
                         int length = value[3] & 0xFF;
                         if (flag == 0x01) {
                             // write
@@ -87,23 +87,19 @@ public class FilterBXPButtonActivity extends PS101BaseActivity {
                                     if (result != 1) {
                                         savedParamsError = true;
                                     }
-                                    if (savedParamsError) {
-                                        ToastUtils.showToast(this, "Opps！Save failed. Please check the input characters and try again.");
-                                    } else {
-                                        ToastUtils.showToast(this, "Save Successfully！");
-                                    }
+                                    ToastUtils.showToast(this, !savedParamsError ? "Setup succeed" : "Setup failed");
                                     break;
                             }
-                        }
-                        if (flag == 0x00) {
+                        } else if (flag == 0x00) {
                             // read
                             switch (configKeyEnum) {
                                 case KEY_FILTER_BXP_BUTTON_RULES:
-                                    if (length == 4) {
-                                        mBind.cbSinglePress.setChecked((value[4] & 0xff) == 1);
-                                        mBind.cbDoublePress.setChecked((value[5] & 0xff) == 1);
-                                        mBind.cbLongPress.setChecked((value[6] & 0xff) == 1);
-                                        mBind.cbAbnormalInactivity.setChecked((value[7] & 0xff) == 1);
+                                    if (length == 1) {
+                                        int data = value[4] & 0xff;
+                                        mBind.cbSinglePress.setChecked((data & 0x01) == 1);
+                                        mBind.cbDoublePress.setChecked((data >> 1 & 0x01) == 1);
+                                        mBind.cbLongPress.setChecked((data >> 2 & 0x01) == 1);
+                                        mBind.cbAbnormalInactivity.setChecked((data >> 3 & 0x01) == 1);
                                     }
                                     break;
                                 case KEY_FILTER_BXP_BUTTON_ENABLE:
@@ -129,10 +125,9 @@ public class FilterBXPButtonActivity extends PS101BaseActivity {
     private void saveParams() {
         savedParamsError = false;
         List<OrderTask> orderTasks = new ArrayList<>();
-        orderTasks.add(OrderTaskAssembler.setFilterBXPButtonRules(mBind.cbSinglePress.isChecked() ? 1 : 0,
-                mBind.cbDoublePress.isChecked() ? 1 : 0,
-                mBind.cbLongPress.isChecked() ? 1 : 0,
-                mBind.cbAbnormalInactivity.isChecked() ? 1 : 0));
+        int enable = (mBind.cbSinglePress.isChecked() ? 1 : 0) | (mBind.cbDoublePress.isChecked() ? 1 << 1 : 0) |
+                (mBind.cbLongPress.isChecked() ? 1 << 2 : 0) | (mBind.cbAbnormalInactivity.isChecked() ? 1 << 3 : 0);
+        orderTasks.add(OrderTaskAssembler.setFilterBXPButtonRules(enable));
         orderTasks.add(OrderTaskAssembler.setFilterBXPButtonEnable(mBind.cbEnable.isChecked() ? 1 : 0));
         MokoSupport.getInstance().sendOrder(orderTasks.toArray(new OrderTask[]{}));
     }

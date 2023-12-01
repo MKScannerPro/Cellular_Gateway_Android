@@ -15,7 +15,7 @@ import com.moko.ble.lib.task.OrderTaskResponse;
 import com.moko.ble.lib.utils.MokoUtils;
 import com.moko.ps101m.R;
 import com.moko.ps101m.activity.PS101BaseActivity;
-import com.moko.ps101m.databinding.Ps101mActivityFilterBxpTagIdBinding;
+import com.moko.ps101m.databinding.ActivityFilterBxpTagBinding;
 import com.moko.ps101m.utils.ToastUtils;
 import com.moko.support.ps101m.MokoSupport;
 import com.moko.support.ps101m.OrderTaskAssembler;
@@ -31,15 +31,15 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
-public class FilterBXPTagIdActivity extends PS101BaseActivity {
-    private Ps101mActivityFilterBxpTagIdBinding mBind;
+public class FilterBXPTagActivity extends PS101BaseActivity {
+    private ActivityFilterBxpTagBinding mBind;
     private boolean savedParamsError;
     private ArrayList<String> filterTagId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mBind = Ps101mActivityFilterBxpTagIdBinding.inflate(getLayoutInflater());
+        mBind = ActivityFilterBxpTagBinding.inflate(getLayoutInflater());
         setContentView(mBind.getRoot());
         EventBus.getDefault().register(this);
         filterTagId = new ArrayList<>();
@@ -69,6 +69,7 @@ public class FilterBXPTagIdActivity extends PS101BaseActivity {
             EventBus.getDefault().cancelEventDelivery(event);
         runOnUiThread(() -> {
             if (MokoConstants.ACTION_ORDER_TIMEOUT.equals(action)) {
+                dismissSyncProgressDialog();
             }
             if (MokoConstants.ACTION_ORDER_FINISH.equals(action)) {
                 dismissSyncProgressDialog();
@@ -82,9 +83,8 @@ public class FilterBXPTagIdActivity extends PS101BaseActivity {
                         int header = value[0] & 0xFF;// 0xED
                         int flag = value[1] & 0xFF;// read or write
                         int cmd = value[2] & 0xFF;
-                        if (header != 0xED) return;
                         ParamsKeyEnum configKeyEnum = ParamsKeyEnum.fromParamKey(cmd);
-                        if (configKeyEnum == null) return;
+                        if (header != 0xED || configKeyEnum == null) return;
                         int length = value[3] & 0xFF;
                         if (flag == 0x01) {
                             // write
@@ -93,23 +93,15 @@ public class FilterBXPTagIdActivity extends PS101BaseActivity {
                                 case KEY_FILTER_BXP_TAG_ENABLE:
                                 case KEY_FILTER_BXP_TAG_PRECISE:
                                 case KEY_FILTER_BXP_TAG_REVERSE:
-                                    if (result != 1) {
-                                        savedParamsError = true;
-                                    }
+                                    if (result != 1) savedParamsError = true;
                                     break;
+
                                 case KEY_FILTER_BXP_TAG_RULES:
-                                    if (result != 1) {
-                                        savedParamsError = true;
-                                    }
-                                    if (savedParamsError) {
-                                        ToastUtils.showToast(FilterBXPTagIdActivity.this, "Opps！Save failed. Please check the input characters and try again.");
-                                    } else {
-                                        ToastUtils.showToast(this, "Save Successfully！");
-                                    }
+                                    if (result != 1) savedParamsError = true;
+                                    ToastUtils.showToast(this, !savedParamsError ? "Setup succeed" : "Setup failed");
                                     break;
                             }
-                        }
-                        if (flag == 0x00) {
+                        } else if (flag == 0x00) {
                             // read
                             switch (configKeyEnum) {
                                 case KEY_FILTER_BXP_TAG_ENABLE:
@@ -142,10 +134,10 @@ public class FilterBXPTagIdActivity extends PS101BaseActivity {
                                         }
                                         for (int i = 0, l = filterTagId.size(); i < l; i++) {
                                             String macAddress = filterTagId.get(i);
-                                            View v = LayoutInflater.from(FilterBXPTagIdActivity.this).inflate(R.layout.ps101m_item_tag_id_filter, mBind.llTagId, false);
+                                            View v = LayoutInflater.from(FilterBXPTagActivity.this).inflate(R.layout.item_tag_id_filter, mBind.llTagId, false);
                                             TextView title = v.findViewById(R.id.tv_tag_id_title);
                                             EditText etMacAddress = v.findViewById(R.id.et_tag_id);
-                                            title.setText(String.format(Locale.getDefault(), "Tag ID %d", i + 1));
+                                            title.setText(String.format(Locale.getDefault(), "ID %d", i + 1));
                                             etMacAddress.setText(macAddress);
                                             etMacAddress.setSelection(etMacAddress.getText().length());
                                             mBind.llTagId.addView(v);
@@ -177,9 +169,9 @@ public class FilterBXPTagIdActivity extends PS101BaseActivity {
             ToastUtils.showToast(this, "You can set up to 10 filters!");
             return;
         }
-        View v = LayoutInflater.from(this).inflate(R.layout.ps101m_item_tag_id_filter, mBind.llTagId, false);
+        View v = LayoutInflater.from(this).inflate(R.layout.item_tag_id_filter, mBind.llTagId, false);
         TextView title = v.findViewById(R.id.tv_tag_id_title);
-        title.setText(String.format(Locale.getDefault(), "Tag ID %d", count + 1));
+        title.setText(String.format(Locale.getDefault(), "ID %d", count + 1));
         mBind.llTagId.addView(v);
     }
 

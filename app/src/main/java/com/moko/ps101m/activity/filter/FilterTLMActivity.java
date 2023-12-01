@@ -8,9 +8,8 @@ import com.moko.ble.lib.event.ConnectStatusEvent;
 import com.moko.ble.lib.event.OrderTaskResponseEvent;
 import com.moko.ble.lib.task.OrderTask;
 import com.moko.ble.lib.task.OrderTaskResponse;
-import com.moko.ps101m.R;
 import com.moko.ps101m.activity.PS101BaseActivity;
-import com.moko.ps101m.databinding.Ps101mActivityFilterTlmBinding;
+import com.moko.ps101m.databinding.ActivityFilterTlmBinding;
 import com.moko.ps101m.dialog.BottomDialog;
 import com.moko.ps101m.utils.ToastUtils;
 import com.moko.support.ps101m.MokoSupport;
@@ -27,16 +26,15 @@ import java.util.Arrays;
 import java.util.List;
 
 public class FilterTLMActivity extends PS101BaseActivity {
-    private Ps101mActivityFilterTlmBinding mBind;
+    private ActivityFilterTlmBinding mBind;
     private boolean savedParamsError;
-    private final String[] mValues = {"Null", "version 0", "version 1"};
+    private final String[] mValues = {"version 0", "version 1", "all"};
     private int mSelected;
-    private boolean mTLMEnable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mBind = Ps101mActivityFilterTlmBinding.inflate(getLayoutInflater());
+        mBind = ActivityFilterTlmBinding.inflate(getLayoutInflater());
         setContentView(mBind.getRoot());
         EventBus.getDefault().register(this);
         showSyncingProgressDialog();
@@ -44,6 +42,7 @@ public class FilterTLMActivity extends PS101BaseActivity {
         orderTasks.add(OrderTaskAssembler.getFilterEddystoneTlmEnable());
         orderTasks.add(OrderTaskAssembler.getFilterEddystoneTlmVersion());
         MokoSupport.getInstance().sendOrder(orderTasks.toArray(new OrderTask[]{}));
+        mBind.ivSave.setOnClickListener(v -> onSave());
     }
 
     @Subscribe(threadMode = ThreadMode.POSTING, priority = 400)
@@ -63,6 +62,7 @@ public class FilterTLMActivity extends PS101BaseActivity {
             EventBus.getDefault().cancelEventDelivery(event);
         runOnUiThread(() -> {
             if (MokoConstants.ACTION_ORDER_TIMEOUT.equals(action)) {
+                dismissSyncProgressDialog();
             }
             if (MokoConstants.ACTION_ORDER_FINISH.equals(action)) {
                 dismissSyncProgressDialog();
@@ -76,9 +76,8 @@ public class FilterTLMActivity extends PS101BaseActivity {
                         int header = value[0] & 0xFF;// 0xED
                         int flag = value[1] & 0xFF;// read or write
                         int cmd = value[2] & 0xFF;
-                        if (header != 0xED) return;
                         ParamsKeyEnum configKeyEnum = ParamsKeyEnum.fromParamKey(cmd);
-                        if (configKeyEnum == null) return;
+                        if (header != 0xED || configKeyEnum == null) return;
                         int length = value[3] & 0xFF;
                         if (flag == 0x01) {
                             // write
@@ -89,15 +88,10 @@ public class FilterTLMActivity extends PS101BaseActivity {
                                     if (result != 1) {
                                         savedParamsError = true;
                                     }
-                                    if (savedParamsError) {
-                                        ToastUtils.showToast(FilterTLMActivity.this, "Opps！Save failed. Please check the input characters and try again.");
-                                    } else {
-                                        ToastUtils.showToast(this, "Save Successfully！");
-                                    }
+                                    ToastUtils.showToast(this, !savedParamsError ? "Setup succeed" : "Setup failed");
                                     break;
                             }
-                        }
-                        if (flag == 0x00) {
+                        } else if (flag == 0x00) {
                             // read
                             switch (configKeyEnum) {
                                 case KEY_FILTER_EDDYSTONE_TLM_VERSION:
@@ -108,8 +102,7 @@ public class FilterTLMActivity extends PS101BaseActivity {
                                     break;
                                 case KEY_FILTER_EDDYSTONE_TLM_ENABLE:
                                     if (length > 0) {
-                                        mTLMEnable = value[4] == 1;
-                                        mBind.ivTlmEnable.setImageResource(mTLMEnable ? R.drawable.ic_checked : R.drawable.ps101_ic_unchecked);
+                                        mBind.cbTlm.setChecked((value[4] & 0xff) == 1);
                                     }
                                     break;
                             }
@@ -142,6 +135,15 @@ public class FilterTLMActivity extends PS101BaseActivity {
         finish();
     }
 
+    private void onSave() {
+        if (isWindowLocked()) return;
+        showSyncingProgressDialog();
+        List<OrderTask> orderTasks = new ArrayList<>();
+        orderTasks.add(OrderTaskAssembler.setFilterEddystoneTlmVersion(mSelected));
+        orderTasks.add(OrderTaskAssembler.setFilterEddystoneTlmEnable(mBind.cbTlm.isChecked() ? 1 : 0));
+        MokoSupport.getInstance().sendOrder(orderTasks.toArray(new OrderTask[]{}));
+    }
+
     public void onTLMVersion(View view) {
         if (isWindowLocked()) return;
         BottomDialog dialog = new BottomDialog();
@@ -149,22 +151,7 @@ public class FilterTLMActivity extends PS101BaseActivity {
         dialog.setListener(value -> {
             mSelected = value;
             mBind.tvTlmVersion.setText(mValues[mSelected]);
-            showSyncingProgressDialog();
-            List<OrderTask> orderTasks = new ArrayList<>();
-            orderTasks.add(OrderTaskAssembler.setFilterEddystoneTlmVersion(mSelected));
-            orderTasks.add(OrderTaskAssembler.getFilterEddystoneTlmVersion());
-            MokoSupport.getInstance().sendOrder(orderTasks.toArray(new OrderTask[]{}));
         });
         dialog.show(getSupportFragmentManager());
-    }
-
-    public void onTLMEnable(View view) {
-        if (isWindowLocked()) return;
-        mTLMEnable = !mTLMEnable;
-        showSyncingProgressDialog();
-        List<OrderTask> orderTasks = new ArrayList<>();
-        orderTasks.add(OrderTaskAssembler.setFilterEddystoneTlmEnable(mTLMEnable ? 1 : 0));
-        orderTasks.add(OrderTaskAssembler.getFilterEddystoneTlmEnable());
-        MokoSupport.getInstance().sendOrder(orderTasks.toArray(new OrderTask[]{}));
     }
 }

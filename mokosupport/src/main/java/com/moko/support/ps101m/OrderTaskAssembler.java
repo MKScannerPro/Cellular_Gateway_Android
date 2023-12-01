@@ -17,6 +17,7 @@ import com.moko.support.ps101m.task.SetPasswordTask;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
 public class OrderTaskAssembler {
     ///////////////////////////////////////////////////////////////////////////
@@ -649,6 +650,96 @@ public class OrderTaskAssembler {
         return task;
     }
 
+    public static OrderTask getFilterMkTofEnable() {
+        ParamsReadTask task = new ParamsReadTask();
+        task.setData(ParamsKeyEnum.KEY_FILTER_MK_TOF_ENABLE);
+        return task;
+    }
+
+    public static OrderTask getFilterMkTofRules() {
+        ParamsReadTask task = new ParamsReadTask();
+        task.setData(ParamsKeyEnum.KEY_FILTER_MK_TOF_RULES);
+        return task;
+    }
+
+    public static OrderTask getIBeaconPayload() {
+        ParamsReadTask task = new ParamsReadTask();
+        task.setData(ParamsKeyEnum.KEY_IBEACON_PAYLOAD);
+        return task;
+    }
+
+    public static OrderTask getEddystoneUidPayload() {
+        ParamsReadTask task = new ParamsReadTask();
+        task.setData(ParamsKeyEnum.KEY_EDDYSTONE_UID_PAYLOAD);
+        return task;
+    }
+
+    public static OrderTask getEddystoneUrlPayload() {
+        ParamsReadTask task = new ParamsReadTask();
+        task.setData(ParamsKeyEnum.KEY_EDDYSTONE_URL_PAYLOAD);
+        return task;
+    }
+
+    public static OrderTask getEddystoneTlmPayload() {
+        ParamsReadTask task = new ParamsReadTask();
+        task.setData(ParamsKeyEnum.KEY_EDDYSTONE_TLM_PAYLOAD);
+        return task;
+    }
+
+    public static OrderTask getBxpDeviceInfoPayload() {
+        ParamsReadTask task = new ParamsReadTask();
+        task.setData(ParamsKeyEnum.KEY_BXP_DEVICE_INFO_PAYLOAD);
+        return task;
+    }
+
+    public static OrderTask getBxpAccPayload() {
+        ParamsReadTask task = new ParamsReadTask();
+        task.setData(ParamsKeyEnum.KEY_BXP_ACC_PAYLOAD);
+        return task;
+    }
+
+    public static OrderTask getBxpThPayload() {
+        ParamsReadTask task = new ParamsReadTask();
+        task.setData(ParamsKeyEnum.KEY_BXP_TH_PAYLOAD);
+        return task;
+    }
+
+    public static OrderTask getBxpButtonPayload() {
+        ParamsReadTask task = new ParamsReadTask();
+        task.setData(ParamsKeyEnum.KEY_BXP_BUTTON_PAYLOAD);
+        return task;
+    }
+
+    public static OrderTask getBxpTagPayload() {
+        ParamsReadTask task = new ParamsReadTask();
+        task.setData(ParamsKeyEnum.KEY_BXP_TAG_PAYLOAD);
+        return task;
+    }
+
+    public static OrderTask getPirPayload() {
+        ParamsReadTask task = new ParamsReadTask();
+        task.setData(ParamsKeyEnum.KEY_PIR_PAYLOAD);
+        return task;
+    }
+
+    public static OrderTask getTofPayload() {
+        ParamsReadTask task = new ParamsReadTask();
+        task.setData(ParamsKeyEnum.KEY_TOF_PAYLOAD);
+        return task;
+    }
+
+    public static OrderTask getOtherPayload() {
+        ParamsReadTask task = new ParamsReadTask();
+        task.setData(ParamsKeyEnum.KEY_OTHER_PAYLOAD);
+        return task;
+    }
+
+    public static OrderTask getOtherPayloadData() {
+        ParamsReadTask task = new ParamsReadTask();
+        task.setData(ParamsKeyEnum.KEY_OTHER_PAYLOAD_DATA);
+        return task;
+    }
+
     public static OrderTask getFilterOtherRelationship() {
         ParamsReadTask task = new ParamsReadTask();
         task.setData(ParamsKeyEnum.KEY_FILTER_OTHER_RELATIONSHIP);
@@ -1037,7 +1128,7 @@ public class OrderTaskAssembler {
         return task;
     }
 
-    public static OrderTask setScanReportMode(@IntRange(from = 0,to = 4) int mode){
+    public static OrderTask setScanReportMode(@IntRange(from = 0, to = 4) int mode) {
         ParamsWriteTask task = new ParamsWriteTask();
         task.setScanReportMode(mode);
         return task;
@@ -1195,15 +1286,15 @@ public class OrderTaskAssembler {
     }
 
     public static OrderTask setPeriodicScanImmediateReport(@IntRange(from = 3, to = 3600) int duration,
-                                                       @IntRange(from = 600, to = 86400) int interval) {
+                                                           @IntRange(from = 600, to = 86400) int interval) {
         ParamsWriteTask task = new ParamsWriteTask();
         task.setPeriodicScanImmediateReport(duration, interval);
         return task;
     }
 
     public static OrderTask setPeriodicScanPeriodicReport(@IntRange(from = 3, to = 3600) int duration,
-                                              @IntRange(from = 600, to = 86400) int interval,
-                                              @IntRange(from = 600, to = 86400) int reportInterval) {
+                                                          @IntRange(from = 600, to = 86400) int interval,
+                                                          @IntRange(from = 600, to = 86400) int reportInterval) {
         ParamsWriteTask task = new ParamsWriteTask();
         task.setPeriodicScanPeriodicReport(duration, interval, reportInterval);
         return task;
@@ -1576,12 +1667,9 @@ public class OrderTaskAssembler {
         return task;
     }
 
-    public static OrderTask setFilterBXPButtonRules(@IntRange(from = 0, to = 1) int singleEnable,
-                                                    @IntRange(from = 0, to = 1) int doubleEnable,
-                                                    @IntRange(from = 0, to = 1) int longEnable,
-                                                    @IntRange(from = 0, to = 1) int abnormalEnable) {
+    public static OrderTask setFilterBXPButtonRules(int enable) {
         ParamsWriteTask task = new ParamsWriteTask();
-        task.setFilterBXPButtonRules(singleEnable, doubleEnable, longEnable, abnormalEnable);
+        task.setFilterBXPButtonRules(enable);
         return task;
     }
 
@@ -1651,6 +1739,18 @@ public class OrderTaskAssembler {
         return task;
     }
 
+    public static OrderTask setFilterMkTofEnable(@IntRange(from = 0, to = 1) int enable) {
+        ParamsWriteTask task = new ParamsWriteTask();
+        task.setFilterMkTofEnable(enable);
+        return task;
+    }
+
+    public static OrderTask setFilterMkTofRules(List<String> filterTofRules) {
+        ParamsWriteTask task = new ParamsWriteTask();
+        task.setFilterMkTofRules(filterTofRules);
+        return task;
+    }
+
     public static OrderTask setFilterOtherRelationship(@IntRange(from = 0, to = 5) int relationship) {
         ParamsWriteTask task = new ParamsWriteTask();
         task.setFilterOtherRelationship(relationship);
@@ -1660,6 +1760,84 @@ public class OrderTaskAssembler {
     public static OrderTask setFilterOtherRules(ArrayList<String> filterOtherRules) {
         ParamsWriteTask task = new ParamsWriteTask();
         task.setFilterOtherRules(filterOtherRules);
+        return task;
+    }
+
+    public static OrderTask setIBeaconPayload(int payload) {
+        ParamsWriteTask task = new ParamsWriteTask();
+        task.setIBeaconPayload(payload);
+        return task;
+    }
+
+    public static OrderTask setEddystoneUidPayload(int payload) {
+        ParamsWriteTask task = new ParamsWriteTask();
+        task.setEddystoneUidPayload(payload);
+        return task;
+    }
+
+    public static OrderTask setEddystoneUrlPayload(int payload) {
+        ParamsWriteTask task = new ParamsWriteTask();
+        task.setEddystoneUrlPayload(payload);
+        return task;
+    }
+
+    public static OrderTask setEddystoneTlmPayload(int payload) {
+        ParamsWriteTask task = new ParamsWriteTask();
+        task.setEddystoneTlmPayload(payload);
+        return task;
+    }
+
+    public static OrderTask setBxpDeviceInfoPayload(int payload) {
+        ParamsWriteTask task = new ParamsWriteTask();
+        task.setBxpDeviceInfoPayload(payload);
+        return task;
+    }
+
+    public static OrderTask setBxpAccPayload(int payload) {
+        ParamsWriteTask task = new ParamsWriteTask();
+        task.setBxpAccPayload(payload);
+        return task;
+    }
+
+    public static OrderTask setBxpThPayload(int payload) {
+        ParamsWriteTask task = new ParamsWriteTask();
+        task.setBxpThPayload(payload);
+        return task;
+    }
+
+    public static OrderTask setBxpTagPayload(int payload) {
+        ParamsWriteTask task = new ParamsWriteTask();
+        task.setBxpTagPayload(payload);
+        return task;
+    }
+
+    public static OrderTask setBxpButtonPayload(int payload) {
+        ParamsWriteTask task = new ParamsWriteTask();
+        task.setBxpButtonPayload(payload);
+        return task;
+    }
+
+    public static OrderTask setPirPayload(int payload) {
+        ParamsWriteTask task = new ParamsWriteTask();
+        task.setPirPayload(payload);
+        return task;
+    }
+
+    public static OrderTask setTofPayload(int payload) {
+        ParamsWriteTask task = new ParamsWriteTask();
+        task.setTofPayload(payload);
+        return task;
+    }
+
+    public static OrderTask setOtherPayload(int payload) {
+        ParamsWriteTask task = new ParamsWriteTask();
+        task.setOtherPayload(payload);
+        return task;
+    }
+
+    public static OrderTask setOtherPayloadData(List<String> otherRules) {
+        ParamsWriteTask task = new ParamsWriteTask();
+        task.setOtherPayloadData(otherRules);
         return task;
     }
 

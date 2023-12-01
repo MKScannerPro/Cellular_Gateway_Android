@@ -27,7 +27,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="BXP-iBeacon Filter"
+            android:text="iBeacon"
             android:textColor="@color/white_ffffff"
             android:textSize="17sp"
             android:textStyle="bold" />
@@ -36,7 +36,7 @@
             android:id="@+id/iv_save"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:onClick="onSave"
             android:paddingLeft="16dp"
             android:paddingRight="16dp"
@@ -47,10 +47,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:background="@color/white_ffffff"
-        android:focusable="true"
-        android:focusableInTouchMode="true">
+        android:background="@color/white_ffffff">
 
         <CheckBox
             android:id="@+id/cb_ibeacon"
@@ -61,10 +58,9 @@
             android:button="@null"
             android:checked="false"
             android:drawableRight="@drawable/selector_cb_btn"
-            android:text="BXP-iBeacon"
+            android:text="iBeacon"
             android:textColor="@color/black_333333"
             android:textSize="15sp"
-            android:textStyle="bold"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -82,10 +78,9 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="12dp"
             android:layout_marginTop="10dp"
-            android:text="BXP-iBeacon UUID"
+            android:text="iBeacon UUID"
             android:textColor="@color/black_333333"
             android:textSize="15sp"
-            android:textStyle="bold"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@id/cb_ibeacon" />
 
@@ -120,10 +115,9 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="12dp"
             android:layout_marginTop="20dp"
-            android:text="BXP-iBeacon Major"
+            android:text="iBeacon Major"
             android:textColor="@color/black_333333"
             android:textSize="15sp"
-            android:textStyle="bold"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@id/et_ibeacon_uuid" />
 
@@ -132,13 +126,10 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
             android:gravity="center_vertical"
             android:orientation="horizontal"
             android:paddingLeft="12dp"
             android:paddingRight="12dp"
-            android:visibility="visible"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/ibeacon_major">
@@ -148,8 +139,7 @@
                 android:layout_height="wrap_content"
                 android:text="Min"
                 android:textColor="@color/black_333333"
-                android:textSize="15sp"
-                android:textStyle="bold" />
+                android:textSize="15sp" />
 
             <EditText
                 android:id="@+id/et_ibeacon_major_min"
@@ -170,8 +160,7 @@
                 android:layout_height="wrap_content"
                 android:text="~ Max"
                 android:textColor="@color/black_333333"
-                android:textSize="15sp"
-                android:textStyle="bold" />
+                android:textSize="15sp" />
 
             <EditText
                 android:id="@+id/et_ibeacon_major_max"
@@ -202,10 +191,9 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="12dp"
             android:layout_marginTop="20dp"
-            android:text="BXP-iBeacon Minor"
+            android:text="iBeacon Minor"
             android:textColor="@color/black_333333"
             android:textSize="15sp"
-            android:textStyle="bold"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@id/ll_ibeacon_major" />
 
@@ -214,13 +202,10 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
             android:gravity="center_vertical"
             android:orientation="horizontal"
             android:paddingLeft="12dp"
             android:paddingRight="12dp"
-            android:visibility="visible"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/ibeacon_minor">
@@ -230,8 +215,7 @@
                 android:layout_height="wrap_content"
                 android:text="Min"
                 android:textColor="@color/black_333333"
-                android:textSize="15sp"
-                android:textStyle="bold" />
+                android:textSize="15sp" />
 
             <EditText
                 android:id="@+id/et_ibeacon_minor_min"
@@ -252,8 +236,7 @@
                 android:layout_height="wrap_content"
                 android:text="~ Max"
                 android:textColor="@color/black_333333"
-                android:textSize="15sp"
-                android:textStyle="bold" />
+                android:textSize="15sp" />
 
             <EditText
                 android:id="@+id/et_ibeacon_minor_max"
@@ -267,7 +250,6 @@
                 android:textColor="@color/black_333333"
                 android:textColorHint="@color/grey_ebebeb"
                 android:textSize="15sp" />
-
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </LinearLayout>

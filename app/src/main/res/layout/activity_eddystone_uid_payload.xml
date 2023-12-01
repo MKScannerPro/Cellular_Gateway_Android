@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/grey_f2f2f2"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:background="@color/blue_2f84d0">
+
+        <TextView
+            android:id="@+id/tv_back"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:drawableLeft="@drawable/ps101_ic_back"
+            android:drawablePadding="6dp"
+            android:gravity="center_vertical"
+            android:paddingLeft="16dp"
+            android:textColor="@color/white_ffffff"
+            android:textSize="15sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="Eddystone-UID payload"
+            android:textColor="@color/white_ffffff"
+            android:textSize="17sp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/ivSave"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:src="@drawable/ps101_ic_save" />
+    </RelativeLayout>
+
+    <CheckBox
+        android:id="@+id/cbRssi"
+        style="@style/NormalCheckBox"
+        android:text="RSSI" />
+
+    <CheckBox
+        android:id="@+id/cbTimestamp"
+        style="@style/NormalCheckBox"
+        android:layout_marginTop="1dp"
+        android:text="Timestamp" />
+
+    <CheckBox
+        android:id="@+id/cbRssi0m"
+        style="@style/NormalCheckBox"
+        android:layout_marginTop="10dp"
+        android:text="RSSI@0m" />
+
+    <CheckBox
+        android:id="@+id/cbNamespace"
+        style="@style/NormalCheckBox"
+        android:layout_marginTop="1dp"
+        android:text="Namespace" />
+
+    <CheckBox
+        android:id="@+id/cbInstance"
+        style="@style/NormalCheckBox"
+        android:layout_marginTop="1dp"
+        android:text="Instance" />
+
+    <CheckBox
+        android:id="@+id/cbRawDataAdv"
+        style="@style/NormalCheckBox"
+        android:layout_marginTop="10dp"
+        android:text="Raw data- Advertising" />
+
+    <CheckBox
+        android:id="@+id/cbRawDataRes"
+        style="@style/NormalCheckBox"
+        android:layout_marginTop="1dp"
+        android:text="Raw data- Response" />
+</LinearLayout>

@@ -14,6 +14,7 @@ import com.moko.ble.lib.task.OrderTask;
 import com.moko.ps101m.R;
 import com.moko.ps101m.activity.DeviceInfoActivity;
 import com.moko.ps101m.activity.ScannerFilterSettingsActivity;
+import com.moko.ps101m.activity.payload.PayloadSettingsActivity;
 import com.moko.ps101m.activity.setting.ScanReportModeActivity;
 import com.moko.ps101m.databinding.FragmentScannerBinding;
 import com.moko.ps101m.dialog.BottomDialog;
@@ -72,6 +73,7 @@ public class ScannerFragment extends Fragment {
             }
         });
         mBind.tvScannerFilter.setOnClickListener(v -> startActivity(new Intent(requireActivity(), ScannerFilterSettingsActivity.class)));
+        mBind.tvUpPayload.setOnClickListener(v -> startActivity(new Intent(requireActivity(), PayloadSettingsActivity.class)));
     }
 
     public void setModeSwitch(int modeSwitch) {

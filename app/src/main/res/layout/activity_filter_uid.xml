@@ -27,7 +27,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="Eddystone-UID Filter"
+            android:text="Eddystone-UID"
             android:textColor="@color/white_ffffff"
             android:textSize="17sp"
             android:textStyle="bold" />
@@ -47,10 +47,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:background="@color/white_ffffff"
-        android:focusable="true"
-        android:focusableInTouchMode="true">
+        android:background="@color/white_ffffff">
 
         <CheckBox
             android:id="@+id/cb_uid"
@@ -64,7 +61,6 @@
             android:text="Eddystone-UID"
             android:textColor="@color/black_333333"
             android:textSize="15sp"
-            android:textStyle="bold"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -85,7 +81,6 @@
             android:text="Namespace ID"
             android:textColor="@color/black_333333"
             android:textSize="15sp"
-            android:textStyle="bold"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@id/cb_uid" />
 
@@ -123,7 +118,6 @@
             android:text="Instance ID"
             android:textColor="@color/black_333333"
             android:textSize="15sp"
-            android:textStyle="bold"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@id/et_uid_namespace" />
 

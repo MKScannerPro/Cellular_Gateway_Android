@@ -1,17 +1,21 @@
 package com.moko.ps101m.activity.filter;
 
 import android.os.Bundle;
-import android.text.InputFilter;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import com.moko.ble.lib.MokoConstants;
 import com.moko.ble.lib.event.ConnectStatusEvent;
 import com.moko.ble.lib.event.OrderTaskResponseEvent;
 import com.moko.ble.lib.task.OrderTask;
 import com.moko.ble.lib.task.OrderTaskResponse;
+import com.moko.ble.lib.utils.MokoUtils;
+import com.moko.ps101m.R;
 import com.moko.ps101m.activity.PS101BaseActivity;
-import com.moko.ps101m.databinding.ActivityFilterUrlBinding;
+import com.moko.ps101m.databinding.ActivityFilterMkTofBinding;
 import com.moko.ps101m.utils.ToastUtils;
 import com.moko.support.ps101m.MokoSupport;
 import com.moko.support.ps101m.OrderTaskAssembler;
@@ -25,29 +29,27 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 
-public class FilterUrlActivity extends PS101BaseActivity {
-    private final String FILTER_ASCII = "[ -~]*";
-    private ActivityFilterUrlBinding mBind;
+/**
+ * @author: jun.liu
+ * @date: 2023/11/30 14:19
+ * @des:
+ */
+public class FilterMkTofActivity extends PS101BaseActivity {
+    private ActivityFilterMkTofBinding mBind;
     private boolean savedParamsError;
+    private final List<String> filterTof = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mBind = ActivityFilterUrlBinding.inflate(getLayoutInflater());
+        mBind = ActivityFilterMkTofBinding.inflate(getLayoutInflater());
         setContentView(mBind.getRoot());
-        EventBus.getDefault().register(this);
-        InputFilter inputFilter = (source, start, end, dest, dstart, dend) -> {
-            if (!(source + "").matches(FILTER_ASCII)) {
-                return "";
-            }
-            return null;
-        };
-        mBind.etUrl.setFilters(new InputFilter[]{new InputFilter.LengthFilter(114), inputFilter});
-        showSyncingProgressDialog();
-        List<OrderTask> orderTasks = new ArrayList<>();
-        orderTasks.add(OrderTaskAssembler.getFilterEddystoneUrlEnable());
-        orderTasks.add(OrderTaskAssembler.getFilterEddystoneUrl());
+
+        List<OrderTask> orderTasks = new ArrayList<>(4);
+        orderTasks.add(OrderTaskAssembler.getFilterMkTofEnable());
+        orderTasks.add(OrderTaskAssembler.getFilterMkTofRules());
         MokoSupport.getInstance().sendOrder(orderTasks.toArray(new OrderTask[]{}));
     }
 
@@ -67,9 +69,6 @@ public class FilterUrlActivity extends PS101BaseActivity {
         if (!MokoConstants.ACTION_CURRENT_DATA.equals(action))
             EventBus.getDefault().cancelEventDelivery(event);
         runOnUiThread(() -> {
-            if (MokoConstants.ACTION_ORDER_TIMEOUT.equals(action)) {
-                dismissSyncProgressDialog();
-            }
             if (MokoConstants.ACTION_ORDER_FINISH.equals(action)) {
                 dismissSyncProgressDialog();
             }
@@ -89,32 +88,48 @@ public class FilterUrlActivity extends PS101BaseActivity {
                             // write
                             int result = value[4] & 0xFF;
                             switch (configKeyEnum) {
-                                case KEY_FILTER_EDDYSTONE_URL:
+                                case KEY_FILTER_MK_TOF_ENABLE:
                                     if (result != 1) {
                                         savedParamsError = true;
                                     }
                                     break;
-                                case KEY_FILTER_EDDYSTONE_URL_ENABLE:
+                                case KEY_FILTER_MK_TOF_RULES:
                                     if (result != 1) {
                                         savedParamsError = true;
                                     }
                                     ToastUtils.showToast(this, !savedParamsError ? "Setup succeed" : "Setup failed");
                                     break;
                             }
-                        }else if (flag == 0x00) {
+                        } else if (flag == 0x00) {
                             // read
                             switch (configKeyEnum) {
-                                case KEY_FILTER_EDDYSTONE_URL:
+                                case KEY_FILTER_OTHER_RULES:
                                     if (length > 0) {
-                                        String url = new String(Arrays.copyOfRange(value, 4, 4 + length));
-                                        mBind.etUrl.setText(url);
-                                        mBind.etUrl.setSelection(mBind.etUrl.getText().length());
+                                        filterTof.clear();
+                                        byte[] bytes = Arrays.copyOfRange(value, 4, 4 + length);
+                                        for (int i = 0, l = bytes.length; i < l; ) {
+                                            int idLength = bytes[i] & 0xFF;
+                                            i++;
+                                            filterTof.add(MokoUtils.bytesToHexString(Arrays.copyOfRange(bytes, i, i + idLength)));
+                                            i += idLength;
+                                        }
+                                        for (int i = 0, l = filterTof.size(); i < l; i++) {
+                                            String macAddress = filterTof.get(i);
+                                            View v = LayoutInflater.from(this).inflate(R.layout.item_mk_tof_filter, mBind.llMkTof, false);
+                                            TextView title = v.findViewById(R.id.tvTofTitle);
+                                            EditText etCode = v.findViewById(R.id.etCode);
+                                            title.setText(String.format(Locale.getDefault(), "Code %d", i + 1));
+                                            etCode.setText(macAddress);
+                                            etCode.setSelection(etCode.getText().length());
+                                            mBind.llMkTof.addView(v);
+                                        }
                                     }
                                     break;
-                                case KEY_FILTER_EDDYSTONE_URL_ENABLE:
+
+                                case KEY_FILTER_MK_TOF_ENABLE:
                                     if (length > 0) {
                                         int enable = value[4] & 0xFF;
-                                        mBind.cbUrl.setChecked(enable == 1);
+                                        mBind.cbEnable.setChecked(enable == 1);
                                     }
                                     break;
                             }
@@ -127,13 +142,61 @@ public class FilterUrlActivity extends PS101BaseActivity {
 
     public void onSave(View view) {
         if (isWindowLocked()) return;
-        showSyncingProgressDialog();
-        final String url = !TextUtils.isEmpty(mBind.etUrl.getText()) ? mBind.etUrl.getText().toString() : null;
+        if (isValid()) {
+            showSyncingProgressDialog();
+            saveParams();
+        } else {
+            ToastUtils.showToast(this, "Para error!");
+        }
+    }
+
+    private boolean isValid() {
+        final int c = mBind.llMkTof.getChildCount();
+        filterTof.clear();
+        if (c > 0) {
+            for (int i = 0; i < c; i++) {
+                View v = mBind.llMkTof.getChildAt(i);
+                EditText etCode = v.findViewById(R.id.etCode);
+                final String macAddress = etCode.getText().toString();
+                if (TextUtils.isEmpty(macAddress)) return false;
+                int length = macAddress.length();
+                if (length != 4) return false;
+                filterTof.add(macAddress);
+            }
+        }
+        return true;
+    }
+
+    private void saveParams() {
         savedParamsError = false;
-        List<OrderTask> orderTasks = new ArrayList<>();
-        orderTasks.add(OrderTaskAssembler.setFilterEddystoneUrl(url));
-        orderTasks.add(OrderTaskAssembler.setFilterEddystoneUrlEnable(mBind.cbUrl.isChecked() ? 1 : 0));
+        List<OrderTask> orderTasks = new ArrayList<>(4);
+        orderTasks.add(OrderTaskAssembler.setFilterOtherEnable(mBind.cbEnable.isChecked() ? 1 : 0));
+        orderTasks.add(OrderTaskAssembler.setFilterMkTofRules(filterTof));
         MokoSupport.getInstance().sendOrder(orderTasks.toArray(new OrderTask[]{}));
+    }
+
+    public void onAdd(View view) {
+        if (isWindowLocked()) return;
+        int count = mBind.llMkTof.getChildCount();
+        if (count > 9) {
+            ToastUtils.showToast(this, "You can set up to 10 filters!");
+            return;
+        }
+        View v = LayoutInflater.from(this).inflate(R.layout.item_mk_tof_filter, mBind.llMkTof, false);
+        TextView title = v.findViewById(R.id.tvTofTitle);
+        title.setText(String.format(Locale.getDefault(), "Code %d", count + 1));
+        mBind.llMkTof.addView(v);
+    }
+
+    public void onDel(View view) {
+        if (isWindowLocked()) return;
+        final int c = mBind.llMkTof.getChildCount();
+        if (c == 0) {
+            ToastUtils.showToast(this, "There are currently no filters to delete");
+            return;
+        }
+        int count = mBind.llMkTof.getChildCount();
+        if (count > 0) mBind.llMkTof.removeViewAt(count - 1);
     }
 
     @Override

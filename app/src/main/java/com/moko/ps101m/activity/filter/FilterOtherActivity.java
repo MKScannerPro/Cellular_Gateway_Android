@@ -15,7 +15,7 @@ import com.moko.ble.lib.task.OrderTaskResponse;
 import com.moko.ble.lib.utils.MokoUtils;
 import com.moko.ps101m.R;
 import com.moko.ps101m.activity.PS101BaseActivity;
-import com.moko.ps101m.databinding.Ps101mActivityFilterOtherBinding;
+import com.moko.ps101m.databinding.ActivityFilterOtherBinding;
 import com.moko.ps101m.dialog.BottomDialog;
 import com.moko.ps101m.utils.ToastUtils;
 import com.moko.support.ps101m.MokoSupport;
@@ -32,7 +32,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class FilterOtherActivity extends PS101BaseActivity {
-    private Ps101mActivityFilterOtherBinding mBind;
+    private ActivityFilterOtherBinding mBind;
     private boolean savedParamsError;
     private ArrayList<String> filterOther = new ArrayList<>();
     private ArrayList<String> mValues;
@@ -41,11 +41,11 @@ public class FilterOtherActivity extends PS101BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mBind = Ps101mActivityFilterOtherBinding.inflate(getLayoutInflater());
+        mBind = ActivityFilterOtherBinding.inflate(getLayoutInflater());
         setContentView(mBind.getRoot());
         EventBus.getDefault().register(this);
         showSyncingProgressDialog();
-        List<OrderTask> orderTasks = new ArrayList<>();
+        List<OrderTask> orderTasks = new ArrayList<>(4);
         orderTasks.add(OrderTaskAssembler.getFilterOtherEnable());
         orderTasks.add(OrderTaskAssembler.getFilterOtherRelationship());
         orderTasks.add(OrderTaskAssembler.getFilterOtherRules());
@@ -80,9 +80,8 @@ public class FilterOtherActivity extends PS101BaseActivity {
                         int header = value[0] & 0xFF;// 0xED
                         int flag = value[1] & 0xFF;// read or write
                         int cmd = value[2] & 0xFF;
-                        if (header != 0xED) return;
                         ParamsKeyEnum configKeyEnum = ParamsKeyEnum.fromParamKey(cmd);
-                        if (configKeyEnum == null) return;
+                        if (header != 0xED || configKeyEnum == null) return;
                         int length = value[3] & 0xFF;
                         if (flag == 0x01) {
                             // write
@@ -98,15 +97,10 @@ public class FilterOtherActivity extends PS101BaseActivity {
                                     if (result != 1) {
                                         savedParamsError = true;
                                     }
-                                    if (savedParamsError) {
-                                        ToastUtils.showToast(FilterOtherActivity.this, "Opps！Save failed. Please check the input characters and try again.");
-                                    } else {
-                                        ToastUtils.showToast(this, "Save Successfully！");
-                                    }
+                                    ToastUtils.showToast(this, !savedParamsError ? "Setup succeed" : "Setup failed");
                                     break;
                             }
-                        }
-                        if (flag == 0x00) {
+                        } else if (flag == 0x00) {
                             // read
                             switch (configKeyEnum) {
                                 case KEY_FILTER_OTHER_RELATIONSHIP:
@@ -143,7 +137,7 @@ public class FilterOtherActivity extends PS101BaseActivity {
                                         }
                                         for (int i = 0, l = filterOther.size(); i < l; i++) {
                                             String other = filterOther.get(i);
-                                            View v = LayoutInflater.from(this).inflate(R.layout.ps101m_item_other_filter, mBind.llFilterCondition, false);
+                                            View v = LayoutInflater.from(this).inflate(R.layout.item_other_filter, mBind.llFilterCondition, false);
                                             TextView tvCondition = v.findViewById(R.id.tv_condition);
                                             EditText etDataType = v.findViewById(R.id.et_data_type);
                                             EditText etMin = v.findViewById(R.id.et_min);
@@ -239,12 +233,11 @@ public class FilterOtherActivity extends PS101BaseActivity {
                     etMin.setText("0");
                     etMax.setText("0");
                 }
-                StringBuilder sb = new StringBuilder();
-                sb.append(MokoUtils.int2HexString(dataType));
-                sb.append(MokoUtils.int2HexString(min));
-                sb.append(MokoUtils.int2HexString(max));
-                sb.append(rawDataStr);
-                filterOther.add(sb.toString());
+                String sb = MokoUtils.int2HexString(dataType) +
+                        MokoUtils.int2HexString(min) +
+                        MokoUtils.int2HexString(max) +
+                        rawDataStr;
+                filterOther.add(sb);
             }
         } else {
             filterOther = new ArrayList<>();
@@ -275,7 +268,7 @@ public class FilterOtherActivity extends PS101BaseActivity {
             ToastUtils.showToast(this, "You can set up to 3 filters!");
             return;
         }
-        View v = LayoutInflater.from(this).inflate(R.layout.ps101m_item_other_filter, mBind.llFilterCondition, false);
+        View v = LayoutInflater.from(this).inflate(R.layout.item_other_filter, mBind.llFilterCondition, false);
         TextView tvCondition = v.findViewById(R.id.tv_condition);
         if (count == 0) {
             tvCondition.setText("Condition A");

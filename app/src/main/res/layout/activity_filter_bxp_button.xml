@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/grey_f2f2f2"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:background="@color/blue_2f84d0">
+
+        <TextView
+            android:id="@+id/tv_back"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:drawableStart="@drawable/ps101_ic_back"
+            android:drawablePadding="6dp"
+            android:gravity="center_vertical"
+            android:onClick="onBack"
+            android:paddingStart="16dp"
+            android:textColor="@color/white_ffffff"
+            android:textSize="15sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="BXP-Button Filter"
+            android:textColor="@color/white_ffffff"
+            android:textSize="17sp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/iv_save"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
+            android:onClick="onSave"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:src="@drawable/ps101_ic_save" />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white_ffffff"
+        android:orientation="vertical"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp">
+
+        <CheckBox
+            android:id="@+id/cb_enable"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:button="@null"
+            android:checked="false"
+            android:drawableEnd="@drawable/selector_cb_btn"
+            android:text="BXP-Button"
+            android:textColor="@color/black_333333"
+            android:textSize="15sp" />
+
+        <View style="@style/divider_line" />
+
+        <CheckBox
+            android:id="@+id/cb_single_press"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:button="@null"
+            android:checked="false"
+            android:drawableEnd="@drawable/selector_cb_btn"
+            android:text="Single press mode"
+            android:textColor="@color/black_333333"
+            android:textSize="15sp" />
+
+        <View style="@style/divider_line" />
+
+        <CheckBox
+            android:id="@+id/cb_double_press"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:button="@null"
+            android:checked="false"
+            android:drawableEnd="@drawable/selector_cb_btn"
+            android:text="Double press mode"
+            android:textColor="@color/black_333333"
+            android:textSize="15sp" />
+
+        <View style="@style/divider_line" />
+
+        <CheckBox
+            android:id="@+id/cb_long_press"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:button="@null"
+            android:checked="false"
+            android:drawableEnd="@drawable/selector_cb_btn"
+            android:text="Long press mode"
+            android:textColor="@color/black_333333"
+            android:textSize="15sp" />
+
+        <View style="@style/divider_line" />
+
+        <CheckBox
+            android:id="@+id/cb_abnormal_inactivity"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:button="@null"
+            android:checked="false"
+            android:drawableEnd="@drawable/selector_cb_btn"
+            android:text="Abnormal inactivity mode"
+            android:textColor="@color/black_333333"
+            android:textSize="15sp" />
+    </LinearLayout>
+</LinearLayout>

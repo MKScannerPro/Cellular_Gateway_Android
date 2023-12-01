@@ -5,26 +5,25 @@
     android:layout_height="wrap_content"
     android:paddingBottom="12dp">
 
-
     <TextView
-        android:id="@+id/tv_tag_id_title"
+        android:id="@+id/tvTofTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Tag ID 1"
+        android:text="Code 1"
         android:textColor="@color/black_333333"
         android:textSize="15sp"
-        app:layout_constraintBottom_toBottomOf="@id/et_tag_id"
+        app:layout_constraintBottom_toBottomOf="@id/etCode"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="@id/et_tag_id" />
+        app:layout_constraintTop_toTopOf="@id/etCode" />
 
 
     <EditText
-        android:id="@+id/et_tag_id"
+        android:id="@+id/etCode"
         android:layout_width="0dp"
         android:layout_height="40dp"
         android:digits="0123456789abcdefABCDEF"
-        android:hint="1-6 Bytes"
-        android:maxLength="12"
+        android:hint="2 Bytes"
+        android:maxLength="4"
         android:paddingLeft="5dp"
         android:paddingRight="5dp"
         android:textColor="@color/black_333333"

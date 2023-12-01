@@ -24,7 +24,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="MK-PIR Filter"
+            android:text="PIR Presence"
             android:textColor="@color/white_ffffff"
             android:textSize="17sp" />
 
@@ -41,7 +41,6 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
         android:background="@color/white_ffffff"
         android:paddingStart="10dp"
         android:paddingEnd="10dp">
@@ -52,11 +51,10 @@
             android:layout_height="50dp"
             android:button="@null"
             android:checked="false"
-            android:drawableRight="@drawable/selector_cb_btn"
-            android:text="MK-PIR"
+            android:drawableEnd="@drawable/selector_cb_btn"
+            android:text="PIR Presence"
             android:textColor="@color/black_333333"
             android:textSize="15sp"
-            android:textStyle="bold"
             app:layout_constraintTop_toTopOf="parent" />
 
         <View
@@ -74,7 +72,6 @@
             android:text="Delay Response Status"
             android:textColor="@color/black_333333"
             android:textSize="15sp"
-            android:textStyle="bold"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/line1" />
 
@@ -109,7 +106,6 @@
             android:text="Door Open/Close Status"
             android:textColor="@color/black_333333"
             android:textSize="15sp"
-            android:textStyle="bold"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/line2" />
 
@@ -144,7 +140,6 @@
             android:text="Sensor Sensitivity"
             android:textColor="@color/black_333333"
             android:textSize="15sp"
-            android:textStyle="bold"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/line3" />
 
@@ -179,7 +174,6 @@
             android:text="Detection Status"
             android:textColor="@color/black_333333"
             android:textSize="15sp"
-            android:textStyle="bold"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/line4" />
 
@@ -211,10 +205,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
-            android:text="MK-PIR Major"
+            android:text="Major"
             android:textColor="@color/black_333333"
             android:textSize="15sp"
-            android:textStyle="bold"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/line5" />
 
@@ -231,8 +224,7 @@
                 android:layout_height="wrap_content"
                 android:text="Min"
                 android:textColor="@color/black_333333"
-                android:textSize="15sp"
-                android:textStyle="bold" />
+                android:textSize="15sp" />
 
             <EditText
                 android:id="@+id/etMajorMin"
@@ -255,8 +247,7 @@
                 android:layout_height="wrap_content"
                 android:text="~ Max"
                 android:textColor="@color/black_333333"
-                android:textSize="15sp"
-                android:textStyle="bold" />
+                android:textSize="15sp" />
 
             <EditText
                 android:id="@+id/etMajorMax"
@@ -287,10 +278,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
-            android:text="MK-PIR Minor"
+            android:text="Minor"
             android:textColor="@color/black_333333"
             android:textSize="15sp"
-            android:textStyle="bold"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/line6" />
 
@@ -307,8 +297,7 @@
                 android:layout_height="wrap_content"
                 android:text="Min"
                 android:textColor="@color/black_333333"
-                android:textSize="15sp"
-                android:textStyle="bold" />
+                android:textSize="15sp" />
 
             <EditText
                 android:id="@+id/etMinorMin"
@@ -331,8 +320,7 @@
                 android:layout_height="wrap_content"
                 android:text="~ Max"
                 android:textColor="@color/black_333333"
-                android:textSize="15sp"
-                android:textStyle="bold" />
+                android:textSize="15sp" />
 
             <EditText
                 android:id="@+id/etMinorMax"

@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/grey_f2f2f2"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:background="@color/blue_2f84d0">
+
+        <TextView
+            android:id="@+id/tv_back"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:drawableLeft="@drawable/ps101_ic_back"
+            android:drawablePadding="6dp"
+            android:gravity="center_vertical"
+            android:paddingLeft="16dp"
+            android:textColor="@color/white_ffffff"
+            android:textSize="15sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="Payload items settings"
+            android:textColor="@color/white_ffffff"
+            android:textSize="17sp"
+            android:textStyle="bold" />
+    </RelativeLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvIBeaconPayload"
+                style="@style/NormalText"
+                android:text="iBeacon" />
+
+            <TextView
+                android:id="@+id/tvUidPayload"
+                style="@style/NormalText"
+                android:layout_marginTop="1dp"
+                android:text="Eddystone-UID" />
+
+            <TextView
+                android:id="@+id/tvUrlPayload"
+                style="@style/NormalText"
+                android:layout_marginTop="1dp"
+                android:text="Eddystone-URL" />
+
+            <TextView
+                android:id="@+id/tvTlmPayload"
+                style="@style/NormalText"
+                android:layout_marginTop="1dp"
+                android:text="Eddystone-TLM" />
+
+            <TextView
+                android:id="@+id/tvDeviceInfoPayload"
+                style="@style/NormalText"
+                android:layout_marginTop="1dp"
+                android:text="BXP- Device info" />
+
+            <TextView
+                android:id="@+id/tvAccPayload"
+                style="@style/NormalText"
+                android:layout_marginTop="1dp"
+                android:text="BXP – ACC" />
+
+            <TextView
+                android:id="@+id/tvThPayload"
+                style="@style/NormalText"
+                android:layout_marginTop="1dp"
+                android:text="BXP - T&amp;H" />
+
+            <TextView
+                android:id="@+id/tvBxpButtonPayload"
+                style="@style/NormalText"
+                android:layout_marginTop="1dp"
+                android:text="BXP- Button" />
+
+            <TextView
+                android:id="@+id/tvBxpTagPayload"
+                style="@style/NormalText"
+                android:layout_marginTop="1dp"
+                android:text="BXP - Tag" />
+
+            <TextView
+                android:id="@+id/tvPirPayload"
+                style="@style/NormalText"
+                android:layout_marginTop="1dp"
+                android:text="PIR Presence" />
+
+            <TextView
+                android:id="@+id/tvTofPayload"
+                style="@style/NormalText"
+                android:layout_marginTop="1dp"
+                android:text="MK TOF" />
+
+            <TextView
+                android:id="@+id/tvOtherPayload"
+                style="@style/NormalText"
+                android:layout_marginTop="1dp"
+                android:text="Other type" />
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</LinearLayout>
