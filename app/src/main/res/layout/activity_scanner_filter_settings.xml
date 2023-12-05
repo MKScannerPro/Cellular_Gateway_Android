@@ -96,7 +96,6 @@
             android:text="-127dBm"
             android:textColor="@color/black_333333"
             android:textSize="15sp"
-
             app:layout_constraintBottom_toBottomOf="@id/sb_rssi_filter"
             app:layout_constraintLeft_toRightOf="@id/sb_rssi_filter"
             app:layout_constraintRight_toRightOf="parent"

@@ -1,0 +1,404 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/grey_f2f2f2"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:background="@color/blue_2f84d0">
+
+        <TextView
+            android:id="@+id/tv_back"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:drawableLeft="@drawable/ps101_ic_back"
+            android:drawablePadding="6dp"
+            android:gravity="center_vertical"
+            android:onClick="onBack"
+            android:paddingLeft="16dp"
+            android:textColor="@color/white_ffffff"
+            android:textSize="15sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="Bluetooth parameters"
+            android:textColor="@color/white_ffffff"
+            android:textSize="17sp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:onClick="onSave"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:src="@drawable/ps101_ic_save" />
+    </RelativeLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:gravity="center_vertical"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
+                android:text="Advertisement"
+                android:textColor="@color/black_333333"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white_ffffff"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp">
+
+                <TextView
+                    android:id="@+id/tvAdvName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="ADV name"
+                    android:textColor="@color/black_333333"
+                    android:textSize="15sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/etAdvName"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/etAdvName" />
+
+                <EditText
+                    android:id="@+id/etAdvName"
+                    android:layout_width="0px"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginTop="12dp"
+                    android:background="@drawable/shape_radius_edit_bg"
+                    android:hint="1-10 characters"
+                    android:maxLength="10"
+                    android:paddingStart="5dp"
+                    android:textColor="@color/black_333333"
+                    android:textSize="15sp"
+                    app:layout_constraintLeft_toRightOf="@+id/tvAdvName"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <EditText
+                    android:id="@+id/etAdvInterval"
+                    android:layout_width="0px"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginRight="12dp"
+                    android:background="@drawable/shape_radius_edit_bg"
+                    android:hint="1-100"
+                    android:inputType="number"
+                    android:maxLength="3"
+                    android:paddingStart="5dp"
+                    android:textColor="@color/black_333333"
+                    android:textSize="15sp"
+                    app:layout_constraintLeft_toLeftOf="@+id/etAdvName"
+                    app:layout_constraintRight_toLeftOf="@+id/tvAdvIntervalUnit"
+                    app:layout_constraintTop_toBottomOf="@+id/etAdvName" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="ADV interval"
+                    android:textColor="@color/black_333333"
+                    android:textSize="15sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/etAdvInterval"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/etAdvInterval" />
+
+                <TextView
+                    android:id="@+id/tvAdvIntervalUnit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="x 100ms"
+                    android:textColor="@color/black_333333"
+                    android:textSize="15sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/etAdvInterval"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/etAdvInterval" />
+
+                <EditText
+                    android:id="@+id/etAdvTimeout"
+                    android:layout_width="0px"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginRight="12dp"
+                    android:background="@drawable/shape_radius_edit_bg"
+                    android:hint="0-60"
+                    android:inputType="number"
+                    android:maxLength="2"
+                    android:paddingStart="5dp"
+                    android:textColor="@color/black_333333"
+                    android:textSize="15sp"
+                    app:layout_constraintLeft_toLeftOf="@+id/etAdvInterval"
+                    app:layout_constraintRight_toLeftOf="@+id/tvAdvTimeoutUnit"
+                    app:layout_constraintTop_toBottomOf="@+id/etAdvInterval" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="ADV timeout"
+                    android:textColor="@color/black_333333"
+                    android:textSize="15sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/etAdvTimeout"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/etAdvTimeout" />
+
+                <TextView
+                    android:id="@+id/tvAdvTimeoutUnit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="minute"
+                    android:textColor="@color/black_333333"
+                    android:textSize="15sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/etAdvTimeout"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/etAdvTimeout" />
+
+                <CheckBox
+                    android:id="@+id/cbAdvResponse"
+                    style="@style/NormalCheckBox"
+                    android:layout_marginTop="10dp"
+                    android:paddingStart="0px"
+                    android:paddingEnd="0px"
+                    android:text="Advertise response packet"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/etAdvTimeout" />
+
+                <EditText
+                    android:id="@+id/etMajor"
+                    android:layout_width="0px"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="25dp"
+                    android:layout_marginTop="12dp"
+                    android:background="@drawable/shape_radius_edit_bg"
+                    android:hint="0-65535"
+                    android:inputType="number"
+                    android:maxLength="5"
+                    android:paddingStart="5dp"
+                    android:textColor="@color/black_333333"
+                    android:textSize="15sp"
+                    app:layout_constraintLeft_toRightOf="@+id/tvMajor"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/cbAdvResponse" />
+
+                <TextView
+                    android:id="@+id/tvMajor"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Major"
+                    android:textColor="@color/black_333333"
+                    android:textSize="15sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/etMajor"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/etMajor" />
+
+                <EditText
+                    android:id="@+id/etMinor"
+                    android:layout_width="0px"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="12dp"
+                    android:background="@drawable/shape_radius_edit_bg"
+                    android:hint="0-65535"
+                    android:inputType="number"
+                    android:maxLength="5"
+                    android:paddingStart="5dp"
+                    android:textColor="@color/black_333333"
+                    android:textSize="15sp"
+                    app:layout_constraintLeft_toLeftOf="@+id/etMajor"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/etMajor" />
+
+                <TextView
+                    android:id="@+id/tvMinor"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Minor"
+                    android:textColor="@color/black_333333"
+                    android:textSize="15sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/etMinor"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/etMinor" />
+
+                <EditText
+                    android:id="@+id/etUUid"
+                    android:layout_width="0px"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="12dp"
+                    android:background="@drawable/shape_radius_edit_bg"
+                    android:digits="0123456789abcdefABCDEF"
+                    android:hint="16 Bytes"
+                    android:maxLength="32"
+                    android:paddingStart="5dp"
+                    android:textColor="@color/black_333333"
+                    android:textSize="15sp"
+                    app:layout_constraintLeft_toLeftOf="@+id/etMinor"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/etMinor" />
+
+                <TextView
+                    android:id="@+id/tvUuid"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="UUID"
+                    android:textColor="@color/black_333333"
+                    android:textSize="15sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/etUUid"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/etUUid" />
+
+                <androidx.constraintlayout.widget.Group
+                    android:id="@+id/group"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    app:constraint_referenced_ids="etMajor,etMinor,etUUid,tvMajor,tvMinor,tvUuid,tvRssi,sb_rssi,tv_rssi_value" />
+
+                <TextView
+                    android:id="@+id/tvRssi"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="12dp"
+                    android:gravity="center_vertical"
+                    android:text="RSSI@1m （-100dBm~0dBm）"
+                    android:textColor="@color/black_333333"
+                    android:textSize="15sp"
+                    app:layout_constraintTop_toBottomOf="@+id/etUUid" />
+
+                <SeekBar
+                    android:id="@+id/sb_rssi"
+                    style="@style/CustomSeekbarStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:max="100"
+                    android:maxHeight="2dp"
+                    android:minHeight="2dp"
+                    android:paddingStart="0dp"
+                    android:paddingEnd="0dp"
+                    android:progress="0"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toLeftOf="@+id/tv_rssi_value"
+                    app:layout_constraintTop_toBottomOf="@+id/tvRssi" />
+
+                <TextView
+                    android:id="@+id/tv_rssi_value"
+                    android:layout_width="70dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="end"
+                    android:text="-100dBm"
+                    android:textColor="@color/black_333333"
+                    android:textSize="15sp"
+                    app:layout_constraintBottom_toBottomOf="@id/sb_rssi"
+                    app:layout_constraintLeft_toRightOf="@id/sb_rssi"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/sb_rssi" />
+
+                <TextView
+                    android:id="@+id/tvTxPower"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="12dp"
+                    android:gravity="center_vertical"
+                    android:text="Tx power (-40,-20,-16,-12,-8,-4,0,2,3,4,5,6,7,8）"
+                    android:textColor="@color/black_333333"
+                    android:textSize="15sp"
+                    app:layout_constraintTop_toBottomOf="@+id/sb_rssi" />
+
+                <SeekBar
+                    android:id="@+id/sbTxPower"
+                    style="@style/CustomSeekbarStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:max="13"
+                    android:maxHeight="2dp"
+                    android:minHeight="2dp"
+                    android:paddingStart="0dp"
+                    android:paddingEnd="0dp"
+                    android:progress="0"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toLeftOf="@+id/tvTxPowerValue"
+                    app:layout_constraintTop_toBottomOf="@+id/tvTxPower" />
+
+                <TextView
+                    android:id="@+id/tvTxPowerValue"
+                    android:layout_width="70dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="end"
+                    android:text="0dBm"
+                    android:textColor="@color/black_333333"
+                    android:textSize="15sp"
+                    app:layout_constraintBottom_toBottomOf="@id/sbTxPower"
+                    app:layout_constraintLeft_toRightOf="@id/sbTxPower"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/sbTxPower" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:gravity="center_vertical"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
+                android:text="Connection"
+                android:textColor="@color/black_333333"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+            <CheckBox
+                android:id="@+id/cbPwdVerify"
+                style="@style/NormalCheckBox"
+                android:checked="true"
+                android:text="Password verification" />
+
+            <LinearLayout
+                android:id="@+id/layoutPwd"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white_ffffff"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
+                android:paddingBottom="15dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:text="Connection password"
+                    android:textColor="@color/black_333333"
+                    android:textSize="15sp" />
+
+                <EditText
+                    android:id="@+id/etPwd"
+                    android:layout_width="0px"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/shape_radius_edit_bg"
+                    android:hint="6-10 characters"
+                    android:maxLength="10"
+                    android:paddingStart="5dp"
+                    android:textColor="@color/black_333333"
+                    android:textSize="15sp" />
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</LinearLayout>

@@ -63,69 +63,12 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="@id/tv_name" />
 
-    <LinearLayout
-        android:id="@+id/ll_battery"
-        android:layout_width="50dp"
+    <include
+        android:id="@+id/layoutIBeacon"
+        layout="@layout/adv_ibeacon"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="13dp"
-        android:gravity="center_horizontal"
-        android:orientation="vertical"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_rssi">
-
-        <ImageView
-            android:id="@+id/iv_battery"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_battery"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_rssi" />
-
-        <TextView
-            android:id="@+id/tv_battery_percent"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:text="N/A"
-            android:textColor="@color/grey_666666"
-            android:textSize="10sp"
-            tools:text="50%" />
-    </LinearLayout>
-
-    <TextView
-        android:id="@+id/tv_tx_power"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:text="Tx Power:N/A"
-        android:textColor="@color/grey_666666"
-        android:textSize="12sp"
-        app:layout_constraintBottom_toBottomOf="@id/ll_battery"
-        app:layout_constraintLeft_toRightOf="@+id/ll_battery"
-        app:layout_constraintTop_toTopOf="@id/ll_battery" />
-
-    <TextView
-        android:id="@+id/tvBattery"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="@+id/tv_tx_power"
-        app:layout_constraintLeft_toRightOf="@+id/tv_tx_power"
-        app:layout_constraintTop_toTopOf="@+id/tv_tx_power"
-        android:layout_marginLeft="30dp"
-        android:textColor="@color/grey_666666"
-        android:textSize="12sp"
-        tools:text="1.324V" />
-
-    <TextView
-        android:id="@+id/tv_track_interval"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:textColor="@color/grey_666666"
-        android:textSize="10sp"
-        android:paddingRight="10dp"
-        app:layout_constraintBottom_toBottomOf="@id/ll_battery"
-        app:layout_constraintRight_toRightOf="@id/tv_connect"
-        app:layout_constraintTop_toTopOf="@id/ll_battery"
-        tools:text="568ms" />
+        android:layout_marginTop="15dp"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@+id/tv_mac" />
 </androidx.constraintlayout.widget.ConstraintLayout>

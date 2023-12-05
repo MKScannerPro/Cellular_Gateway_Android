@@ -27,7 +27,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="3-Axis Data Report"
+            android:text="Battery management"
             android:textColor="@color/white_ffffff"
             android:textSize="17sp"
             android:textStyle="bold" />
@@ -42,11 +42,17 @@
             android:src="@drawable/ps101_ic_save" />
     </RelativeLayout>
 
+    <CheckBox
+        android:id="@+id/cbLowPowerNotify"
+        style="@style/NormalCheckBox"
+        android:checked="true"
+        android:background="@color/grey_f2f2f2"
+        android:text="Low power notification" />
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_margin="12dp"
-        android:background="@color/white_ffffff"
+        android:layout_height="55dp"
+        android:gravity="center_vertical"
         android:orientation="horizontal"
         android:paddingStart="12dp"
         android:paddingEnd="12dp">
@@ -56,31 +62,18 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center_vertical"
-            android:text="3-Axis Data Report Interval"
+            android:text="Low power threshold"
             android:textColor="@color/black_333333"
-            android:textSize="15sp"
-            android:textStyle="bold" />
-
-        <EditText
-            android:id="@+id/etInterval"
-            android:layout_width="100dp"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:hint="0~65535"
-            android:inputType="number"
-            android:maxLength="5"
-            android:textColor="@color/black_333333"
-            android:textColorHint="@color/grey_999999"
             android:textSize="15sp" />
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="12dp"
-            android:gravity="center_vertical"
-            android:text="s"
-            android:textColor="@color/black_333333"
-            android:textSize="15sp"
-            android:textStyle="bold" />
+            android:id="@+id/tvLowPowerPercent"
+            android:layout_width="80dp"
+            android:layout_height="40dp"
+            android:background="@drawable/shape_radius_blue_btn_bg"
+            android:gravity="center"
+            android:text="10%"
+            android:textColor="@color/white_ffffff"
+            android:textSize="15sp" />
     </LinearLayout>
 </LinearLayout>

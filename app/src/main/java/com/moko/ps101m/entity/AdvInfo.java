@@ -4,11 +4,12 @@ public class AdvInfo {
     public String name;
     public int rssi;
     public String mac;
-    public int powerPercent;
     public long scanTime;
     public long intervalTime;
-    public int txPower;
+    public String uuid;
+    public String major;
+    public String minor;
+    public String rssi1M;
     public boolean verifyEnable;
     public boolean connectable;
-    public int batteryVoltage;
 }

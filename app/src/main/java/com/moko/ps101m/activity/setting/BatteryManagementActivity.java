@@ -14,7 +14,7 @@ import com.moko.ble.lib.event.OrderTaskResponseEvent;
 import com.moko.ble.lib.task.OrderTask;
 import com.moko.ble.lib.task.OrderTaskResponse;
 import com.moko.ps101m.activity.PS101BaseActivity;
-import com.moko.ps101m.databinding.Ps101mActivityAlartAlermSettingBinding;
+import com.moko.ps101m.databinding.ActivityBatteryManagementBinding;
 import com.moko.ps101m.dialog.BottomDialog;
 import com.moko.ps101m.utils.ToastUtils;
 import com.moko.support.ps101m.MokoSupport;
@@ -30,24 +30,17 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-/**
- * @author: jun.liu
- * @date: 2023/6/8 15:14
- * @des:
- */
-public class AlertAlarmSettingActivity extends PS101BaseActivity {
-    private Ps101mActivityAlartAlermSettingBinding mBind;
-    private boolean mReceiverTag;
-    private final String[] mValues = {"WIFI", "BLE", "GPS", "WIFI+GPS", "BLE+GPS", "WIFI+BLE", "WIFI+BLE+GPS"};
-    private final String[] triggerMode = {"Single Click", "Double Click", "Long Press 1s", "Long Press 2s", "Long Press 3s"};
-    private int mSelectedPos;
-    private int mSelectedMode;
-    private int modeFlag, posFlag;
+public class BatteryManagementActivity extends PS101BaseActivity {
+    private ActivityBatteryManagementBinding mBind;
+    private boolean mReceiverTag = false;
+    private final String[] mValues = {"10%", "20%", "30%", "40%", "50%"};
+    private int mSelected;
+    private boolean saveParamError;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mBind = Ps101mActivityAlartAlermSettingBinding.inflate(getLayoutInflater());
+        mBind = ActivityBatteryManagementBinding.inflate(getLayoutInflater());
         setContentView(mBind.getRoot());
         EventBus.getDefault().register(this);
         // 注册广播接收器
@@ -56,36 +49,24 @@ public class AlertAlarmSettingActivity extends PS101BaseActivity {
         registerReceiver(mReceiver, filter);
         mReceiverTag = true;
         showSyncingProgressDialog();
-        List<OrderTask> orderTasks = new ArrayList<>(4);
-        orderTasks.add(OrderTaskAssembler.getAlarmAlertTriggerType());
-        orderTasks.add(OrderTaskAssembler.getAlarmAlertPosStrategy());
-        orderTasks.add(OrderTaskAssembler.getAlarmAlertNotifyEnable());
+        List<OrderTask> orderTasks = new ArrayList<>(2);
+        orderTasks.add(OrderTaskAssembler.getLowPowerNotifyEnable());
+        orderTasks.add(OrderTaskAssembler.getLowPowerPercent());
         MokoSupport.getInstance().sendOrder(orderTasks.toArray(new OrderTask[]{}));
 
-        mBind.tvTriggerMode.setOnClickListener(v -> {
+        mBind.tvLowPowerPercent.setOnClickListener(v -> {
             if (isWindowLocked()) return;
             BottomDialog dialog = new BottomDialog();
-            dialog.setDatas(new ArrayList<>(Arrays.asList(triggerMode)), mSelectedMode);
+            dialog.setDatas(new ArrayList<>(Arrays.asList(mValues)), mSelected);
             dialog.setListener(value -> {
-                mSelectedMode = value;
-                mBind.tvTriggerMode.setText(triggerMode[value]);
-            });
-            dialog.show(getSupportFragmentManager());
-        });
-
-        mBind.tvPosStrategy.setOnClickListener(v -> {
-            if (isWindowLocked()) return;
-            BottomDialog dialog = new BottomDialog();
-            dialog.setDatas(new ArrayList<>(Arrays.asList(mValues)), mSelectedPos);
-            dialog.setListener(value -> {
-                mSelectedPos = value;
-                mBind.tvPosStrategy.setText(mValues[value]);
+                mSelected = value;
+                mBind.tvLowPowerPercent.setText(mValues[value]);
             });
             dialog.show(getSupportFragmentManager());
         });
     }
 
-    @Subscribe(threadMode = ThreadMode.POSTING, priority = 400)
+    @Subscribe(threadMode = ThreadMode.POSTING, priority = 200)
     public void onConnectStatusEvent(ConnectStatusEvent event) {
         final String action = event.getAction();
         runOnUiThread(() -> {
@@ -95,7 +76,7 @@ public class AlertAlarmSettingActivity extends PS101BaseActivity {
         });
     }
 
-    @Subscribe(threadMode = ThreadMode.POSTING, priority = 400)
+    @Subscribe(threadMode = ThreadMode.POSTING, priority = 200)
     public void onOrderTaskResponseEvent(OrderTaskResponseEvent event) {
         final String action = event.getAction();
         if (!MokoConstants.ACTION_CURRENT_DATA.equals(action))
@@ -109,55 +90,39 @@ public class AlertAlarmSettingActivity extends PS101BaseActivity {
                 OrderCHAR orderCHAR = (OrderCHAR) response.orderCHAR;
                 byte[] value = response.responseValue;
                 if (orderCHAR == OrderCHAR.CHAR_PARAMS) {
-                    if (null != value && value.length >= 4) {
+                    if (value.length >= 4) {
                         int header = value[0] & 0xFF;// 0xED
                         int flag = value[1] & 0xFF;// read or write
                         int cmd = value[2] & 0xFF;
                         ParamsKeyEnum configKeyEnum = ParamsKeyEnum.fromParamKey(cmd);
-                        if (header != 0xED || null == configKeyEnum) return;
+                        if (header != 0xED || configKeyEnum == null) return;
                         int length = value[3] & 0xFF;
                         if (flag == 0x01) {
                             // write
+                            int result = value[4] & 0xFF;
                             switch (configKeyEnum) {
-                                case KEY_ALARM_ALERT_TRIGGER_TYPE:
-                                    modeFlag = value[4] & 0xff;
+                                case KEY_LOW_POWER_PERCENT:
+                                    if (result != 1) saveParamError = true;
                                     break;
 
-                                case KEY_ALARM_ALERT_POS_STRATEGY:
-                                    posFlag = value[4] & 0xff;
-                                    break;
-
-                                case KEY_ALARM_ALERT_NOTIFY_ENABLE:
-                                    if ((value[4] & 0xff) == 1 && modeFlag == 1 && posFlag == 1) {
-                                        ToastUtils.showToast(this, "Save Successfully！");
-                                    } else {
-                                        ToastUtils.showToast(this, "Opps！Save failed. Please check the input characters and try again.");
-                                    }
+                                case KEY_LOW_POWER_NOTIFY_ENABLE:
+                                    if (result != 1) saveParamError = true;
+                                    ToastUtils.showToast(this, !saveParamError ? "Setup succeed" : "Setup failed");
                                     break;
                             }
-                        }
-                        if (flag == 0x00) {
+                        } else if (flag == 0x00) {
                             // read
                             switch (configKeyEnum) {
-                                case KEY_ALARM_ALERT_TRIGGER_TYPE:
-                                    if (length == 1) {
-                                        mSelectedMode = value[4] & 0xff;
-                                        mBind.tvTriggerMode.setText(triggerMode[mSelectedMode]);
+                                case KEY_LOW_POWER_NOTIFY_ENABLE:
+                                    if (length > 0) {
+                                        int enable = value[4] & 0xFF;
+                                        mBind.cbLowPowerNotify.setChecked(enable == 1);
                                     }
                                     break;
-
-                                case KEY_ALARM_ALERT_POS_STRATEGY:
-                                    if (length == 1) {
-                                        mSelectedPos = value[4] & 0xff;
-                                        mBind.tvPosStrategy.setText(mValues[mSelectedPos]);
-                                    }
-                                    break;
-
-                                case KEY_ALARM_ALERT_NOTIFY_ENABLE:
-                                    if (length == 1) {
-                                        int result = value[4] & 0xff;
-                                        mBind.cbNotifyAlertStart.setChecked((result & 0x01) == 1);
-                                        mBind.cbNotifyAlertEnd.setChecked((result >> 1 & 0x01) == 1);
+                                case KEY_LOW_POWER_PERCENT:
+                                    if (length > 0) {
+                                        mSelected = value[4] & 0xff;
+                                        mBind.tvLowPowerPercent.setText(mValues[mSelected]);
                                     }
                                     break;
                             }
@@ -166,17 +131,6 @@ public class AlertAlarmSettingActivity extends PS101BaseActivity {
                 }
             }
         });
-    }
-
-    public void onSave(View view) {
-        if (isWindowLocked()) return;
-        showSyncingProgressDialog();
-        int type = (mBind.cbNotifyAlertStart.isChecked() ? 1 : 0) | (mBind.cbNotifyAlertEnd.isChecked() ? 2 : 0);
-        List<OrderTask> orderTasks = new ArrayList<>(4);
-        orderTasks.add(OrderTaskAssembler.setAlarmAlertTriggerType(mSelectedMode));
-        orderTasks.add(OrderTaskAssembler.setAlarmAlertPosStrategy(mSelectedPos));
-        orderTasks.add(OrderTaskAssembler.setAlarmAlertNotifyEnable(type));
-        MokoSupport.getInstance().sendOrder(orderTasks.toArray(new OrderTask[]{}));
     }
 
     private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
@@ -203,10 +157,31 @@ public class AlertAlarmSettingActivity extends PS101BaseActivity {
             // 注销广播
             unregisterReceiver(mReceiver);
         }
-        EventBus.getDefault().unregister(this);
+        if (EventBus.getDefault().isRegistered(this))
+            EventBus.getDefault().unregister(this);
     }
 
     public void onBack(View view) {
+        backHome();
+    }
+
+    @Override
+    public void onBackPressed() {
+        backHome();
+    }
+
+    private void backHome() {
+        EventBus.getDefault().unregister(this);
         finish();
+    }
+
+    public void onSave(View view) {
+        if (isWindowLocked()) return;
+        List<OrderTask> orderTasks = new ArrayList<>(2);
+        if (mBind.cbLowPowerNotify.isChecked()) {
+            orderTasks.add(OrderTaskAssembler.setLowPowerPercent(mSelected));
+        }
+        orderTasks.add(OrderTaskAssembler.setLowPowerReportEnable(mBind.cbLowPowerNotify.isChecked() ? 1 : 0));
+        MokoSupport.getInstance().sendOrder(orderTasks.toArray(new OrderTask[0]));
     }
 }

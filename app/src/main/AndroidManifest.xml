@@ -60,15 +60,15 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name="com.moko.ps101m.activity.setting.DownlinkForPosActivity"
+            android:name="com.moko.ps101m.activity.setting.SyncTimeFromNtpActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name="com.moko.ps101m.activity.setting.ManDownDetectionActivity"
+            android:name="com.moko.ps101m.activity.setting.BatteryManagementActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name="com.moko.ps101m.activity.setting.BleSettingsActivity"
+            android:name="com.moko.ps101m.activity.setting.SystemTimeActivity"
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
@@ -158,12 +158,12 @@
         <activity android:name="com.moko.ps101m.activity.setting.PeriodicScanImmediateReportActivity"
             android:screenOrientation="portrait"/>
 
-        <activity android:name="com.moko.ps101m.activity.setting.AlarmFunctionActivity"
+        <activity android:name="com.moko.ps101m.activity.setting.LedSettingsActivity"
             android:screenOrientation="portrait"/>
-        <activity android:name="com.moko.ps101m.activity.setting.AlertAlarmSettingActivity"
+        <activity android:name="com.moko.ps101m.activity.setting.BleParametersActivity"
             android:screenOrientation="portrait"/>
 
-        <activity android:name="com.moko.ps101m.activity.setting.AlarmSosSettingActivity"
+        <activity android:name="com.moko.ps101m.activity.setting.HeartReportSettingActivity"
             android:screenOrientation="portrait"/>
 
         <activity android:name="com.moko.ps101m.activity.device.OnOffSettingsActivity"

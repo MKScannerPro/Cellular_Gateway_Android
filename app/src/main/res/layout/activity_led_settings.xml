@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/grey_f2f2f2"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:background="@color/blue_2f84d0">
+
+        <TextView
+            android:id="@+id/tv_back"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:drawableLeft="@drawable/ps101_ic_back"
+            android:drawablePadding="6dp"
+            android:gravity="center_vertical"
+            android:onClick="onBack"
+            android:paddingLeft="16dp"
+            android:textColor="@color/white_ffffff"
+            android:textSize="15sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="LED Settings"
+            android:textColor="@color/white_ffffff"
+            android:textSize="17sp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:onClick="onSave"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:src="@drawable/ps101_ic_save" />
+    </RelativeLayout>
+
+    <CheckBox
+        android:id="@+id/cbPowerIndicator"
+        style="@style/NormalCheckBox"
+        android:text="Power indicator" />
+
+    <CheckBox
+        android:id="@+id/cbSwitchIndicator"
+        style="@style/NormalCheckBox"
+        android:layout_marginTop="1dp"
+        android:text="Switch indicator" />
+
+    <CheckBox
+        android:id="@+id/cbNetworkIndicator"
+        style="@style/NormalCheckBox"
+        android:layout_marginTop="1dp"
+        android:text="Network indicator" />
+
+    <CheckBox
+        android:id="@+id/cbGpsIndicator"
+        style="@style/NormalCheckBox"
+        android:layout_marginTop="1dp"
+        android:text="GPS indicator" />
+</LinearLayout>

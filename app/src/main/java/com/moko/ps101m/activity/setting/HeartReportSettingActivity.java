@@ -1,4 +1,4 @@
-package com.moko.ps101m.activity.device;
+package com.moko.ps101m.activity.setting;
 
 import android.bluetooth.BluetoothAdapter;
 import android.content.BroadcastReceiver;
@@ -6,15 +6,17 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 
 import com.moko.ble.lib.MokoConstants;
 import com.moko.ble.lib.event.ConnectStatusEvent;
 import com.moko.ble.lib.event.OrderTaskResponseEvent;
+import com.moko.ble.lib.task.OrderTask;
 import com.moko.ble.lib.task.OrderTaskResponse;
 import com.moko.ble.lib.utils.MokoUtils;
 import com.moko.ps101m.activity.PS101BaseActivity;
-import com.moko.ps101m.databinding.Ps101mActivityIndicatorSettingsBinding;
+import com.moko.ps101m.databinding.ActivityHeartReportSettingBinding;
 import com.moko.ps101m.utils.ToastUtils;
 import com.moko.support.ps101m.MokoSupport;
 import com.moko.support.ps101m.OrderTaskAssembler;
@@ -25,18 +27,25 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
-public class IndicatorSettingsActivity extends PS101BaseActivity {
-    private Ps101mActivityIndicatorSettingsBinding mBind;
-    private boolean mReceiverTag = false;
+/**
+ * @author: jun.liu
+ * @date: 2023/12/4 17:36
+ * @des:
+ */
+public class HeartReportSettingActivity extends PS101BaseActivity {
+    private ActivityHeartReportSettingBinding mBind;
+    private boolean mReceiverTag;
+    private boolean saveParError;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mBind = Ps101mActivityIndicatorSettingsBinding.inflate(getLayoutInflater());
+        mBind = ActivityHeartReportSettingBinding.inflate(getLayoutInflater());
         setContentView(mBind.getRoot());
-
         EventBus.getDefault().register(this);
         // 注册广播接收器
         IntentFilter filter = new IntentFilter();
@@ -44,7 +53,11 @@ public class IndicatorSettingsActivity extends PS101BaseActivity {
         registerReceiver(mReceiver, filter);
         mReceiverTag = true;
         showSyncingProgressDialog();
-        MokoSupport.getInstance().sendOrder(OrderTaskAssembler.getIndicatorStatus());
+        List<OrderTask> orderTasks = new ArrayList<>(4);
+        orderTasks.add(OrderTaskAssembler.getDevicePayloadInterval());
+        orderTasks.add(OrderTaskAssembler.getDeviceStatusChoose());
+        MokoSupport.getInstance().sendOrder(orderTasks.toArray(new OrderTask[]{}));
+
     }
 
     @Subscribe(threadMode = ThreadMode.POSTING, priority = 200)
@@ -71,40 +84,45 @@ public class IndicatorSettingsActivity extends PS101BaseActivity {
                 OrderCHAR orderCHAR = (OrderCHAR) response.orderCHAR;
                 byte[] value = response.responseValue;
                 if (orderCHAR == OrderCHAR.CHAR_PARAMS) {
-                    if (value.length >= 4) {
+                    if (null != value && value.length >= 4) {
                         int header = value[0] & 0xFF;// 0xED
                         int flag = value[1] & 0xFF;// read or write
                         int cmd = value[2] & 0xFF;
-                        if (header != 0xED) return;
                         ParamsKeyEnum configKeyEnum = ParamsKeyEnum.fromParamKey(cmd);
-                        if (configKeyEnum == null) return;
+                        if (header != 0xED || null == configKeyEnum) return;
                         int length = value[3] & 0xFF;
                         if (flag == 0x01) {
                             // write
-                            int result = value[4] & 0xFF;
-                            if (configKeyEnum == ParamsKeyEnum.KEY_INDICATOR_STATUS) {
-                                if (result == 1) {
-                                    ToastUtils.showToast(this, "Save Successfully！");
-                                } else {
-                                    ToastUtils.showToast(this, "Opps！Save failed. Please check the input characters and try again.");
-                                }
+                            int result = value[4] & 0xff;
+                            switch (configKeyEnum) {
+                                case KEY_DEVICE_PAYLOAD_INTERVAL:
+                                    if (result == 1) saveParError = true;
+                                    break;
+
+                                case KEY_DEVICE_STATUS_CHOOSE:
+                                    if (result == 1) saveParError = true;
+                                    ToastUtils.showToast(this, !saveParError ? "Setup succeed" : "Setup failed");
+                                    break;
                             }
-                        }
-                        if (flag == 0x00) {
+                        } else if (flag == 0x00) {
                             // read
-                            if (configKeyEnum == ParamsKeyEnum.KEY_INDICATOR_STATUS) {
-                                if (length == 3) {
-                                    byte[] indicatorBytes = Arrays.copyOfRange(value, 4, 4 + length);
-                                    int indicator = MokoUtils.toInt(indicatorBytes);
-                                    mBind.cbDeviceState.setChecked((indicator & 0x01) == 1);
-                                    mBind.cbLowPower.setChecked((indicator >> 1 & 0x01) == 1);
-                                    mBind.cbCharging.setChecked((indicator >> 2 & 0x01) == 1);
-                                    mBind.cbFullCharge.setChecked((indicator >> 3 & 0x01) == 1);
-                                    mBind.cbBleConnection.setChecked((indicator >> 4 & 0x01) == 1);
-                                    mBind.cbInfix.setChecked((indicator >> 5 & 0x01) == 1);
-                                    mBind.cbFixSuccessful.setChecked((indicator >> 6 & 0x01) == 1);
-                                    mBind.cbFailToFix.setChecked((indicator >> 7 & 0x01) == 1);
-                                }
+                            switch (configKeyEnum) {
+                                case KEY_DEVICE_PAYLOAD_INTERVAL:
+                                    if (length == 4) {
+                                        int interval = MokoUtils.toInt(Arrays.copyOfRange(value, 4, value.length));
+                                        mBind.etInterval.setText(String.valueOf(interval));
+                                        mBind.etInterval.setSelection(mBind.etInterval.getText().length());
+                                    }
+                                    break;
+
+                                case KEY_DEVICE_STATUS_CHOOSE:
+                                    if (length == 1) {
+                                        int status = value[4] & 0xff;
+                                        mBind.cbBattery.setChecked((status & 0x01) == 1);
+                                        mBind.cbAcc.setChecked((status >> 1 & 0x01) == 1);
+                                        mBind.cbVehicleStatus.setChecked((status >> 2 & 0x01) == 1);
+                                    }
+                                    break;
                             }
                         }
                     }
@@ -113,6 +131,27 @@ public class IndicatorSettingsActivity extends PS101BaseActivity {
         });
     }
 
+    public void onSave(View view) {
+        if (isWindowLocked()) return;
+        if (isValid()) {
+            showSyncingProgressDialog();
+            saveParError = false;
+            int interval = Integer.parseInt(mBind.etInterval.getText().toString().trim());
+            List<OrderTask> orderTasks = new ArrayList<>(4);
+            orderTasks.add(OrderTaskAssembler.setDevicePayloadInterval(interval));
+            int status = (mBind.cbBattery.isChecked() ? 1 : 0) | (mBind.cbAcc.isChecked() ? 1 << 1 : 0) | (mBind.cbVehicleStatus.isChecked() ? 1 << 2 : 0);
+            orderTasks.add(OrderTaskAssembler.setDeviceStatusChoose(status));
+            MokoSupport.getInstance().sendOrder(orderTasks.toArray(new OrderTask[]{}));
+        } else {
+            ToastUtils.showToast(this, "Para error!");
+        }
+    }
+
+    private boolean isValid() {
+        if (TextUtils.isEmpty(mBind.etInterval.getText())) return false;
+        int interval = Integer.parseInt(mBind.etInterval.getText().toString());
+        return (interval >= 30 && interval <= 86400) || interval == 0;
+    }
 
     private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
         @Override
@@ -138,7 +177,8 @@ public class IndicatorSettingsActivity extends PS101BaseActivity {
             // 注销广播
             unregisterReceiver(mReceiver);
         }
-        EventBus.getDefault().unregister(this);
+        if (EventBus.getDefault().isRegistered(this))
+            EventBus.getDefault().unregister(this);
     }
 
     public void onBack(View view) {
@@ -151,22 +191,7 @@ public class IndicatorSettingsActivity extends PS101BaseActivity {
     }
 
     private void backHome() {
-        setResult(RESULT_OK);
+        EventBus.getDefault().unregister(this);
         finish();
-    }
-
-    public void onSave(View view) {
-        if (isWindowLocked()) return;
-        int indicator = (mBind.cbDeviceState.isChecked() ? 1 : 0)
-                | (mBind.cbLowPower.isChecked() ? 1 << 1 : 0)
-                | (mBind.cbCharging.isChecked() ? 1 << 2 : 0)
-                | (mBind.cbFullCharge.isChecked() ? 1 << 3 : 0)
-                | (mBind.cbBleConnection.isChecked() ? 1 << 4 : 0)
-                | (mBind.cbInfix.isChecked() ? 1 << 5 : 0)
-                | (mBind.cbFixSuccessful.isChecked() ? 1 << 6 : 0)
-                | (mBind.cbFailToFix.isChecked() ? 1 << 7 : 0)
-                | 1 << 8 | 1 << 9 | 1 << 10 | 1 << 11 | 1 << 12 | 1 << 13 | 1 << 14 | 1 << 15 | 1 << 16;
-        showSyncingProgressDialog();
-        MokoSupport.getInstance().sendOrder(OrderTaskAssembler.setIndicatorStatus(indicator));
     }
 }

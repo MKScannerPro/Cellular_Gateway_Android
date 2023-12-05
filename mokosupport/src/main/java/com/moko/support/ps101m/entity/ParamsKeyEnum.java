@@ -5,13 +5,11 @@ import java.io.Serializable;
 
 public enum ParamsKeyEnum implements Serializable {
     //// 系统相关参数
-    KEY_CLOSE(0x10),
-    KEY_REBOOT(0x11),
-    KEY_RESET(0x12),
+
     // 时区
-    KEY_TIME_ZONE(0x14),
+
     // 芯片MAC
-    KEY_CHIP_MAC(0x15),
+
     // 自检状态
     KEY_SELFTEST_STATUS(0x16),
     // 产测状态
@@ -19,7 +17,7 @@ public enum ParamsKeyEnum implements Serializable {
     // 读取当前需求版本
     KEY_DEMAND_VERSION(0x18),
     // 电池电量
-    KEY_BATTERY_POWER(0x19),
+
     // 厂家信息
     KEY_MANUFACTURER(0x1A),
     // 工作模式选择
@@ -28,9 +26,7 @@ public enum ParamsKeyEnum implements Serializable {
     //按键关机
     KEY_OFF_BY_BUTTON(0x1D),
     // 低电触发心跳开关
-    KEY_LOW_POWER_PAYLOAD_ENABLE(0x1E),
-    //低电百分比
-    KEY_LOW_POWER_PERCENT(0x1F),
+
     // 设备心跳间隔
     KEY_HEARTBEAT_INTERVAL(0x20),
     //蜂鸣器声效选择
@@ -50,26 +46,12 @@ public enum ParamsKeyEnum implements Serializable {
     //MQTT连接状态
     KEY_MQTT_CONNECT_STATUS(0xC5),
     //ntp服务器
-    KEY_NTP_SERVER(0x2B),
-    //ntp同步时间间隔
-    KEY_NTP_SYNC_INTERVAL(0x2C),
-
 
 
     //// 蓝牙相关参数
     // 登录是否需要密码
-    KEY_PASSWORD_VERIFY_ENABLE(0x30),
-    //连接密码
-    KEY_PASSWORD(0x31),
+
     //蓝牙广播超时时间
-    KEY_ADV_TIMEOUT(0x32),
-    //蓝牙 TX power
-    KEY_ADV_TX_POWER(0x33),
-    //广播名称
-    KEY_ADV_NAME(0x34),
-    //广播间隔
-    KEY_ADV_INTERVAL(0x35),
-    
 
 
     //// 模式相关参数
@@ -104,7 +86,6 @@ public enum ParamsKeyEnum implements Serializable {
     KEY_MOTION_MODE_STATIONARY_REPORT_INTERVAL(0x4E),
 
 
-
     KEY_FILTER_MAC_PRECISE(0x53),
     KEY_FILTER_MAC_REVERSE(0x54),
     KEY_FILTER_MAC_RULES(0x55),
@@ -119,33 +100,6 @@ public enum ParamsKeyEnum implements Serializable {
     // BXP-iBeacon类型过滤开关
     KEY_FILTER_BXP_IBEACON_ENABLE(0x5A),
     // BXP-iBeacon类型Major范围
-    KEY_FILTER_BXP_IBEACON_MAJOR_RANGE(0x5B),
-    // BXP-iBeacon类型Minor范围
-    KEY_FILTER_BXP_IBEACON_MINOR_RANGE(0x5C),
-    // BXP-iBeacon类型UUID
-    KEY_FILTER_BXP_IBEACON_UUID(0x5D),
-    // eddystone-UID类型过滤开关
-
-    // eddystone-URL类型过滤开关
-
-    // eddystone-TLM类型过滤开关
-
-    // iBeacon类型过滤开关
-
-    // iBeacon类型Major范围
-
-    // iBeacon类型UUID
-
-    // BXP-Device类型过滤开关
-
-    // BXP-Button类型过滤开关
-
-    // BXP-Tag开关类型过滤开关
-
-    //MK-PIR 设备过滤开关
-
-    // Unknown设备过滤开关
-
 
 
     //// 定位参数
@@ -227,6 +181,39 @@ public enum ParamsKeyEnum implements Serializable {
     KEY_OTHER_PAYLOAD(0xAB),
     KEY_OTHER_PAYLOAD_DATA(0xAC),
 
+    KEY_BATTERY_POWER(0xC0),
+    KEY_POWER_LOSS_NOTIFY(0x13),
+    KEY_LED_INDICATOR(0x0C),
+    KEY_PASSWORD_VERIFY_ENABLE(0x15),
+    KEY_PASSWORD(0x14),
+    KEY_ADV_RESPONSE(0x80),
+    KEY_ADV_NAME(0x81),
+    KEY_IBEACON_MAJOR(0x82),
+    KEY_IBEACON_MINOR(0x83),
+    KEY_IBEACON_UUID(0x84),
+    KEY_IBEACON_RSSI1M(0x85),
+    KEY_ADV_INTERVAL(0x86),
+    KEY_ADV_TX_POWER(0x87),
+    KEY_ADV_TIMEOUT(0x88),
+    KEY_DEVICE_PAYLOAD_INTERVAL(0x11),
+    KEY_DEVICE_STATUS_CHOOSE(0x12),
+    KEY_TIME_ZONE(0x10),
+    KEY_NTP_SWITCH(0x0D),
+    KEY_NTP_SYNC_INTERVAL(0x0E),
+    KEY_NTP_SERVER(0x0F),
+    KEY_LOW_POWER_NOTIFY_ENABLE(0x16),
+    KEY_LOW_POWER_PERCENT(0x17),
+    KEY_CHIP_MAC(0x06),
+    KEY_IMEI(0xC1),
+    KEY_ICC_ID(0xC2),
+    KEY_DELETE_BUFFER_DATA(0x18),
+    KEY_CLOSE(0x02),
+    KEY_REBOOT(0x01),
+    KEY_RESET(0x0B),
+
+
+
+
 
 
 
@@ -246,14 +233,12 @@ public enum ParamsKeyEnum implements Serializable {
     KEY_BLE_POS_MAC_NUMBER(0x85),
 
 
-
     ////网络通信参数
     KEY_NETWORK_PRIORITY(0x30),
     KEY_APN(0x31),
     KEY_APN_NAME(0x32),
     KEY_APN_PASSWORD(0x33),
     KEY_CONNECT_NETWORK_TIMEOUT(0x34),
-
 
 
     //////
@@ -272,7 +257,6 @@ public enum ParamsKeyEnum implements Serializable {
     KEY_MQTT_CA(0x2B),
     KEY_MQTT_CLIENT_CERT(0x2C),
     KEY_MQTT_CLIENT_KEY(0x2D),
-
 
 
     //// 辅助功能参数
@@ -306,7 +290,6 @@ public enum ParamsKeyEnum implements Serializable {
     KEY_ALARM_SOS_NOTIFY_ENABLE(0xBD),
     //三轴数据上报间隔
     KEY_AXIS_REPORT_INTERVAL(0xBE),
-
 
 
     //// 存储协议

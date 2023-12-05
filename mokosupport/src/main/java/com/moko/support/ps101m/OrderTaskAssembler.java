@@ -102,9 +102,9 @@ public class OrderTaskAssembler {
         return task;
     }
 
-    public static OrderTask getLowPowerPayloadEnable() {
+    public static OrderTask getLowPowerNotifyEnable() {
         ParamsReadTask task = new ParamsReadTask();
-        task.setData(ParamsKeyEnum.KEY_LOW_POWER_PAYLOAD_ENABLE);
+        task.setData(ParamsKeyEnum.KEY_LOW_POWER_NOTIFY_ENABLE);
         return task;
     }
 
@@ -126,9 +126,33 @@ public class OrderTaskAssembler {
         return task;
     }
 
+    public static OrderTask getPowerLossNotify() {
+        ParamsReadTask task = new ParamsReadTask();
+        task.setData(ParamsKeyEnum.KEY_POWER_LOSS_NOTIFY);
+        return task;
+    }
+
+    public static OrderTask getLedIndicator() {
+        ParamsReadTask task = new ParamsReadTask();
+        task.setData(ParamsKeyEnum.KEY_LED_INDICATOR);
+        return task;
+    }
+
     public static OrderTask getMacAddress() {
         ParamsReadTask task = new ParamsReadTask();
         task.setData(ParamsKeyEnum.KEY_CHIP_MAC);
+        return task;
+    }
+
+    public static OrderTask getIMEI() {
+        ParamsReadTask task = new ParamsReadTask();
+        task.setData(ParamsKeyEnum.KEY_IMEI);
+        return task;
+    }
+
+    public static OrderTask getIccId() {
+        ParamsReadTask task = new ParamsReadTask();
+        task.setData(ParamsKeyEnum.KEY_ICC_ID);
         return task;
     }
 
@@ -168,6 +192,17 @@ public class OrderTaskAssembler {
         return task;
     }
 
+    public static OrderTask getDevicePayloadInterval() {
+        ParamsReadTask task = new ParamsReadTask();
+        task.setData(ParamsKeyEnum.KEY_DEVICE_PAYLOAD_INTERVAL);
+        return task;
+    }
+
+    public static OrderTask getDeviceStatusChoose() {
+        ParamsReadTask task = new ParamsReadTask();
+        task.setData(ParamsKeyEnum.KEY_DEVICE_STATUS_CHOOSE);
+        return task;
+    }
 
     public static OrderTask getAdvTxPower() {
         ParamsReadTask task = new ParamsReadTask();
@@ -178,6 +213,12 @@ public class OrderTaskAssembler {
     public static OrderTask getAdvName() {
         ParamsReadTask task = new ParamsReadTask();
         task.setData(ParamsKeyEnum.KEY_ADV_NAME);
+        return task;
+    }
+
+    public static OrderTask getAdvResponse() {
+        ParamsReadTask task = new ParamsReadTask();
+        task.setData(ParamsKeyEnum.KEY_ADV_RESPONSE);
         return task;
     }
 
@@ -482,21 +523,27 @@ public class OrderTaskAssembler {
         return task;
     }
 
-    public static OrderTask getFilterBXPIBeaconMajorRange() {
+    public static OrderTask getIBeaconMajor() {
         ParamsReadTask task = new ParamsReadTask();
-        task.setData(ParamsKeyEnum.KEY_FILTER_BXP_IBEACON_MAJOR_RANGE);
+        task.setData(ParamsKeyEnum.KEY_IBEACON_MAJOR);
         return task;
     }
 
-    public static OrderTask getFilterBXPIBeaconMinorRange() {
+    public static OrderTask getIBeaconMinor() {
         ParamsReadTask task = new ParamsReadTask();
-        task.setData(ParamsKeyEnum.KEY_FILTER_BXP_IBEACON_MINOR_RANGE);
+        task.setData(ParamsKeyEnum.KEY_IBEACON_MINOR);
         return task;
     }
 
-    public static OrderTask getFilterBXPIBeaconUUID() {
+    public static OrderTask getIBeaconUUID() {
         ParamsReadTask task = new ParamsReadTask();
-        task.setData(ParamsKeyEnum.KEY_FILTER_BXP_IBEACON_UUID);
+        task.setData(ParamsKeyEnum.KEY_IBEACON_UUID);
+        return task;
+    }
+
+    public static OrderTask getRssi1M() {
+        ParamsReadTask task = new ParamsReadTask();
+        task.setData(ParamsKeyEnum.KEY_IBEACON_RSSI1M);
         return task;
     }
 
@@ -1004,17 +1051,47 @@ public class OrderTaskAssembler {
         return task;
     }
 
+    public static OrderTask getPassword() {
+        ParamsReadTask task = new ParamsReadTask();
+        task.setData(ParamsKeyEnum.KEY_PASSWORD);
+        return task;
+    }
+
+    public static OrderTask getNtpEnable() {
+        ParamsReadTask task = new ParamsReadTask();
+        task.setData(ParamsKeyEnum.KEY_NTP_SWITCH);
+        return task;
+    }
+
 
     ///////////////////////////////////////////////////////////////////////////
     // WRITE
     ///////////////////////////////////////////////////////////////////////////
+    public static OrderTask setPowerLossNotify(@IntRange(from = 0, to = 1) int enable) {
+        ParamsWriteTask task = new ParamsWriteTask();
+        task.setPowerLossNotify(enable);
+        return task;
+    }
+
+    public static OrderTask setLedIndicator(int indicator) {
+        ParamsWriteTask task = new ParamsWriteTask();
+        task.setLedIndicator(indicator);
+        return task;
+    }
+
+    public static OrderTask setNtpEnable(@IntRange(from = 0, to = 1) int enable) {
+        ParamsWriteTask task = new ParamsWriteTask();
+        task.setNtpEnable(enable);
+        return task;
+    }
+
     public static OrderTask setNtpServer(@Nullable String ntpServer) {
         ParamsWriteTask task = new ParamsWriteTask();
         task.setNtpServer(ntpServer);
         return task;
     }
 
-    public static OrderTask setNtpSyncInterval(@IntRange(from = 0, to = 720) int interval) {
+    public static OrderTask setNtpSyncInterval(@IntRange(from = 1, to = 720) int interval) {
         ParamsWriteTask task = new ParamsWriteTask();
         task.setNtpSyncInterval(interval);
         return task;
@@ -1171,13 +1248,13 @@ public class OrderTaskAssembler {
         return task;
     }
 
-    public static OrderTask restart() {
+    public static OrderTask reboot() {
         ParamsWriteTask task = new ParamsWriteTask();
         task.reboot();
         return task;
     }
 
-    public static OrderTask restore() {
+    public static OrderTask reset() {
         ParamsWriteTask task = new ParamsWriteTask();
         task.reset();
         return task;
@@ -1189,12 +1266,17 @@ public class OrderTaskAssembler {
         return task;
     }
 
-    public static OrderTask setLowPowerPercent(@IntRange(from = 0, to = 5) int percent) {
+    public static OrderTask setLowPowerPercent(@IntRange(from = 0, to = 4) int percent) {
         ParamsWriteTask task = new ParamsWriteTask();
         task.setLowPowerPercent(percent);
         return task;
     }
 
+    public static OrderTask deleteBufferData() {
+        ParamsWriteTask task = new ParamsWriteTask();
+        task.deleteBufferData();
+        return task;
+    }
     public static OrderTask setBuzzerSound(@IntRange(from = 0, to = 2) int buzzer) {
         ParamsWriteTask task = new ParamsWriteTask();
         task.setBuzzerSound(buzzer);
@@ -1249,9 +1331,21 @@ public class OrderTaskAssembler {
         return task;
     }
 
-    public static OrderTask setAdvTimeout(@IntRange(from = 1, to = 60) int timeout) {
+    public static OrderTask setAdvTimeout(@IntRange(from = 0, to = 60) int timeout) {
         ParamsWriteTask task = new ParamsWriteTask();
         task.setAdvTimeout(timeout);
+        return task;
+    }
+
+    public static OrderTask setDevicePayloadInterval(int interval) {
+        ParamsWriteTask task = new ParamsWriteTask();
+        task.setDevicePayloadInterval(interval);
+        return task;
+    }
+
+    public static OrderTask setDeviceStatusChoose(int status) {
+        ParamsWriteTask task = new ParamsWriteTask();
+        task.setDeviceStatusChoose(status);
         return task;
     }
 
@@ -1261,9 +1355,15 @@ public class OrderTaskAssembler {
         return task;
     }
 
-    public static OrderTask setAdvName(@Nullable String advName) {
+    public static OrderTask setAdvName(String advName) {
         ParamsWriteTask task = new ParamsWriteTask();
         task.setAdvName(advName);
+        return task;
+    }
+
+    public static OrderTask setAdvResponse(@IntRange(from = 0, to = 1) int enable) {
+        ParamsWriteTask task = new ParamsWriteTask();
+        task.setAdvResponse(enable);
         return task;
     }
 
@@ -1573,23 +1673,27 @@ public class OrderTaskAssembler {
         return task;
     }
 
-    public static OrderTask setFilterMKIBeaconMajorRange(@IntRange(from = 0, to = 65535) int min,
-                                                         @IntRange(from = 0, to = 65535) int max) {
+    public static OrderTask setIBeaconMajor(@IntRange(from = 0, to = 65535) int major) {
         ParamsWriteTask task = new ParamsWriteTask();
-        task.setFilterBXPIBeaconMajorRange(min, max);
+        task.setIBeaconMajor(major);
         return task;
     }
 
-    public static OrderTask setFilterMKIBeaconMinorRange(@IntRange(from = 0, to = 65535) int min,
-                                                         @IntRange(from = 0, to = 65535) int max) {
+    public static OrderTask setIBeaconMinor(@IntRange(from = 0, to = 65535) int minor) {
         ParamsWriteTask task = new ParamsWriteTask();
-        task.setFilterBXPIBeaconMinorRange(min, max);
+        task.setIBeaconMinor(minor);
         return task;
     }
 
-    public static OrderTask setFilterMKIBeaconUUID(String uuid) {
+    public static OrderTask setIBeaconUUID(String uuid) {
         ParamsWriteTask task = new ParamsWriteTask();
-        task.setFilterBXPIBeaconUUID(uuid);
+        task.setIBeaconUUID(uuid);
+        return task;
+    }
+
+    public static OrderTask setRssi1M(@IntRange(from = -100, to = 0) int rssi1M) {
+        ParamsWriteTask task = new ParamsWriteTask();
+        task.setRssi1M(rssi1M);
         return task;
     }
 

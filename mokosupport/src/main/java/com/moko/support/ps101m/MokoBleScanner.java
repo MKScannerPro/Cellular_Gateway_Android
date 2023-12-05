@@ -2,7 +2,6 @@ package com.moko.support.ps101m;
 
 import android.bluetooth.BluetoothDevice;
 import android.content.Context;
-import android.os.ParcelUuid;
 
 import androidx.annotation.NonNull;
 
@@ -10,7 +9,6 @@ import com.elvishew.xlog.XLog;
 import com.moko.ble.lib.utils.MokoUtils;
 import com.moko.support.ps101m.callback.MokoScanDeviceCallback;
 import com.moko.support.ps101m.entity.DeviceInfo;
-import com.moko.support.ps101m.entity.OrderServices;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +40,7 @@ public final class MokoBleScanner {
                 .build();
         List<ScanFilter> scanFilterList = new ArrayList<>();
         ScanFilter.Builder builder = new ScanFilter.Builder();
-        builder.setServiceData(new ParcelUuid(OrderServices.SERVICE_ADV.getUuid()), null);
+        builder.setManufacturerData(0xAA11, null);
         scanFilterList.add(builder.build());
 //        List<ScanFilter> scanFilterList = Collections.singletonList(new ScanFilter.Builder().build());
         mMokoLeScanHandler = new MokoLeScanHandler(callback);

@@ -149,5 +149,5 @@
         android:overScrollMode="never"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
-        tools:listitem="@layout/ps101m_list_item_device" />
+        tools:listitem="@layout/mkgw4_list_item_device" />
 </LinearLayout>

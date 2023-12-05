@@ -13,7 +13,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
+            android:layout_marginLeft="15dp"
             android:text="UUID"
             android:textColor="@color/grey_999999"
             android:textSize="12sp" />
@@ -36,7 +36,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
+            android:layout_marginLeft="15dp"
             android:text="Major"
             android:textColor="@color/grey_999999"
             android:textSize="12sp" />
@@ -59,7 +59,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
+            android:layout_marginLeft="15dp"
             android:text="Minor"
             android:textColor="@color/grey_999999"
             android:textSize="12sp" />
@@ -82,7 +82,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
+            android:layout_marginLeft="15dp"
             android:text="RSSI@1m"
             android:textColor="@color/grey_999999"
             android:textSize="12sp" />
@@ -96,7 +96,7 @@
             android:textColor="@color/grey_666666"
             android:textSize="12sp" />
     </RelativeLayout>
-
+<!--
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -105,7 +105,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
+            android:layout_marginLeft="15dp"
             android:text="Tx power"
             android:textColor="@color/grey_999999"
             android:textSize="12sp" />
@@ -118,5 +118,5 @@
             android:text=""
             android:textColor="@color/grey_666666"
             android:textSize="12sp" />
-    </RelativeLayout>
+    </RelativeLayout>-->
 </LinearLayout>

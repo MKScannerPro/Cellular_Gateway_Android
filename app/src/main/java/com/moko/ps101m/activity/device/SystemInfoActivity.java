@@ -9,7 +9,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.Window;
@@ -27,7 +26,7 @@ import com.moko.ble.lib.task.OrderTaskResponse;
 import com.moko.ble.lib.utils.MokoUtils;
 import com.moko.ps101m.AppConstants;
 import com.moko.ps101m.activity.PS101BaseActivity;
-import com.moko.ps101m.databinding.Ps101mActivitySystemInfoBinding;
+import com.moko.ps101m.databinding.ActivitySystemInfoBinding;
 import com.moko.ps101m.service.DfuService;
 import com.moko.ps101m.utils.FileUtils;
 import com.moko.ps101m.utils.ToastUtils;
@@ -52,7 +51,7 @@ import no.nordicsemi.android.dfu.DfuServiceListenerHelper;
 
 public class SystemInfoActivity extends PS101BaseActivity {
     public static final int REQUEST_CODE_SELECT_FIRMWARE = 0x10;
-    private Ps101mActivitySystemInfoBinding mBind;
+    private ActivitySystemInfoBinding mBind;
     private boolean mReceiverTag = false;
     private String mDeviceMac;
     private String mDeviceName;
@@ -60,7 +59,7 @@ public class SystemInfoActivity extends PS101BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mBind = Ps101mActivitySystemInfoBinding.inflate(getLayoutInflater());
+        mBind = ActivitySystemInfoBinding.inflate(getLayoutInflater());
         setContentView(mBind.getRoot());
         EventBus.getDefault().register(this);
         // 注册广播接收器
@@ -71,13 +70,15 @@ public class SystemInfoActivity extends PS101BaseActivity {
         showSyncingProgressDialog();
         List<OrderTask> orderTasks = new ArrayList<>();
         orderTasks.add(OrderTaskAssembler.getAdvName());
-        orderTasks.add(OrderTaskAssembler.getMacAddress());
-        orderTasks.add(OrderTaskAssembler.getBattery());
         orderTasks.add(OrderTaskAssembler.getDeviceModel());
+        orderTasks.add(OrderTaskAssembler.getManufacturer());
+        orderTasks.add(OrderTaskAssembler.getHardwareVersion());
         orderTasks.add(OrderTaskAssembler.getSoftwareVersion());
         orderTasks.add(OrderTaskAssembler.getFirmwareVersion());
-        orderTasks.add(OrderTaskAssembler.getHardwareVersion());
-        orderTasks.add(OrderTaskAssembler.getManufacturer());
+        orderTasks.add(OrderTaskAssembler.getMacAddress());
+        orderTasks.add(OrderTaskAssembler.getIMEI());
+        orderTasks.add(OrderTaskAssembler.getIccId());
+
         MokoSupport.getInstance().sendOrder(orderTasks.toArray(new OrderTask[]{}));
         DfuServiceListenerHelper.registerProgressListener(this, mDfuProgressListener);
     }
@@ -88,12 +89,7 @@ public class SystemInfoActivity extends PS101BaseActivity {
         final String action = event.getAction();
         runOnUiThread(() -> {
             if (MokoConstants.ACTION_DISCONNECTED.equals(action)) {
-                if (!isUpgrade) {
-                    Intent intent = new Intent();
-                    intent.putExtra(AppConstants.EXTRA_KEY_DEVICE_MAC, mDeviceMac);
-                    setResult(RESULT_FIRST_USER, intent);
-                    backHome();
-                }
+                finish();
             }
         });
     }
@@ -114,7 +110,7 @@ public class SystemInfoActivity extends PS101BaseActivity {
                 switch (orderCHAR) {
                     case CHAR_MODEL_NUMBER:
                         String productModel = new String(value);
-                        mBind.tvProductModel.setText(productModel);
+                        mBind.tvProdutMode.setText(productModel);
                         break;
                     case CHAR_SOFTWARE_REVISION:
                         String softwareVersion = new String(value);
@@ -130,7 +126,7 @@ public class SystemInfoActivity extends PS101BaseActivity {
                         break;
                     case CHAR_MANUFACTURER_NAME:
                         String manufacture = new String(value);
-                        mBind.tvManufacture.setText(manufacture);
+                        mBind.tvManufacturer.setText(manufacture);
                         break;
                     case CHAR_PARAMS:
                         if (value.length >= 4) {
@@ -147,14 +143,7 @@ public class SystemInfoActivity extends PS101BaseActivity {
                                         if (length > 0) {
                                             byte[] rawDataBytes = Arrays.copyOfRange(value, 4, 4 + length);
                                             mDeviceName = new String(rawDataBytes);
-                                        }
-                                        break;
-                                    case KEY_BATTERY_POWER:
-                                        if (length > 0) {
-                                            byte[] batteryBytes = Arrays.copyOfRange(value, 4, 4 + length);
-                                            int battery = MokoUtils.toInt(batteryBytes);
-                                            String batteryStr = MokoUtils.getDecimalFormat("0.000").format(battery * 0.001);
-                                            mBind.tvBattery.setText(String.format("%sV", batteryStr));
+                                            mBind.tvDeviceName.setText(mDeviceName);
                                         }
                                         break;
                                     case KEY_CHIP_MAC:
@@ -168,7 +157,19 @@ public class SystemInfoActivity extends PS101BaseActivity {
                                             builder.insert(11, ":");
                                             builder.insert(14, ":");
                                             mDeviceMac = builder.toString().toUpperCase();
-                                            mBind.tvMacAddress.setText(mDeviceMac);
+                                            mBind.tvMac.setText(mDeviceMac);
+                                        }
+                                        break;
+
+                                    case KEY_IMEI:
+                                        if (length > 0) {
+                                            mBind.tvImei.setText(new String(Arrays.copyOfRange(value, 4, value.length)).toUpperCase());
+                                        }
+                                        break;
+
+                                    case KEY_ICC_ID:
+                                        if (length > 0) {
+                                            mBind.tvIccId.setText(new String(Arrays.copyOfRange(value, 4, value.length)).toUpperCase());
                                         }
                                         break;
                                 }
@@ -178,13 +179,6 @@ public class SystemInfoActivity extends PS101BaseActivity {
                 }
             }
         });
-    }
-
-    public void onDebuggerMode(View view) {
-        if (isWindowLocked()) return;
-        Intent intent = new Intent(this, LogDataActivity.class);
-        intent.putExtra(AppConstants.EXTRA_KEY_DEVICE_MAC, mDeviceMac);
-        startActivity(intent);
     }
 
     private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
@@ -314,6 +308,7 @@ public class SystemInfoActivity extends PS101BaseActivity {
             if (!isFinishing() && mDFUDialog != null && mDFUDialog.isShowing()) {
                 mDFUDialog.dismiss();
             }
+            ToastUtils.showToast(SystemInfoActivity.this, "DFU successful.");
             setResult(RESULT_OK);
             finish();
         }
@@ -361,31 +356,6 @@ public class SystemInfoActivity extends PS101BaseActivity {
                 starter.start(this, DfuService.class);
                 showDFUProgressDialog("Waiting...");
             }
-        }
-    }
-
-    // 记录上次页面控件点击时间,屏蔽无效点击事件
-    private long mLastOnClickTime = 0;
-    private int mTriggerSum;
-
-    private boolean isTriggerValid() {
-        long current = SystemClock.elapsedRealtime();
-        if (current - mLastOnClickTime > 500) {
-            mTriggerSum = 0;
-            mLastOnClickTime = current;
-        } else {
-            mTriggerSum++;
-            if (mTriggerSum == 2) {
-                mTriggerSum = 0;
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public void onTest(View view) {
-        if (isTriggerValid()) {
-            startActivity(new Intent(this, SelfTestActivity.class));
         }
     }
 }

@@ -24,21 +24,12 @@ import com.moko.ble.lib.task.OrderTaskResponse;
 import com.moko.ble.lib.utils.MokoUtils;
 import com.moko.ps101m.AppConstants;
 import com.moko.ps101m.R;
-import com.moko.ps101m.activity.device.ExportDataActivity;
-import com.moko.ps101m.activity.device.IndicatorSettingsActivity;
-import com.moko.ps101m.activity.device.OnOffSettingsActivity;
-import com.moko.ps101m.activity.device.SystemInfoActivity;
-import com.moko.ps101m.activity.setting.AuxiliaryOperationActivity;
-import com.moko.ps101m.activity.setting.AxisParameterActivity;
-import com.moko.ps101m.activity.setting.BleSettingsActivity;
-import com.moko.ps101m.activity.setting.ScanReportModeActivity;
 import com.moko.ps101m.databinding.Ps101mActivityDeviceInfoBinding;
 import com.moko.ps101m.dialog.AlertMessageDialog;
-import com.moko.ps101m.dialog.ChangePasswordDialog;
-import com.moko.ps101m.fragment.SettingsFragment;
-import com.moko.ps101m.fragment.ScannerFragment;
 import com.moko.ps101m.fragment.NetworkFragment;
 import com.moko.ps101m.fragment.PositionFragment;
+import com.moko.ps101m.fragment.ScannerFragment;
+import com.moko.ps101m.fragment.SettingsFragment;
 import com.moko.ps101m.utils.ToastUtils;
 import com.moko.support.ps101m.MokoSupport;
 import com.moko.support.ps101m.OrderTaskAssembler;
@@ -52,8 +43,6 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class DeviceInfoActivity extends PS101BaseActivity implements RadioGroup.OnCheckedChangeListener {
     private Ps101mActivityDeviceInfoBinding mBind;
@@ -170,12 +159,10 @@ public class DeviceInfoActivity extends PS101BaseActivity implements RadioGroup.
                             // write
                             int result = value[4] & 0xFF;
                             switch (configKeyEnum) {
-                                case KEY_HEARTBEAT_INTERVAL:
-                                case KEY_LOW_POWER_PERCENT:
-                                case KEY_TIME_ZONE:
-                                case KEY_BUZZER_SOUND_CHOOSE:
-                                case KEY_VIBRATION_INTENSITY:
-                                case KEY_LOW_POWER_PAYLOAD_ENABLE:
+                                case KEY_SCAN_REPORT_ENABLE:
+                                case KEY_UPLOAD_PRIORITY:
+                                case KEY_POWER_LOSS_NOTIFY:
+                                case KEY_DELETE_BUFFER_DATA:
                                     if (result != 1) {
                                         savedParamsError = true;
                                     }
@@ -213,29 +200,17 @@ public class DeviceInfoActivity extends PS101BaseActivity implements RadioGroup.
                                         scannerFragment.setUpLoadPriority(value[4] & 0xff);
                                     }
                                     break;
-                                case KEY_LOW_POWER_PAYLOAD_ENABLE:
+
+                                case KEY_BATTERY_POWER:
                                     if (length > 0) {
-                                        int enable = value[4] & 0xFF;
-                                        settingsFragment.setLowPowerPayload(enable);
+                                        int battery = MokoUtils.toInt(Arrays.copyOfRange(value, 4, value.length));
+                                        settingsFragment.setBattery(battery);
                                     }
                                     break;
 
-                                case KEY_LOW_POWER_PERCENT:
+                                case KEY_POWER_LOSS_NOTIFY:
                                     if (length > 0) {
-                                        int lowPower = value[4] & 0xFF;
-                                        settingsFragment.setLowPower(lowPower);
-                                    }
-                                    break;
-
-                                case KEY_BUZZER_SOUND_CHOOSE:
-                                    if (length == 1) {
-                                        settingsFragment.setBuzzerSound(value[4] & 0xff);
-                                    }
-                                    break;
-
-                                case KEY_VIBRATION_INTENSITY:
-                                    if (length == 1) {
-                                        settingsFragment.setVibrationIntensity(value[4] & 0xff);
+                                        settingsFragment.setPowerLossNotify(value[4] & 0xff);
                                     }
                                     break;
                             }
@@ -340,7 +315,7 @@ public class DeviceInfoActivity extends PS101BaseActivity implements RadioGroup.
     }
 
     private void showSettingAndGetData() {
-        mBind.tvTitle.setText("Device Settings");
+        mBind.tvTitle.setText("Settings");
         fragmentManager.beginTransaction()
                 .hide(networkFragment)
                 .hide(posFragment)
@@ -348,13 +323,10 @@ public class DeviceInfoActivity extends PS101BaseActivity implements RadioGroup.
                 .show(settingsFragment)
                 .commit();
         showSyncingProgressDialog();
-        List<OrderTask> orderTasks = new ArrayList<>(8);
+        List<OrderTask> orderTasks = new ArrayList<>(4);
         // device
-        orderTasks.add(OrderTaskAssembler.getTimeZone());
-        orderTasks.add(OrderTaskAssembler.getLowPowerPercent());
-        orderTasks.add(OrderTaskAssembler.getLowPowerPayloadEnable());
-        orderTasks.add(OrderTaskAssembler.getBuzzerSoundChoose());
-        orderTasks.add(OrderTaskAssembler.getVibrationIntensity());
+        orderTasks.add(OrderTaskAssembler.getBattery());
+        orderTasks.add(OrderTaskAssembler.getPowerLossNotify());
         MokoSupport.getInstance().sendOrder(orderTasks.toArray(new OrderTask[]{}));
     }
 
@@ -398,63 +370,6 @@ public class DeviceInfoActivity extends PS101BaseActivity implements RadioGroup.
         MokoSupport.getInstance().sendOrder(orderTasks.toArray(new OrderTask[]{}));
     }
 
-    public void onChangePassword(View view) {
-        if (isWindowLocked()) return;
-        final ChangePasswordDialog dialog = new ChangePasswordDialog(this);
-        dialog.setOnPasswordClicked(password -> {
-            showSyncingProgressDialog();
-            MokoSupport.getInstance().sendOrder(OrderTaskAssembler.changePassword(password));
-        });
-        dialog.show();
-        Timer timer = new Timer();
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                runOnUiThread(dialog::showKeyboard);
-            }
-        }, 200);
-    }
-
-    public void onLocalDataSync(View view) {
-        if (isWindowLocked()) return;
-        startActivity(new Intent(this, ExportDataActivity.class));
-    }
-
-    public void onIndicatorSettings(View view) {
-        if (isWindowLocked()) return;
-        startActivity(new Intent(this, IndicatorSettingsActivity.class));
-    }
-
-    public void selectTimeZone(View view) {
-        if (isWindowLocked()) return;
-        settingsFragment.showTimeZoneDialog();
-    }
-
-    public void onLowPowerPayload(View view) {
-        if (isWindowLocked()) return;
-        settingsFragment.changeLowPowerPayload();
-    }
-
-    public void onBuzzer(View view) {
-        if (isWindowLocked()) return;
-        settingsFragment.showBuzzerDialog();
-    }
-
-    public void onVibration(View view) {
-        if (isWindowLocked()) return;
-        settingsFragment.showVibrationDialog();
-    }
-
-    public void selectLowPowerPrompt(View view) {
-        if (isWindowLocked()) return;
-        settingsFragment.showLowPowerDialog();
-    }
-
-    public void onDeviceInfo(View view) {
-        if (isWindowLocked()) return;
-        launcher.launch(new Intent(this, SystemInfoActivity.class));
-    }
-
     private final ActivityResultLauncher<Intent> launcher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
         int resultCode = result.getResultCode();
         if (resultCode == RESULT_OK) {
@@ -480,23 +395,4 @@ public class DeviceInfoActivity extends PS101BaseActivity implements RadioGroup.
             }, 500);
         }
     });
-
-    public void onFactoryReset(View view) {
-        if (isWindowLocked()) return;
-        AlertMessageDialog dialog = new AlertMessageDialog();
-        dialog.setTitle("Factory Reset!");
-        dialog.setMessage("After factory reset,all the data will be reseted to the factory values.");
-        dialog.setConfirm("OK");
-        dialog.setOnAlertConfirmListener(() -> {
-            showSyncingProgressDialog();
-            MokoSupport.getInstance().sendOrder(OrderTaskAssembler.restore());
-        });
-        dialog.show(getSupportFragmentManager());
-    }
-
-    public void onOffSetting(View view) {
-        if (isWindowLocked()) return;
-        Intent intent = new Intent(this, OnOffSettingsActivity.class);
-        startActivity(intent);
-    }
 }

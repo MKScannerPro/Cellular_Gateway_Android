@@ -52,7 +52,7 @@
             android:id="@+id/cbTlm"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:button="null"
+            android:button="@null"
             android:drawableEnd="@drawable/selector_cb_btn"
             android:gravity="center_vertical"
             android:paddingStart="12dp"

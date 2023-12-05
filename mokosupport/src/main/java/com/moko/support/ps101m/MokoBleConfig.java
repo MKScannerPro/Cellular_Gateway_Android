@@ -6,6 +6,8 @@ import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattService;
 import android.content.Context;
 
+import androidx.annotation.NonNull;
+
 import com.elvishew.xlog.XLog;
 import com.moko.ble.lib.MokoBleManager;
 import com.moko.ble.lib.callback.MokoResponseCallback;
@@ -15,15 +17,12 @@ import com.moko.support.ps101m.entity.OrderServices;
 
 import java.util.UUID;
 
-import androidx.annotation.NonNull;
-
 final class MokoBleConfig extends MokoBleManager {
 
     private final MokoResponseCallback mMokoResponseCallback;
     private BluetoothGattCharacteristic passwordCharacteristic;
     private BluetoothGattCharacteristic disconnectedCharacteristic;
     private BluetoothGattCharacteristic paramsCharacteristic;
-    private BluetoothGattCharacteristic storageDataCharacteristic;
     private BluetoothGattCharacteristic logCharacteristic;
 
     public MokoBleConfig(@NonNull Context context, MokoResponseCallback callback) {
@@ -37,12 +36,10 @@ final class MokoBleConfig extends MokoBleManager {
         if (service != null) {
             passwordCharacteristic = service.getCharacteristic(OrderCHAR.CHAR_PASSWORD.getUuid());
             disconnectedCharacteristic = service.getCharacteristic(OrderCHAR.CHAR_DISCONNECTED_NOTIFY.getUuid());
-            storageDataCharacteristic = service.getCharacteristic(OrderCHAR.CHAR_STORAGE_DATA_NOTIFY.getUuid());
             paramsCharacteristic = service.getCharacteristic(OrderCHAR.CHAR_PARAMS.getUuid());
             logCharacteristic = service.getCharacteristic(OrderCHAR.CHAR_LOG.getUuid());
             enablePasswordNotify();
             enableDisconnectedNotify();
-            enableStorageDataNotify();
             enableParamNotify();
             return true;
         }
@@ -135,20 +132,6 @@ final class MokoBleConfig extends MokoBleManager {
 
     public void disableParamNotify() {
         disableNotifications(paramsCharacteristic).enqueue();
-    }
-
-    public void enableStorageDataNotify() {
-        setIndicationCallback(storageDataCharacteristic).with((device, data) -> {
-            final byte[] value = data.getValue();
-            XLog.e("onDataReceived");
-            XLog.e("device to app : " + MokoUtils.bytesToHexString(value));
-            mMokoResponseCallback.onCharacteristicChanged(storageDataCharacteristic, value);
-        });
-        enableNotifications(storageDataCharacteristic).enqueue();
-    }
-
-    public void disableStorageDataNotify() {
-        disableNotifications(storageDataCharacteristic).enqueue();
     }
 
     public void enableLogNotify() {

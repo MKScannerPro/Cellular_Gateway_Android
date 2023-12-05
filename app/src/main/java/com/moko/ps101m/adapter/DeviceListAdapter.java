@@ -10,7 +10,7 @@ import com.moko.ps101m.entity.AdvInfo;
 
 public class DeviceListAdapter extends BaseQuickAdapter<AdvInfo, BaseViewHolder> {
     public DeviceListAdapter() {
-        super(R.layout.ps101m_list_item_device);
+        super(R.layout.mkgw4_list_item_device);
     }
 
     @Override
@@ -20,12 +20,15 @@ public class DeviceListAdapter extends BaseQuickAdapter<AdvInfo, BaseViewHolder>
         final String name = TextUtils.isEmpty(item.name) ? "N/A" : item.name;
         helper.setText(R.id.tv_name, name);
         helper.setText(R.id.tv_mac, String.format("MAC:%s", item.mac));
-
-        final String intervalTime = item.intervalTime == 0 ? "<->N/A" : String.format("<->%dms", item.intervalTime);
-        helper.setText(R.id.tv_track_interval, intervalTime);
-        helper.setText(R.id.tv_battery_percent, item.powerPercent + "%");
-        helper.setText(R.id.tvBattery, MokoUtils.getDecimalFormat("#.###").format(item.batteryVoltage * 0.001)+"V");
-        helper.setText(R.id.tv_tx_power, String.format("Tx Power:%ddBm", item.txPower));
+        if (!TextUtils.isEmpty(item.uuid)) {
+            helper.setGone(R.id.layoutIBeacon, true);
+            helper.setText(R.id.tv_uuid, item.uuid);
+            helper.setText(R.id.tv_major, item.major);
+            helper.setText(R.id.tv_minor, item.minor);
+            helper.setText(R.id.tv_rssi_1m, item.rssi1M);
+        } else {
+            helper.setGone(R.id.layoutIBeacon, false);
+        }
         helper.setVisible(R.id.tv_connect, item.connectable);
         helper.addOnClickListener(R.id.tv_connect);
     }

@@ -27,7 +27,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="Debugger Mode"
+            android:text="Debug Mode"
             android:textColor="@color/white_ffffff"
             android:textSize="17sp"
             android:textStyle="bold" />
@@ -92,6 +92,7 @@
             android:layout_below="@id/tv_sync_switch"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp"
+            tools:itemCount="5"
             android:background="@color/white_ffffff"
             tools:listitem="@layout/ps101m_item_log_data" />
 

@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.text.InputFilter;
 import android.text.TextUtils;
 import android.view.View;
 
@@ -14,9 +15,9 @@ import com.moko.ble.lib.event.ConnectStatusEvent;
 import com.moko.ble.lib.event.OrderTaskResponseEvent;
 import com.moko.ble.lib.task.OrderTask;
 import com.moko.ble.lib.task.OrderTaskResponse;
+import com.moko.ble.lib.utils.MokoUtils;
 import com.moko.ps101m.activity.PS101BaseActivity;
-import com.moko.ps101m.databinding.Ps101mActivityAlarmFunctionBinding;
-import com.moko.ps101m.dialog.BottomDialog;
+import com.moko.ps101m.databinding.ActivitySyncTimeFromNtpBinding;
 import com.moko.ps101m.utils.ToastUtils;
 import com.moko.support.ps101m.MokoSupport;
 import com.moko.support.ps101m.OrderTaskAssembler;
@@ -31,22 +32,16 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-/**
- * @author: jun.liu
- * @date: 2023/6/8 10:43
- * @des:
- */
-public class AlarmFunctionActivity extends PS101BaseActivity {
-    private Ps101mActivityAlarmFunctionBinding mBind;
-    private boolean mReceiverTag;
-    private final String[] mValues = {"NO", "Alert", "SOS"};
-    private int mSelected;
-    private int alarmTypeFlag;
+public class SyncTimeFromNtpActivity extends PS101BaseActivity {
+    private ActivitySyncTimeFromNtpBinding mBind;
+    private boolean mReceiverTag = false;
+    private boolean savedParamsError;
+    private final String FILTER_ASCII = "[ -~]*";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mBind = Ps101mActivityAlarmFunctionBinding.inflate(getLayoutInflater());
+        mBind = ActivitySyncTimeFromNtpBinding.inflate(getLayoutInflater());
         setContentView(mBind.getRoot());
         EventBus.getDefault().register(this);
         // 注册广播接收器
@@ -54,25 +49,25 @@ public class AlarmFunctionActivity extends PS101BaseActivity {
         filter.addAction(BluetoothAdapter.ACTION_STATE_CHANGED);
         registerReceiver(mReceiver, filter);
         mReceiverTag = true;
+        initData();
         showSyncingProgressDialog();
         List<OrderTask> orderTasks = new ArrayList<>(4);
-        orderTasks.add(OrderTaskAssembler.getAlarmType());
-        orderTasks.add(OrderTaskAssembler.getAlarmExitTime());
-        MokoSupport.getInstance().sendOrder(orderTasks.toArray(new OrderTask[]{}));
+        orderTasks.add(OrderTaskAssembler.getNtpEnable());
+        orderTasks.add(OrderTaskAssembler.getNtpSyncInterval());
+        orderTasks.add(OrderTaskAssembler.getNtpServer());
+        MokoSupport.getInstance().sendOrder(orderTasks.toArray(new OrderTask[0]));
+    }
 
-        mBind.tvAlarmType.setOnClickListener(v -> {
-            if (isWindowLocked()) return;
-            BottomDialog dialog = new BottomDialog();
-            dialog.setDatas(new ArrayList<>(Arrays.asList(mValues)), mSelected);
-            dialog.setListener(value -> {
-                mSelected = value;
-                mBind.tvAlarmType.setText(mValues[value]);
-            });
-            dialog.show(getSupportFragmentManager());
-        });
-
-        mBind.tvAlertAlarmSetting.setOnClickListener(v -> startActivity(new Intent(this, AlertAlarmSettingActivity.class)));
-        mBind.tvSosAlarmSetting.setOnClickListener(v -> startActivity(new Intent(this, AlarmSosSettingActivity.class)));
+    private void initData() {
+        InputFilter inputFilter = (source, start, end, dest, dstart, dend) -> {
+            if (!(source + "").matches(FILTER_ASCII)) {
+                return "";
+            }
+            return null;
+        };
+        mBind.etServer.setFilters(new InputFilter[]{new InputFilter.LengthFilter(64), inputFilter});
+        mBind.cbSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> mBind.group.setVisibility(isChecked ? View.VISIBLE : View.GONE));
+        mBind.ivSave.setOnClickListener(v -> save());
     }
 
     @Subscribe(threadMode = ThreadMode.POSTING, priority = 300)
@@ -99,44 +94,48 @@ public class AlarmFunctionActivity extends PS101BaseActivity {
                 OrderCHAR orderCHAR = (OrderCHAR) response.orderCHAR;
                 byte[] value = response.responseValue;
                 if (orderCHAR == OrderCHAR.CHAR_PARAMS) {
-                    if (null != value && value.length >= 4) {
+                    if (value.length >= 4) {
                         int header = value[0] & 0xFF;// 0xED
                         int flag = value[1] & 0xFF;// read or write
                         int cmd = value[2] & 0xFF;
                         ParamsKeyEnum configKeyEnum = ParamsKeyEnum.fromParamKey(cmd);
-                        if (header != 0xED || null == configKeyEnum) return;
+                        if (header != 0xED || configKeyEnum == null) return;
                         int length = value[3] & 0xFF;
                         if (flag == 0x01) {
                             // write
+                            int result = value[4] & 0xFF;
                             switch (configKeyEnum) {
-                                case KEY_ALARM_TYPE:
-                                    alarmTypeFlag = value[4] & 0xff;
+                                case KEY_NTP_SERVER:
+                                case KEY_NTP_SYNC_INTERVAL:
+                                    if (result != 1) savedParamsError = true;
                                     break;
 
-                                case KEY_ALARM_EXIT_TIME:
-                                    if (alarmTypeFlag == 1 && (value[4] & 0xff) == 1) {
-                                        ToastUtils.showToast(this, "Save Successfully！");
-                                    } else {
-                                        ToastUtils.showToast(this, "Opps！Save failed. Please check the input characters and try again.");
-                                    }
+                                case KEY_NTP_SWITCH:
+                                    if (result != 1) savedParamsError = true;
+                                    ToastUtils.showToast(this, !savedParamsError ? "Setup succeed" : "Setup failed");
                                     break;
                             }
-                        }
-                        if (flag == 0x00) {
+                        } else if (flag == 0x00) {
                             // read
                             switch (configKeyEnum) {
-                                case KEY_ALARM_TYPE:
+                                case KEY_NTP_SWITCH:
                                     if (length == 1) {
-                                        mSelected = value[4] & 0xff;
-                                        mBind.tvAlarmType.setText(mValues[mSelected]);
+                                        mBind.cbSwitch.setChecked((value[4] & 0xff) == 1);
                                     }
                                     break;
 
-                                case KEY_ALARM_EXIT_TIME:
-                                    if (length == 1) {
-                                        int time = value[4] & 0xff;
-                                        mBind.etExitAlarmTime.setText(String.valueOf(time));
-                                        mBind.etExitAlarmTime.setSelection(mBind.etExitAlarmTime.getText().length());
+                                case KEY_NTP_SYNC_INTERVAL:
+                                    if (length > 0) {
+                                        int interval = MokoUtils.toInt(Arrays.copyOfRange(value, 4, value.length));
+                                        mBind.etInterval.setText(String.valueOf(interval));
+                                        mBind.etInterval.setSelection(mBind.etInterval.getText().length());
+                                    }
+                                    break;
+
+                                case KEY_NTP_SERVER:
+                                    if (length > 0) {
+                                        mBind.etServer.setText(new String(Arrays.copyOfRange(value, 4, value.length)));
+                                        mBind.etServer.setSelection(mBind.etServer.getText().length());
                                     }
                                     break;
                             }
@@ -147,32 +146,8 @@ public class AlarmFunctionActivity extends PS101BaseActivity {
         });
     }
 
-    public void onSave(View view) {
-        if (isWindowLocked()) return;
-        if (isValid()) {
-            showSyncingProgressDialog();
-            saveParams();
-        } else {
-            ToastUtils.showToast(this, "Para error!");
-        }
-    }
-
-    private void saveParams() {
-        int time = Integer.parseInt(mBind.etExitAlarmTime.getText().toString());
-        List<OrderTask> orderTasks = new ArrayList<>(2);
-        orderTasks.add(OrderTaskAssembler.setAlarmType(mSelected));
-        orderTasks.add(OrderTaskAssembler.setAlarmExitTime(time));
-        MokoSupport.getInstance().sendOrder(orderTasks.toArray(new OrderTask[]{}));
-    }
-
-    private boolean isValid() {
-        if (TextUtils.isEmpty(mBind.etExitAlarmTime.getText())) return false;
-        String timeStr = mBind.etExitAlarmTime.getText().toString();
-        int time = Integer.parseInt(timeStr);
-        return time >= 5 && time <= 15;
-    }
-
     private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
+
         @Override
         public void onReceive(Context context, Intent intent) {
             if (intent != null) {
@@ -188,6 +163,33 @@ public class AlarmFunctionActivity extends PS101BaseActivity {
         }
     };
 
+    private void save() {
+        if (isWindowLocked()) return;
+        if (isValid()) {
+            showSyncingProgressDialog();
+            List<OrderTask> orderTasks = new ArrayList<>(4);
+            orderTasks.add(OrderTaskAssembler.setNtpEnable(mBind.cbSwitch.isChecked() ? 1 : 0));
+            if (mBind.cbSwitch.isChecked()) {
+                int interval = Integer.parseInt(mBind.etInterval.getText().toString());
+                orderTasks.add(OrderTaskAssembler.setNtpSyncInterval(interval));
+                String server = TextUtils.isEmpty(mBind.etServer.getText()) ? null : mBind.etServer.getText().toString();
+                orderTasks.add(OrderTaskAssembler.setNtpServer(server));
+            }
+            MokoSupport.getInstance().sendOrder(orderTasks.toArray(new OrderTask[0]));
+        } else {
+            ToastUtils.showToast(this, "Para error!");
+        }
+    }
+
+    private boolean isValid() {
+        if (mBind.cbSwitch.isChecked()) {
+            if (TextUtils.isEmpty(mBind.etInterval.getText())) return false;
+            int interval = Integer.parseInt(mBind.etInterval.getText().toString());
+            return interval >= 1 && interval <= 720;
+        }
+        return true;
+    }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -196,10 +198,21 @@ public class AlarmFunctionActivity extends PS101BaseActivity {
             // 注销广播
             unregisterReceiver(mReceiver);
         }
-        EventBus.getDefault().unregister(this);
+        if (EventBus.getDefault().isRegistered(this))
+            EventBus.getDefault().unregister(this);
     }
 
     public void onBack(View view) {
+        backHome();
+    }
+
+    @Override
+    public void onBackPressed() {
+        backHome();
+    }
+
+    private void backHome() {
+        EventBus.getDefault().unregister(this);
         finish();
     }
 }

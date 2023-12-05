@@ -27,5 +27,105 @@
             style="@style/NormalText"
             android:layout_marginTop="1dp"
             android:text="Heartbeat report settings" />
+
+        <TextView
+            android:id="@+id/tvSystemTime"
+            style="@style/NormalText"
+            android:layout_marginTop="1dp"
+            android:text="System time" />
+
+        <LinearLayout
+            android:id="@+id/layoutBattery"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="1dp"
+            android:background="@color/white_ffffff"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingStart="12dp">
+
+            <TextView
+                android:layout_width="0px"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:text="Battery management"
+                android:textColor="@color/black_333333"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/tvBattery"
+                style="@style/NormalText"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginTop="1dp"
+                android:drawablePadding="12dp"
+                tools:text="3300mV" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tvDeleteBufferData"
+            style="@style/NormalText"
+            android:layout_marginTop="1dp"
+            android:text="Delete buffer data" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="1dp"
+            android:background="@color/white_ffffff"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingStart="12dp">
+
+            <TextView
+                android:layout_width="0px"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:text="Power loss notification"
+                android:textColor="@color/black_333333"
+                android:textSize="15sp" />
+
+            <ImageView
+                android:id="@+id/ivPowerNotification"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="12dp"
+                android:paddingTop="6dp"
+                android:paddingEnd="12dp"
+                android:paddingBottom="6dp"
+                android:src="@drawable/ps101_ic_unchecked" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tvReboot"
+            style="@style/NormalText"
+            android:layout_marginTop="10dp"
+            android:text="Reboot" />
+
+        <TextView
+            android:id="@+id/tvPowerOff"
+            style="@style/NormalText"
+            android:layout_marginTop="1dp"
+            android:text="Power off" />
+
+        <TextView
+            android:id="@+id/tvReset"
+            style="@style/NormalText"
+            android:layout_marginTop="1dp"
+            android:text="Reset" />
+
+        <TextView
+            android:id="@+id/tvDeviceInfo"
+            style="@style/NormalText"
+            android:layout_marginTop="10dp"
+            android:text="Device information" />
+
+        <TextView
+            android:id="@+id/tvDebugMode"
+            style="@style/NormalText"
+            android:layout_marginTop="1dp"
+            android:text="Debug mode" />
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>
