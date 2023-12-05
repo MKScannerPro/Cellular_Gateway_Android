@@ -13,14 +13,14 @@ import androidx.fragment.app.Fragment;
 import com.moko.ble.lib.task.OrderTask;
 import com.moko.mkgw4.AppConstants;
 import com.moko.mkgw4.R;
-import com.moko.mkgw4.activity.DeviceInfoActivity;
-import com.moko.mkgw4.activity.setting.LogDataActivity;
-import com.moko.mkgw4.activity.setting.SystemInfoActivity;
+import com.moko.mkgw4.activity.MkGw4DeviceInfoActivity;
+import com.moko.mkgw4.activity.setting.MkGw4LogDataActivity;
+import com.moko.mkgw4.activity.setting.MkGw4SystemInfoActivity;
 import com.moko.mkgw4.activity.setting.BatteryManagementActivity;
 import com.moko.mkgw4.activity.setting.BleParametersActivity;
 import com.moko.mkgw4.activity.setting.HeartReportSettingActivity;
 import com.moko.mkgw4.activity.setting.LedSettingsActivity;
-import com.moko.mkgw4.activity.setting.SystemTimeActivity;
+import com.moko.mkgw4.activity.setting.MkGw4SystemTimeActivity;
 import com.moko.mkgw4.databinding.FragmentSettingsBinding;
 import com.moko.mkgw4.dialog.AlertMessageDialog;
 import com.moko.support.mkgw4.MokoSupport;
@@ -32,7 +32,7 @@ import java.util.List;
 public class SettingsFragment extends Fragment {
     private static final String TAG = SettingsFragment.class.getSimpleName();
     private FragmentSettingsBinding mBind;
-    private DeviceInfoActivity activity;
+    private MkGw4DeviceInfoActivity activity;
     private boolean isNotifyEnable;
     private String mac;
 
@@ -47,7 +47,7 @@ public class SettingsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.i(TAG, "onCreateView: ");
         mBind = FragmentSettingsBinding.inflate(inflater, container, false);
-        activity = (DeviceInfoActivity) getActivity();
+        activity = (MkGw4DeviceInfoActivity) getActivity();
         initView();
         return mBind.getRoot();
     }
@@ -67,11 +67,11 @@ public class SettingsFragment extends Fragment {
         mBind.tvLedSetting.setOnClickListener(v -> start(LedSettingsActivity.class));
         mBind.tvBleParams.setOnClickListener(v -> start(BleParametersActivity.class));
         mBind.tvHeartReportSeting.setOnClickListener(v -> start(HeartReportSettingActivity.class));
-        mBind.tvSystemTime.setOnClickListener(v -> start(SystemTimeActivity.class));
+        mBind.tvSystemTime.setOnClickListener(v -> start(MkGw4SystemTimeActivity.class));
         mBind.layoutBattery.setOnClickListener(v -> start(BatteryManagementActivity.class));
-        mBind.tvDeviceInfo.setOnClickListener(v -> start(SystemInfoActivity.class));
+        mBind.tvDeviceInfo.setOnClickListener(v -> start(MkGw4SystemInfoActivity.class));
         mBind.tvDebugMode.setOnClickListener(v -> {
-            Intent intent = new Intent(requireActivity(), LogDataActivity.class);
+            Intent intent = new Intent(requireActivity(), MkGw4LogDataActivity.class);
             intent.putExtra(AppConstants.EXTRA_KEY_DEVICE_MAC, mac);
             startActivity(intent);
         });

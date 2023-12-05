@@ -18,7 +18,7 @@ import com.moko.ble.lib.task.OrderTask;
 import com.moko.ble.lib.task.OrderTaskResponse;
 import com.moko.ble.lib.utils.MokoUtils;
 import com.moko.mkgw4.R;
-import com.moko.mkgw4.activity.BaseActivity;
+import com.moko.mkgw4.activity.MkGw4BaseActivity;
 import com.moko.mkgw4.databinding.ActivityBleParametersBinding;
 import com.moko.mkgw4.utils.ToastUtils;
 import com.moko.support.mkgw4.MokoSupport;
@@ -39,7 +39,7 @@ import java.util.List;
  * @date: 2023/6/8 15:14
  * @des:
  */
-public class BleParametersActivity extends BaseActivity implements SeekBar.OnSeekBarChangeListener {
+public class BleParametersActivity extends MkGw4BaseActivity implements SeekBar.OnSeekBarChangeListener {
     private ActivityBleParametersBinding mBind;
     private boolean mReceiverTag;
     private boolean isParamsError;

@@ -15,9 +15,9 @@ import com.moko.ble.lib.event.OrderTaskResponseEvent;
 import com.moko.ble.lib.task.OrderTask;
 import com.moko.ble.lib.task.OrderTaskResponse;
 import com.moko.ble.lib.utils.MokoUtils;
-import com.moko.mkgw4.activity.BaseActivity;
+import com.moko.mkgw4.activity.MkGw4BaseActivity;
 import com.moko.mkgw4.databinding.ActivityPeriodicScanPeriodicReportBinding;
-import com.moko.mkgw4.dialog.BottomDialog;
+import com.moko.mkgw4.dialog.MkGw4BottomDialog;
 import com.moko.mkgw4.utils.ToastUtils;
 import com.moko.support.mkgw4.MokoSupport;
 import com.moko.support.mkgw4.OrderTaskAssembler;
@@ -32,7 +32,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class PeriodicScanPeriodicReportActivity extends BaseActivity {
+public class PeriodicScanPeriodicReportActivity extends MkGw4BaseActivity {
     private ActivityPeriodicScanPeriodicReportBinding mBind;
     private boolean mReceiverTag = false;
     private boolean savedParamsError;
@@ -167,7 +167,7 @@ public class PeriodicScanPeriodicReportActivity extends BaseActivity {
 
     private void selectPriority() {
         if (isWindowLocked()) return;
-        BottomDialog dialog = new BottomDialog();
+        MkGw4BottomDialog dialog = new MkGw4BottomDialog();
         dialog.setDatas(new ArrayList<>(Arrays.asList(mValues)), mSelected);
         dialog.setListener(value -> {
             mSelected = value;

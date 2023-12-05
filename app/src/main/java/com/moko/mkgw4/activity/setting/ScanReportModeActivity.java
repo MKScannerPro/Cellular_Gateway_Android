@@ -12,9 +12,9 @@ import com.moko.ble.lib.MokoConstants;
 import com.moko.ble.lib.event.ConnectStatusEvent;
 import com.moko.ble.lib.event.OrderTaskResponseEvent;
 import com.moko.ble.lib.task.OrderTaskResponse;
-import com.moko.mkgw4.activity.BaseActivity;
+import com.moko.mkgw4.activity.MkGw4BaseActivity;
 import com.moko.mkgw4.databinding.ActivityScanReportModeBinding;
-import com.moko.mkgw4.dialog.BottomDialog;
+import com.moko.mkgw4.dialog.MkGw4BottomDialog;
 import com.moko.mkgw4.utils.ToastUtils;
 import com.moko.support.mkgw4.MokoSupport;
 import com.moko.support.mkgw4.OrderTaskAssembler;
@@ -28,7 +28,7 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class ScanReportModeActivity extends BaseActivity {
+public class ScanReportModeActivity extends MkGw4BaseActivity {
     private ActivityScanReportModeBinding mBind;
     private boolean mReceiverTag;
     private final String[] mValues = {"turn off scan", "Real time scan& immediate report", "real time scan & periodic report",
@@ -157,7 +157,7 @@ public class ScanReportModeActivity extends BaseActivity {
 
     private void selectDeviceMode() {
         if (isWindowLocked()) return;
-        BottomDialog dialog = new BottomDialog();
+        MkGw4BottomDialog dialog = new MkGw4BottomDialog();
         dialog.setDatas(new ArrayList<>(Arrays.asList(mValues)), mSelected);
         dialog.setListener(value -> {
             mSelected = value;

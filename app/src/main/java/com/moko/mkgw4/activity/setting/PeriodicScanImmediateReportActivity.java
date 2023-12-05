@@ -14,7 +14,7 @@ import com.moko.ble.lib.event.ConnectStatusEvent;
 import com.moko.ble.lib.event.OrderTaskResponseEvent;
 import com.moko.ble.lib.task.OrderTaskResponse;
 import com.moko.ble.lib.utils.MokoUtils;
-import com.moko.mkgw4.activity.BaseActivity;
+import com.moko.mkgw4.activity.MkGw4BaseActivity;
 import com.moko.mkgw4.databinding.ActivityPeriodicScanImmediateReportBinding;
 import com.moko.mkgw4.utils.ToastUtils;
 import com.moko.support.mkgw4.MokoSupport;
@@ -33,7 +33,7 @@ import java.util.Arrays;
  * @date: 2023/11/29 14:54
  * @des:
  */
-public class PeriodicScanImmediateReportActivity extends BaseActivity {
+public class PeriodicScanImmediateReportActivity extends MkGw4BaseActivity {
     private ActivityPeriodicScanImmediateReportBinding mBind;
     private boolean mReceiverTag = false;
 

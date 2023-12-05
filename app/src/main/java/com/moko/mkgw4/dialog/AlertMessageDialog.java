@@ -11,9 +11,9 @@ import androidx.annotation.StringRes;
 import androidx.core.content.ContextCompat;
 
 import com.moko.mkgw4.R;
-import com.moko.mkgw4.databinding.Ps101mDialogAlertBinding;
+import com.moko.mkgw4.databinding.DialogAlertBinding;
 
-public class AlertMessageDialog extends MokoBaseDialog<Ps101mDialogAlertBinding> {
+public class AlertMessageDialog extends MokoBaseDialog<DialogAlertBinding> {
     public static final String TAG = AlertMessageDialog.class.getSimpleName();
     private String cancel;
     private String confirm;
@@ -27,8 +27,8 @@ public class AlertMessageDialog extends MokoBaseDialog<Ps101mDialogAlertBinding>
     private int messageTextColorId = -1;
 
     @Override
-    protected Ps101mDialogAlertBinding getViewBind(LayoutInflater inflater, ViewGroup container) {
-        return Ps101mDialogAlertBinding.inflate(inflater, container, false);
+    protected DialogAlertBinding getViewBind(LayoutInflater inflater, ViewGroup container) {
+        return DialogAlertBinding.inflate(inflater, container, false);
     }
 
     @Override

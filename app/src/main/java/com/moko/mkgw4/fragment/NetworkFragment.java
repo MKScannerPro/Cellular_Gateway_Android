@@ -10,8 +10,8 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import com.moko.mkgw4.activity.setting.MqttSettingsActivity;
-import com.moko.mkgw4.activity.setting.NetworkSettingsActivity;
+import com.moko.mkgw4.activity.setting.MkGw4MqttSettingsActivity;
+import com.moko.mkgw4.activity.setting.MkGw4NetworkSettingsActivity;
 import com.moko.mkgw4.databinding.FragmentNetworkBinding;
 
 public class NetworkFragment extends Fragment {
@@ -29,8 +29,8 @@ public class NetworkFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.i(TAG, "onCreateView: ");
         mBind = FragmentNetworkBinding.inflate(inflater, container, false);
-        mBind.layoutMqttStatus.setOnClickListener(v -> startActivity(new Intent(requireActivity(), MqttSettingsActivity.class)));
-        mBind.layoutNetworkStatus.setOnClickListener(v -> startActivity(new Intent(requireActivity(), NetworkSettingsActivity.class)));
+        mBind.layoutMqttStatus.setOnClickListener(v -> startActivity(new Intent(requireActivity(), MkGw4MqttSettingsActivity.class)));
+        mBind.layoutNetworkStatus.setOnClickListener(v -> startActivity(new Intent(requireActivity(), MkGw4NetworkSettingsActivity.class)));
         return mBind.getRoot();
     }
 

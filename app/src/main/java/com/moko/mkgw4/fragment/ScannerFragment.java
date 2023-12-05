@@ -12,12 +12,12 @@ import androidx.fragment.app.Fragment;
 
 import com.moko.ble.lib.task.OrderTask;
 import com.moko.mkgw4.R;
-import com.moko.mkgw4.activity.DeviceInfoActivity;
+import com.moko.mkgw4.activity.MkGw4DeviceInfoActivity;
 import com.moko.mkgw4.activity.ScannerFilterSettingsActivity;
 import com.moko.mkgw4.activity.payload.PayloadSettingsActivity;
 import com.moko.mkgw4.activity.setting.ScanReportModeActivity;
 import com.moko.mkgw4.databinding.FragmentScannerBinding;
-import com.moko.mkgw4.dialog.BottomDialog;
+import com.moko.mkgw4.dialog.MkGw4BottomDialog;
 import com.moko.support.mkgw4.MokoSupport;
 import com.moko.support.mkgw4.OrderTaskAssembler;
 
@@ -56,7 +56,7 @@ public class ScannerFragment extends Fragment {
         mBind.tvScannerReportMode.setOnClickListener(v -> startActivity(new Intent(requireActivity(), ScanReportModeActivity.class)));
         mBind.ivModeSwitch.setOnClickListener(v -> {
             if (null != getActivity()) {
-                ((DeviceInfoActivity) getActivity()).showSyncingProgressDialog();
+                ((MkGw4DeviceInfoActivity) getActivity()).showSyncingProgressDialog();
                 List<OrderTask> orderTasks = new ArrayList<>(4);
                 orderTasks.add(OrderTaskAssembler.setScanReportEnable(modeEnable ? 0 : 1));
                 orderTasks.add(OrderTaskAssembler.getScanReportEnable());
@@ -65,10 +65,10 @@ public class ScannerFragment extends Fragment {
         });
         mBind.tvUploadPriority.setOnClickListener(v -> {
             if (null != getActivity()) {
-                BottomDialog dialog = new BottomDialog();
+                MkGw4BottomDialog dialog = new MkGw4BottomDialog();
                 dialog.setDatas(new ArrayList<>(Arrays.asList(priorityValue)), prioritySelect);
                 dialog.setListener(value -> {
-                    ((DeviceInfoActivity) getActivity()).showSyncingProgressDialog();
+                    ((MkGw4DeviceInfoActivity) getActivity()).showSyncingProgressDialog();
                     List<OrderTask> orderTasks = new ArrayList<>(4);
                     orderTasks.add(OrderTaskAssembler.setUploadPriority(value));
                     orderTasks.add(OrderTaskAssembler.getUploadPriority());

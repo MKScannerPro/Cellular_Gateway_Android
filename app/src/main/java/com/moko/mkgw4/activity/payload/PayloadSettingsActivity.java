@@ -3,7 +3,7 @@ package com.moko.mkgw4.activity.payload;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.moko.mkgw4.activity.BaseActivity;
+import com.moko.mkgw4.activity.MkGw4BaseActivity;
 import com.moko.mkgw4.databinding.ActivityPayloadSettingsBinding;
 
 /**
@@ -11,7 +11,7 @@ import com.moko.mkgw4.databinding.ActivityPayloadSettingsBinding;
  * @date: 2023/11/30 16:46
  * @des:
  */
-public class PayloadSettingsActivity extends BaseActivity {
+public class PayloadSettingsActivity extends MkGw4BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

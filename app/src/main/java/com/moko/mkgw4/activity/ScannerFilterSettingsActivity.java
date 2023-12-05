@@ -16,11 +16,11 @@ import com.moko.ble.lib.event.OrderTaskResponseEvent;
 import com.moko.ble.lib.task.OrderTask;
 import com.moko.ble.lib.task.OrderTaskResponse;
 import com.moko.mkgw4.R;
-import com.moko.mkgw4.activity.filter.FilterAdvNameActivity;
-import com.moko.mkgw4.activity.filter.FilterMacAddressActivity;
-import com.moko.mkgw4.activity.filter.FilterRawDataActivity;
+import com.moko.mkgw4.activity.filter.MkGw4FilterAdvNameActivity;
+import com.moko.mkgw4.activity.filter.MkGw4FilterMacAddressActivity;
+import com.moko.mkgw4.activity.filter.MkGw4FilterRawDataActivity;
 import com.moko.mkgw4.databinding.ActivityScannerFilterSettingsBinding;
-import com.moko.mkgw4.dialog.BottomDialog;
+import com.moko.mkgw4.dialog.MkGw4BottomDialog;
 import com.moko.mkgw4.utils.ToastUtils;
 import com.moko.support.mkgw4.MokoSupport;
 import com.moko.support.mkgw4.OrderTaskAssembler;
@@ -36,7 +36,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
-public class ScannerFilterSettingsActivity extends BaseActivity implements SeekBar.OnSeekBarChangeListener {
+public class ScannerFilterSettingsActivity extends MkGw4BaseActivity implements SeekBar.OnSeekBarChangeListener {
     private ActivityScannerFilterSettingsBinding mBind;
     private boolean mReceiverTag = false;
     private boolean savedParamsError;
@@ -214,7 +214,7 @@ public class ScannerFilterSettingsActivity extends BaseActivity implements SeekB
 
     public void onDuplicateFilter() {
         if (isWindowLocked()) return;
-        BottomDialog dialog = new BottomDialog();
+        MkGw4BottomDialog dialog = new MkGw4BottomDialog();
         dialog.setDatas(new ArrayList<>(Arrays.asList(duplicateDataValues)), duplicateDataSelected);
         dialog.setListener(value -> {
             duplicateDataSelected = value;
@@ -225,7 +225,7 @@ public class ScannerFilterSettingsActivity extends BaseActivity implements SeekB
 
     public void onFilterType() {
         if (isWindowLocked()) return;
-        BottomDialog dialog = new BottomDialog();
+        MkGw4BottomDialog dialog = new MkGw4BottomDialog();
         dialog.setDatas(new ArrayList<>(Arrays.asList(mFilterTypeValues)), mFilterTypeSelected);
         dialog.setListener(value -> {
             mFilterTypeSelected = value;
@@ -236,7 +236,7 @@ public class ScannerFilterSettingsActivity extends BaseActivity implements SeekB
 
     public void onFilterRelationship() {
         if (isWindowLocked()) return;
-        BottomDialog dialog = new BottomDialog();
+        MkGw4BottomDialog dialog = new MkGw4BottomDialog();
         dialog.setDatas(new ArrayList<>(Arrays.asList(mRelationshipValues)), mRelationshipSelected);
         dialog.setListener(value -> {
             mRelationshipSelected = value;
@@ -247,19 +247,19 @@ public class ScannerFilterSettingsActivity extends BaseActivity implements SeekB
 
     public void onFilterByMac(View view) {
         if (isWindowLocked()) return;
-        Intent intent = new Intent(this, FilterMacAddressActivity.class);
+        Intent intent = new Intent(this, MkGw4FilterMacAddressActivity.class);
         startActivity(intent);
     }
 
     public void onFilterByName(View view) {
         if (isWindowLocked()) return;
-        Intent intent = new Intent(this, FilterAdvNameActivity.class);
+        Intent intent = new Intent(this, MkGw4FilterAdvNameActivity.class);
         startActivity(intent);
     }
 
     public void onFilterByRawData(View view) {
         if (isWindowLocked()) return;
-        Intent intent = new Intent(this, FilterRawDataActivity.class);
+        Intent intent = new Intent(this, MkGw4FilterRawDataActivity.class);
         startActivity(intent);
     }
 

@@ -30,15 +30,15 @@ import com.moko.ble.lib.task.OrderTaskResponse;
 import com.moko.mkgw4.AppConstants;
 import com.moko.mkgw4.BuildConfig;
 import com.moko.mkgw4.R;
-import com.moko.mkgw4.activity.setting.LogDataActivity;
-import com.moko.mkgw4.adapter.DeviceListAdapter;
-import com.moko.mkgw4.databinding.Ps101mActivityMainBinding;
+import com.moko.mkgw4.activity.setting.MkGw4LogDataActivity;
+import com.moko.mkgw4.adapter.MkGw4DeviceListAdapter;
+import com.moko.mkgw4.databinding.ActivityMainMkgw4Binding;
 import com.moko.mkgw4.dialog.AlertMessageDialog;
 import com.moko.mkgw4.dialog.LoadingMessageDialog;
-import com.moko.mkgw4.dialog.PasswordDialog;
-import com.moko.mkgw4.dialog.ScanFilterDialog;
-import com.moko.mkgw4.entity.AdvInfo;
-import com.moko.mkgw4.utils.AdvInfoAnalysisImpl;
+import com.moko.mkgw4.dialog.MkGw4PasswordDialog;
+import com.moko.mkgw4.dialog.MkGw4ScanFilterDialog;
+import com.moko.mkgw4.entity.MkGw4AdvInfo;
+import com.moko.mkgw4.utils.MkGw4AdvInfoAnalysisImpl;
 import com.moko.mkgw4.utils.SPUtiles;
 import com.moko.mkgw4.utils.ToastUtils;
 import com.moko.support.mkgw4.MokoBleScanner;
@@ -60,12 +60,12 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class MKGW4MainActivity extends BaseActivity implements MokoScanDeviceCallback, BaseQuickAdapter.OnItemChildClickListener {
-    private Ps101mActivityMainBinding mBind;
+public class MKGW4MainActivity extends MkGw4BaseActivity implements MokoScanDeviceCallback, BaseQuickAdapter.OnItemChildClickListener {
+    private ActivityMainMkgw4Binding mBind;
     private boolean mReceiverTag = false;
-    private ConcurrentHashMap<String, AdvInfo> beaconInfoHashMap;
-    private ArrayList<AdvInfo> beaconInfos;
-    private DeviceListAdapter adapter;
+    private ConcurrentHashMap<String, MkGw4AdvInfo> beaconInfoHashMap;
+    private ArrayList<MkGw4AdvInfo> beaconInfos;
+    private MkGw4DeviceListAdapter adapter;
     private Animation animation = null;
     private MokoBleScanner mokoBleScanner;
     public Handler mHandler;
@@ -74,7 +74,7 @@ public class MKGW4MainActivity extends BaseActivity implements MokoScanDeviceCal
     public static String PATH_LOGCAT;
     private String mPassword;
     private String mSavedPassword;
-    private AdvInfoAnalysisImpl beaconInfoParseable;
+    private MkGw4AdvInfoAnalysisImpl beaconInfoParseable;
     public String filterName;
     public int filterRssi = -127;
     private String advName;
@@ -83,7 +83,7 @@ public class MKGW4MainActivity extends BaseActivity implements MokoScanDeviceCal
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mBind = Ps101mActivityMainBinding.inflate(getLayoutInflater());
+        mBind = ActivityMainMkgw4Binding.inflate(getLayoutInflater());
         setContentView(mBind.getRoot());
         // 初始化Xlog
         if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
@@ -101,7 +101,7 @@ public class MKGW4MainActivity extends BaseActivity implements MokoScanDeviceCal
         mSavedPassword = SPUtiles.getStringValue(this, AppConstants.SP_KEY_SAVED_PASSWORD_LW006, "");
         beaconInfoHashMap = new ConcurrentHashMap<>();
         beaconInfos = new ArrayList<>();
-        adapter = new DeviceListAdapter();
+        adapter = new MkGw4DeviceListAdapter();
         adapter.replaceData(beaconInfos);
         adapter.setOnItemChildClickListener(this);
         adapter.openLoadAnimation();
@@ -131,7 +131,7 @@ public class MKGW4MainActivity extends BaseActivity implements MokoScanDeviceCal
         }
         animation = AnimationUtils.loadAnimation(this, R.anim.rotate_refresh);
         mBind.ivRefresh.startAnimation(animation);
-        beaconInfoParseable = new AdvInfoAnalysisImpl();
+        beaconInfoParseable = new MkGw4AdvInfoAnalysisImpl();
         mokoBleScanner.startScanDevice(this);
         mHandler.postDelayed(() -> mokoBleScanner.stopScanDevice(), 1000 * 60);
     }
@@ -157,7 +157,7 @@ public class MKGW4MainActivity extends BaseActivity implements MokoScanDeviceCal
 
     @Override
     public void onScanDevice(DeviceInfo deviceInfo) {
-        AdvInfo beaconInfo = beaconInfoParseable.parseDeviceInfo(deviceInfo);
+        MkGw4AdvInfo beaconInfo = beaconInfoParseable.parseDeviceInfo(deviceInfo);
         if (beaconInfo == null) return;
         beaconInfoHashMap.put(beaconInfo.mac, beaconInfo);
     }
@@ -171,10 +171,10 @@ public class MKGW4MainActivity extends BaseActivity implements MokoScanDeviceCal
     private void updateDevices() {
         beaconInfos.clear();
         if (!TextUtils.isEmpty(filterName) || filterRssi != -127) {
-            ArrayList<AdvInfo> beaconInfosFilter = new ArrayList<>(beaconInfoHashMap.values());
-            Iterator<AdvInfo> iterator = beaconInfosFilter.iterator();
+            ArrayList<MkGw4AdvInfo> beaconInfosFilter = new ArrayList<>(beaconInfoHashMap.values());
+            Iterator<MkGw4AdvInfo> iterator = beaconInfosFilter.iterator();
             while (iterator.hasNext()) {
-                AdvInfo beaconInfo = iterator.next();
+                MkGw4AdvInfo beaconInfo = iterator.next();
                 if (beaconInfo.rssi > filterRssi) {
                     if (TextUtils.isEmpty(filterName)) {
                         continue;
@@ -254,7 +254,7 @@ public class MKGW4MainActivity extends BaseActivity implements MokoScanDeviceCal
             mHandler.removeMessages(0);
             mokoBleScanner.stopScanDevice();
         }
-        ScanFilterDialog scanFilterDialog = new ScanFilterDialog(this);
+        MkGw4ScanFilterDialog scanFilterDialog = new MkGw4ScanFilterDialog(this);
         scanFilterDialog.setFilterName(filterName);
         scanFilterDialog.setFilterRssi(filterRssi);
         scanFilterDialog.setOnScanFilterListener((filterName, filterRssi) -> {
@@ -306,7 +306,7 @@ public class MKGW4MainActivity extends BaseActivity implements MokoScanDeviceCal
             MokoSupport.getInstance().enableBluetooth();
             return;
         }
-        AdvInfo advInfo = (AdvInfo) adapter.getItem(position);
+        MkGw4AdvInfo advInfo = (MkGw4AdvInfo) adapter.getItem(position);
         if (advInfo != null && advInfo.connectable && !isFinishing()) {
             if (animation != null) {
                 mHandler.removeMessages(0);
@@ -321,9 +321,9 @@ public class MKGW4MainActivity extends BaseActivity implements MokoScanDeviceCal
                 return;
             }
             // show password
-            final PasswordDialog dialog = new PasswordDialog(this);
+            final MkGw4PasswordDialog dialog = new MkGw4PasswordDialog(this);
             dialog.setData(mSavedPassword);
-            dialog.setOnPasswordClicked(new PasswordDialog.PasswordClickListener() {
+            dialog.setOnPasswordClicked(new MkGw4PasswordDialog.PasswordClickListener() {
                 @Override
                 public void onEnsureClicked(String password) {
                     if (!MokoSupport.getInstance().isBluetoothOpen()) {
@@ -398,7 +398,7 @@ public class MKGW4MainActivity extends BaseActivity implements MokoScanDeviceCal
             dismissLoadingProgressDialog();
             if (!isVerifyEnable) {
                 XLog.i("Success");
-                Intent i = new Intent(this, DeviceInfoActivity.class);
+                Intent i = new Intent(this, MkGw4DeviceInfoActivity.class);
                 i.putExtra("advName", advName);
                 i.putExtra("mac",selectMac);
                 launcher.launch(i);
@@ -442,7 +442,7 @@ public class MKGW4MainActivity extends BaseActivity implements MokoScanDeviceCal
                             mSavedPassword = mPassword;
                             SPUtiles.setStringValue(this, AppConstants.SP_KEY_SAVED_PASSWORD_LW006, mSavedPassword);
                             XLog.i("Success");
-                            Intent i = new Intent(this, DeviceInfoActivity.class);
+                            Intent i = new Intent(this, MkGw4DeviceInfoActivity.class);
                             i.putExtra("advName", advName);
                             i.putExtra("mac",selectMac);
                             launcher.launch(i);
@@ -492,7 +492,7 @@ public class MKGW4MainActivity extends BaseActivity implements MokoScanDeviceCal
         setIntent(intent);
         if (getIntent().getExtras() != null) {
             String from = getIntent().getStringExtra(AppConstants.EXTRA_KEY_FROM_ACTIVITY);
-            if (LogDataActivity.TAG.equals(from)) {
+            if (MkGw4LogDataActivity.TAG.equals(from)) {
                 if (animation == null) startScan();
             }
         }

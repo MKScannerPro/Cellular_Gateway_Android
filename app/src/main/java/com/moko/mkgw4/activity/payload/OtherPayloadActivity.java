@@ -13,7 +13,7 @@ import com.moko.ble.lib.task.OrderTask;
 import com.moko.ble.lib.task.OrderTaskResponse;
 import com.moko.ble.lib.utils.MokoUtils;
 import com.moko.mkgw4.R;
-import com.moko.mkgw4.activity.BaseActivity;
+import com.moko.mkgw4.activity.MkGw4BaseActivity;
 import com.moko.mkgw4.adapter.OtherPayloadAdapter;
 import com.moko.mkgw4.databinding.ActivityOtherPayloadBinding;
 import com.moko.mkgw4.entity.OtherTypePayloadBean;
@@ -36,7 +36,7 @@ import java.util.List;
  * @date: 2023/12/1 12:19
  * @des:
  */
-public class OtherPayloadActivity extends BaseActivity implements BaseQuickAdapter.OnItemChildClickListener {
+public class OtherPayloadActivity extends MkGw4BaseActivity implements BaseQuickAdapter.OnItemChildClickListener {
     private ActivityOtherPayloadBinding mBind;
     private boolean isParamsError;
     private final List<OtherTypePayloadBean> otherData = new ArrayList<>();
