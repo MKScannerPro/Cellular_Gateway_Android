@@ -44,6 +44,7 @@
             android:clickable="true"
             android:onClick="onAbout"
             android:paddingLeft="16dp"
+            android:visibility="gone"
             android:paddingRight="16dp"
             android:src="@drawable/ic_about" />
     </RelativeLayout>

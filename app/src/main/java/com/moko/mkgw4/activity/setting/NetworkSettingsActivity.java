@@ -166,7 +166,25 @@ public class NetworkSettingsActivity extends BaseActivity {
     }
 
     public void onBack(View view) {
+        back();
+    }
+
+    @Override
+    public void onBackPressed() {
+        back();
+    }
+
+    private void back(){
+        EventBus.getDefault().unregister(this);
         finish();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (EventBus.getDefault().isRegistered(this)){
+            EventBus.getDefault().unregister(this);
+        }
     }
 
     public void onSave(View view) {
@@ -192,7 +210,7 @@ public class NetworkSettingsActivity extends BaseActivity {
     private boolean isValid() {
         if (TextUtils.isEmpty(mBind.etConnectTimeout.getText())) return false;
         int timeout = Integer.parseInt(mBind.etConnectTimeout.getText().toString().trim());
-        return timeout >= 30 && timeout <= 60;
+        return timeout >= 30 && timeout <= 600;
     }
 
 }

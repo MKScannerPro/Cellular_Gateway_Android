@@ -1,4 +1,4 @@
-package com.moko.mkgw4.activity.device;
+package com.moko.mkgw4.activity.setting;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,7 +18,7 @@ import com.moko.mkgw4.R;
 import com.moko.mkgw4.activity.BaseActivity;
 import com.moko.mkgw4.activity.MKGW4MainActivity;
 import com.moko.mkgw4.adapter.LogDataListAdapter;
-import com.moko.mkgw4.databinding.Ps101mActivityLogDataBinding;
+import com.moko.mkgw4.databinding.ActivityLogDataBinding;
 import com.moko.mkgw4.dialog.AlertMessageDialog;
 import com.moko.mkgw4.entity.LogData;
 import com.moko.mkgw4.utils.Utils;
@@ -41,7 +41,7 @@ import java.util.Objects;
 
 public class LogDataActivity extends BaseActivity implements BaseQuickAdapter.OnItemClickListener {
     public static String TAG = LogDataActivity.class.getSimpleName();
-    private Ps101mActivityLogDataBinding mBind;
+    private ActivityLogDataBinding mBind;
     private StringBuilder storeString;
     private ArrayList<LogData> LogDatas;
     private boolean isSync;
@@ -52,11 +52,12 @@ public class LogDataActivity extends BaseActivity implements BaseQuickAdapter.On
     private Animation animation = null;
     private boolean isDisconnected;
     private boolean isBack;
+    private StringBuilder builder = new StringBuilder();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mBind = Ps101mActivityLogDataBinding.inflate(getLayoutInflater());
+        mBind = ActivityLogDataBinding.inflate(getLayoutInflater());
         setContentView(mBind.getRoot());
         String mDeviceMac = getIntent().getStringExtra(AppConstants.EXTRA_KEY_DEVICE_MAC).replaceAll(":", "");
         logDirPath = MKGW4MainActivity.PATH_LOGCAT + File.separator + mDeviceMac;
@@ -110,8 +111,11 @@ public class LogDataActivity extends BaseActivity implements BaseQuickAdapter.On
                 isDisconnected = true;
                 // 中途断开，要先保存数据
                 mBind.tvSyncSwitch.setEnabled(false);
-                if (isSync)
+                if (isSync) {
                     stopSync();
+                }else {
+                    finish();
+                }
             }
         });
     }
@@ -128,6 +132,8 @@ public class LogDataActivity extends BaseActivity implements BaseQuickAdapter.On
                 if (Objects.requireNonNull(orderCHAR) == OrderCHAR.CHAR_LOG) {
                     String log = new String(value);
                     storeString.append(log);
+                    builder.insert(0,log);
+                    mBind.tvContent.setText(builder.toString());
                 }
             }
         });
@@ -150,6 +156,8 @@ public class LogDataActivity extends BaseActivity implements BaseQuickAdapter.On
             storeString = new StringBuilder();
             mBind.tvSyncSwitch.setText("Stop");
             isSync = true;
+            builder = new StringBuilder();
+            mBind.tvContent.setText("");
             animation = AnimationUtils.loadAnimation(this, R.anim.rotate_refresh);
             mBind.ivSync.startAnimation(animation);
             MokoSupport.getInstance().enableLogNotify();

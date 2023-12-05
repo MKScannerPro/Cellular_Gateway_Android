@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">PS101-M</string>
+    <string name="app_name">MKGW4</string>
 
     <string name="cancel">Cancel</string>
     <string name="ensure">OK</string>
@@ -31,15 +31,15 @@
     <string name="wifi_fix_filter">*The information of WIFI device whose rssi is no less than %ddBm will be uploaded.</string>
     <string name="ble_fix_filter">*The device will uplink valid ADV data with RSSI no less than %ddBm.</string>
 
-    <string name="permission_storage_close_content">Please find it in cellphone setting- permission, and allow PS101-M use the Storage and location permission</string>
-    <string name="permission_ble_close_content">Please find it in cellphone setting- permission, and allow PS101-M use the bluetooth and location permission</string>
+    <string name="permission_storage_close_content">Please find it in cellphone setting- permission, and allow MKGW4 use the Storage and location permission</string>
+    <string name="permission_ble_close_content">Please find it in cellphone setting- permission, and allow MKGW4 use the bluetooth and location permission</string>
     <string name="permission_open">OK</string>
-    <string name="permission_storage_need_content">PS101-M requires access to Storage and location permission. If the permissions are not on, PS101-M cannot be used normally.</string>
+    <string name="permission_storage_need_content">MKGW4 requires access to Storage and location permission. If the permissions are not on, MKGW4 cannot be used normally.</string>
     <string name="location_need_title">Turn on Location permission</string>
-    <string name="location_need_content">After that, PS101-M could search and connect with the device</string>
-    <string name="permission_location_close_content">Please find it in cellphone setting- permission, and allow PS101-M use the Location permission</string>
-    <string name="permission_location_need_content">PS101-M requires access to Location permission. If the permissions are not on, PS101-M cannot be used normally.</string>
-    <string name="permission_ble_content">PS101-M requires access to bluetooth scan contract and location permission. If the permissions are not on, PS101-M cannot be used normally.</string>
+    <string name="location_need_content">After that, MKGW4 could search and connect with the device</string>
+    <string name="permission_location_close_content">Please find it in cellphone setting- permission, and allow MKGW4 use the Location permission</string>
+    <string name="permission_location_need_content">MKGW4 requires access to Location permission. If the permissions are not on, MKGW4 cannot be used normally.</string>
+    <string name="permission_ble_content">MKGW4 requires access to bluetooth scan contract and location permission. If the permissions are not on, MKGW4 cannot be used normally.</string>
     <string name="title_lora">LoRa</string>
     <string name="title_position">POSITION</string>
     <string name="title_general">GENERAL</string>

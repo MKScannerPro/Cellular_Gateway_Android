@@ -54,6 +54,7 @@ public class ScannerFilterSettingsActivity extends BaseActivity implements SeekB
         mBind = ActivityScannerFilterSettingsBinding.inflate(getLayoutInflater());
         setContentView(mBind.getRoot());
         EventBus.getDefault().register(this);
+        String advName = getIntent().getStringExtra("advName");
         mBind.sbRssiFilter.setOnSeekBarChangeListener(this);
         // 注册广播接收器
         IntentFilter filter = new IntentFilter();
@@ -63,6 +64,7 @@ public class ScannerFilterSettingsActivity extends BaseActivity implements SeekB
         } else {
             registerReceiver(mReceiver, filter);
         }
+        mBind.tvTitle.setText(advName);
         mReceiverTag = true;
         showSyncingProgressDialog();
         List<OrderTask> orderTasks = new ArrayList<>(8);

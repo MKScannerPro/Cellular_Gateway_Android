@@ -84,6 +84,8 @@ public class BleParametersActivity extends BaseActivity implements SeekBar.OnSee
         mBind.etPwd.setFilters(new InputFilter[]{new InputFilter.LengthFilter(10), inputFilter});
         mBind.cbAdvResponse.setOnCheckedChangeListener((buttonView, isChecked) -> mBind.group.setVisibility(isChecked ? View.VISIBLE : View.GONE));
         mBind.cbPwdVerify.setOnCheckedChangeListener((buttonView, isChecked) -> mBind.layoutPwd.setVisibility(isChecked ? View.VISIBLE : View.GONE));
+        mBind.sbRssi.setOnSeekBarChangeListener(this);
+        mBind.sbTxPower.setOnSeekBarChangeListener(this);
     }
 
     @Subscribe(threadMode = ThreadMode.POSTING, priority = 200)

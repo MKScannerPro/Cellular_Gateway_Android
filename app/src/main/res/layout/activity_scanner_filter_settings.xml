@@ -212,6 +212,8 @@
             android:background="@drawable/shape_radius_blue_btn_bg"
             android:gravity="center"
             android:minWidth="150dp"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
             android:text="Null"
             android:textColor="@color/white_ffffff"
             android:textSize="15sp" />
@@ -243,6 +245,8 @@
             android:gravity="center"
             android:minWidth="150dp"
             android:text="Null"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
             android:textColor="@color/white_ffffff"
             android:textSize="15sp" />
     </LinearLayout>

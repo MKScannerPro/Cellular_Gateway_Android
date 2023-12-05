@@ -96,11 +96,11 @@ public class HeartReportSettingActivity extends BaseActivity {
                             int result = value[4] & 0xff;
                             switch (configKeyEnum) {
                                 case KEY_DEVICE_PAYLOAD_INTERVAL:
-                                    if (result == 1) saveParError = true;
+                                    if (result != 1) saveParError = true;
                                     break;
 
                                 case KEY_DEVICE_STATUS_CHOOSE:
-                                    if (result == 1) saveParError = true;
+                                    if (result != 1) saveParError = true;
                                     ToastUtils.showToast(this, !saveParError ? "Setup succeed" : "Setup failed");
                                     break;
                             }

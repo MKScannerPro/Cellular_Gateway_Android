@@ -30,7 +30,7 @@ import com.moko.ble.lib.task.OrderTaskResponse;
 import com.moko.mkgw4.AppConstants;
 import com.moko.mkgw4.BuildConfig;
 import com.moko.mkgw4.R;
-import com.moko.mkgw4.activity.device.LogDataActivity;
+import com.moko.mkgw4.activity.setting.LogDataActivity;
 import com.moko.mkgw4.adapter.DeviceListAdapter;
 import com.moko.mkgw4.databinding.Ps101mActivityMainBinding;
 import com.moko.mkgw4.dialog.AlertMessageDialog;
@@ -77,6 +77,8 @@ public class MKGW4MainActivity extends BaseActivity implements MokoScanDeviceCal
     private AdvInfoAnalysisImpl beaconInfoParseable;
     public String filterName;
     public int filterRssi = -127;
+    private String advName;
+    private String selectMac;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,13 +89,13 @@ public class MKGW4MainActivity extends BaseActivity implements MokoScanDeviceCal
         if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
             // 优先保存到SD卡中
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                PATH_LOGCAT = getExternalFilesDir(null).getAbsolutePath() + File.separator + (BuildConfig.IS_LIBRARY ? "MKLoRa" : "PS101M");
+                PATH_LOGCAT = getExternalFilesDir(null).getAbsolutePath() + File.separator + (BuildConfig.IS_LIBRARY ? "MKScannerPro" : "MKGW4");
             } else {
-                PATH_LOGCAT = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + (BuildConfig.IS_LIBRARY ? "MKLoRa" : "PS101M");
+                PATH_LOGCAT = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + (BuildConfig.IS_LIBRARY ? "MKScannerPro" : "MKGW4");
             }
         } else {
             // 如果SD卡不存在，就保存到本应用的目录下
-            PATH_LOGCAT = getFilesDir().getAbsolutePath() + File.separator + (BuildConfig.IS_LIBRARY ? "MKLoRa" : "PS101M");
+            PATH_LOGCAT = getFilesDir().getAbsolutePath() + File.separator + (BuildConfig.IS_LIBRARY ? "MKScannerPro" : "MKGW4");
         }
         MokoSupport.getInstance().init(getApplicationContext());
         mSavedPassword = SPUtiles.getStringValue(this, AppConstants.SP_KEY_SAVED_PASSWORD_LW006, "");
@@ -311,6 +313,8 @@ public class MKGW4MainActivity extends BaseActivity implements MokoScanDeviceCal
                 mokoBleScanner.stopScanDevice();
             }
             isVerifyEnable = advInfo.verifyEnable;
+            advName = advInfo.name;
+            selectMac = advInfo.mac;
             if (!isVerifyEnable) {
                 showLoadingProgressDialog();
                 MokoSupport.getInstance().connDevice(advInfo.mac);
@@ -395,6 +399,8 @@ public class MKGW4MainActivity extends BaseActivity implements MokoScanDeviceCal
             if (!isVerifyEnable) {
                 XLog.i("Success");
                 Intent i = new Intent(this, DeviceInfoActivity.class);
+                i.putExtra("advName", advName);
+                i.putExtra("mac",selectMac);
                 launcher.launch(i);
                 return;
             }
@@ -404,7 +410,7 @@ public class MKGW4MainActivity extends BaseActivity implements MokoScanDeviceCal
     }
 
     private final ActivityResultLauncher<Intent> launcher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
-        if (result.getResultCode() == RESULT_OK){
+        if (result.getResultCode() == RESULT_OK) {
             if (animation == null) startScan();
         }
     });
@@ -437,6 +443,8 @@ public class MKGW4MainActivity extends BaseActivity implements MokoScanDeviceCal
                             SPUtiles.setStringValue(this, AppConstants.SP_KEY_SAVED_PASSWORD_LW006, mSavedPassword);
                             XLog.i("Success");
                             Intent i = new Intent(this, DeviceInfoActivity.class);
+                            i.putExtra("advName", advName);
+                            i.putExtra("mac",selectMac);
                             launcher.launch(i);
                         } else {
                             isPasswordError = true;

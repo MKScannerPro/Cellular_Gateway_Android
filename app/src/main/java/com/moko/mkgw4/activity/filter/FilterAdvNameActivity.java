@@ -9,11 +9,13 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.elvishew.xlog.XLog;
 import com.moko.ble.lib.MokoConstants;
 import com.moko.ble.lib.event.ConnectStatusEvent;
 import com.moko.ble.lib.event.OrderTaskResponseEvent;
 import com.moko.ble.lib.task.OrderTask;
 import com.moko.ble.lib.task.OrderTaskResponse;
+import com.moko.ble.lib.utils.MokoUtils;
 import com.moko.mkgw4.R;
 import com.moko.mkgw4.activity.BaseActivity;
 import com.moko.mkgw4.databinding.ActivityFilterAdvNameBinding;
@@ -85,47 +87,22 @@ public class FilterAdvNameActivity extends BaseActivity {
                 byte[] value = response.responseValue;
                 if (orderCHAR == OrderCHAR.CHAR_PARAMS) {
                     if (value.length >= 4) {
+                        int header = value[0] & 0xff;
                         int flag = value[1] & 0xFF;// read or write
                         int cmd = value[2] & 0xFF;
                         ParamsKeyEnum configKeyEnum = ParamsKeyEnum.fromParamKey(cmd);
                         if (configKeyEnum == null) return;
-                        int length = value[3] & 0xFF;
-                        if (flag == 0x01) {
-                            // write
-                            int result = value[4] & 0xFF;
-                            switch (configKeyEnum) {
-                                case KEY_FILTER_NAME_PRECISE:
-                                case KEY_FILTER_NAME_REVERSE:
-                                    if (result != 1) {
-                                        savedParamsError = true;
-                                    }
-                                    break;
-                                case KEY_FILTER_NAME_RULES:
-                                    if (result != 1) {
-                                        savedParamsError = true;
-                                    }
-                                    ToastUtils.showToast(this, !savedParamsError ? "Setup succeed" : "Setup failed");
-                                    break;
-                            }
-                        }else if (flag == 0x00) {
-                            // read
-                            switch (configKeyEnum) {
-                                case KEY_FILTER_NAME_PRECISE:
-                                    if (length > 0) {
-                                        int enable = value[4] & 0xFF;
-                                        mBind.cbPreciseMatch.setChecked(enable == 1);
-                                    }
-                                    break;
-                                case KEY_FILTER_NAME_REVERSE:
-                                    if (length > 0) {
-                                        int enable = value[4] & 0xFF;
-                                        mBind.cbReverseFilter.setChecked(enable == 1);
-                                    }
-                                    break;
-                                case KEY_FILTER_NAME_RULES:
+                        if (header == 0xEE) {
+                            if (flag == 0x01) {
+                                if (configKeyEnum == ParamsKeyEnum.KEY_FILTER_NAME_RULES) {
+                                    if ((value[4] & 0xff) != 1) savedParamsError = true;
+                                }
+                            } else if (flag == 0x00) {
+                                int length = MokoUtils.toInt(Arrays.copyOfRange(value, 3, 5));
+                                if (configKeyEnum == ParamsKeyEnum.KEY_FILTER_NAME_RULES) {
                                     if (length > 0) {
                                         filterAdvName.clear();
-                                        byte[] nameBytes = Arrays.copyOfRange(value, 4, 4 + length);
+                                        byte[] nameBytes = Arrays.copyOfRange(value, 5, 5 + length);
                                         for (int i = 0, l = nameBytes.length; i < l; ) {
                                             int nameLength = nameBytes[i] & 0xFF;
                                             i++;
@@ -144,7 +121,39 @@ public class FilterAdvNameActivity extends BaseActivity {
                                             mBind.llDavName.addView(v);
                                         }
                                     }
-                                    break;
+                                }
+                            }
+                        } else if (header == 0xED) {
+                            int length = value[3] & 0xff;
+                            if (flag == 0x01) {
+                                // write
+                                int result = value[4] & 0xFF;
+                                switch (configKeyEnum) {
+                                    case KEY_FILTER_NAME_PRECISE:
+                                        break;
+                                    case KEY_FILTER_NAME_REVERSE:
+                                        if (result != 1) {
+                                            savedParamsError = true;
+                                        }
+                                        ToastUtils.showToast(this, !savedParamsError ? "Setup succeed" : "Setup failed");
+                                        break;
+                                }
+                            } else if (flag == 0x00) {
+                                // read
+                                switch (configKeyEnum) {
+                                    case KEY_FILTER_NAME_PRECISE:
+                                        if (length > 0) {
+                                            int enable = value[4] & 0xFF;
+                                            mBind.cbPreciseMatch.setChecked(enable == 1);
+                                        }
+                                        break;
+                                    case KEY_FILTER_NAME_REVERSE:
+                                        if (length > 0) {
+                                            int enable = value[4] & 0xFF;
+                                            mBind.cbReverseFilter.setChecked(enable == 1);
+                                        }
+                                        break;
+                                }
                             }
                         }
                     }
@@ -195,9 +204,9 @@ public class FilterAdvNameActivity extends BaseActivity {
     private void saveParams() {
         savedParamsError = false;
         List<OrderTask> orderTasks = new ArrayList<>();
+        orderTasks.add(OrderTaskAssembler.setFilterNameRules(filterAdvName));
         orderTasks.add(OrderTaskAssembler.setFilterNamePrecise(mBind.cbPreciseMatch.isChecked() ? 1 : 0));
         orderTasks.add(OrderTaskAssembler.setFilterNameReverse(mBind.cbReverseFilter.isChecked() ? 1 : 0));
-        orderTasks.add(OrderTaskAssembler.setFilterNameRules(filterAdvName));
         MokoSupport.getInstance().sendOrder(orderTasks.toArray(new OrderTask[]{}));
     }
 

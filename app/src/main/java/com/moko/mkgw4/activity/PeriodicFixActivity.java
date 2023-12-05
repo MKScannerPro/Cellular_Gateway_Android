@@ -78,11 +78,7 @@ public class PeriodicFixActivity extends BaseActivity {
                             // write
                             int result = value[4] & 0xFF;
                             if (configKeyEnum == ParamsKeyEnum.KEY_PERIODIC_FIX_INTERVAL) {
-                                if (result == 1) {
-                                    ToastUtils.showToast(this, "Save Successfully！");
-                                } else {
-                                    ToastUtils.showToast(this, "Opps！Save failed. Please check the input characters and try again.");
-                                }
+                                ToastUtils.showToast(this, result == 1 ? "Setup succeed" : "Setup failed");
                             }
                         } else if (flag == 0x00) {
                             // read

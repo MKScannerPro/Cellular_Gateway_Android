@@ -54,6 +54,8 @@ public class DeviceInfoActivity extends BaseActivity implements RadioGroup.OnChe
     private boolean mReceiverTag;
     private int disConnectType;
     private boolean savedParamsError;
+    private String advName;
+    private String mac;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +63,8 @@ public class DeviceInfoActivity extends BaseActivity implements RadioGroup.OnChe
         mBind = Ps101mActivityDeviceInfoBinding.inflate(getLayoutInflater());
         setContentView(mBind.getRoot());
         fragmentManager = getSupportFragmentManager();
+        advName = getIntent().getStringExtra("advName");
+        mac = getIntent().getStringExtra("mac");
         initFragment();
         mBind.radioBtnNetwork.setChecked(true);
         mBind.rgOptions.setOnCheckedChangeListener(this);
@@ -98,7 +102,9 @@ public class DeviceInfoActivity extends BaseActivity implements RadioGroup.OnChe
                 .hide(scannerFragment)
                 .hide(settingsFragment)
                 .commit();
-        mBind.tvTitle.setText("Network");
+        mBind.tvTitle.setText(advName);
+        scannerFragment.setAdvName(advName);
+        settingsFragment.setMac(mac);
     }
 
     @Subscribe(threadMode = ThreadMode.POSTING, priority = 100)
@@ -172,6 +178,17 @@ public class DeviceInfoActivity extends BaseActivity implements RadioGroup.OnChe
                                         ToastUtils.showToast(this, "Setup succeed");
                                     }
                                     break;
+
+                                case KEY_RESET:
+                                case KEY_REBOOT:
+                                case KEY_CLOSE:
+                                    if (result == 1){
+                                        ToastUtils.showToast(this, "Setup succeed");
+                                        MokoSupport.getInstance().disConnectBle();
+                                    }else {
+                                        ToastUtils.showToast(this, "Setup failed");
+                                    }
+                                    break;
                             }
                         } else if (flag == 0x00) {
                             // read
@@ -235,14 +252,10 @@ public class DeviceInfoActivity extends BaseActivity implements RadioGroup.OnChe
     }
 
     private void showDisconnectDialog() {
-        if (disConnectType == 2) {
+        if (disConnectType == 3) {
             showAlertDialog("Change Password", "Password changed successfully!Please reconnect the device.", "OK");
-        } else if (disConnectType == 3) {
-            showAlertDialog(null, "No data communication for 3 minutes, the device is disconnected.", "OK");
-        } else if (disConnectType == 5) {
-            showAlertDialog("Factory Reset", "Factory reset successfully!\nPlease reconnect the device.", "OK");
-        } else if (disConnectType == 4) {
-            showAlertDialog("Dismiss", "Reboot successfully!\nPlease reconnect the device", "OK");
+        } else if (disConnectType == 2) {
+            showAlertDialog(null, "No data communication for 10 minutes, the device is disconnected.", "OK");
         } else if (disConnectType == 1) {
             showAlertDialog(null, "The device is disconnected!", "OK");
         } else {
@@ -356,7 +369,7 @@ public class DeviceInfoActivity extends BaseActivity implements RadioGroup.OnChe
     }
 
     private void showNetworkAndGetData() {
-        mBind.tvTitle.setText("Network");
+        mBind.tvTitle.setText(advName);
         fragmentManager.beginTransaction()
                 .show(networkFragment)
                 .hide(posFragment)

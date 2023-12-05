@@ -28,7 +28,7 @@ public class AdvInfoAnalysisImpl implements DeviceInfoParseable<AdvInfo> {
         if (null == record) return null;
         byte[] manufacturerSpecificData = record.getManufacturerSpecificData(0xAA11);
         byte[] bytes = record.getServiceData(new ParcelUuid(OrderServices.SERVICE_ADV.getUuid()));
-        if (null == manufacturerSpecificData || manufacturerSpecificData.length != 14) return null;
+        if (null == manufacturerSpecificData || manufacturerSpecificData.length < 8) return null;
         if ((manufacturerSpecificData[0] & 0xff) != 0) return null;
         boolean verifyEnable = (manufacturerSpecificData[7] & 0xff) == 1;
         String uuid = null;

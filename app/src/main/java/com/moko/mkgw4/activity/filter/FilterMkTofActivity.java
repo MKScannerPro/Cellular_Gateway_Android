@@ -45,8 +45,9 @@ public class FilterMkTofActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mBind = ActivityFilterMkTofBinding.inflate(getLayoutInflater());
+        EventBus.getDefault().register(this);
         setContentView(mBind.getRoot());
-
+        showSyncingProgressDialog();
         List<OrderTask> orderTasks = new ArrayList<>(4);
         orderTasks.add(OrderTaskAssembler.getFilterMkTofEnable());
         orderTasks.add(OrderTaskAssembler.getFilterMkTofRules());
@@ -103,15 +104,15 @@ public class FilterMkTofActivity extends BaseActivity {
                         } else if (flag == 0x00) {
                             // read
                             switch (configKeyEnum) {
-                                case KEY_FILTER_OTHER_RULES:
+                                case KEY_FILTER_MK_TOF_RULES:
                                     if (length > 0) {
                                         filterTof.clear();
                                         byte[] bytes = Arrays.copyOfRange(value, 4, 4 + length);
-                                        for (int i = 0, l = bytes.length; i < l; ) {
-                                            int idLength = bytes[i] & 0xFF;
-                                            i++;
-                                            filterTof.add(MokoUtils.bytesToHexString(Arrays.copyOfRange(bytes, i, i + idLength)));
-                                            i += idLength;
+                                        int index = 0;
+                                        for (int i = 0; i < bytes.length / 2; i++) {
+                                            //0  2;2  4;4  6
+                                            filterTof.add(MokoUtils.bytesToHexString(Arrays.copyOfRange(bytes, index, index + 2)));
+                                            index += 2;
                                         }
                                         for (int i = 0, l = filterTof.size(); i < l; i++) {
                                             String macAddress = filterTof.get(i);

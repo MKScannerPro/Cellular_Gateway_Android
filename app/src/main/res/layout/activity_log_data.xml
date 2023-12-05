@@ -18,8 +18,8 @@
             android:drawableLeft="@drawable/ps101_ic_back"
             android:drawablePadding="6dp"
             android:gravity="center_vertical"
-            android:paddingLeft="16dp"
             android:onClick="onBack"
+            android:paddingLeft="16dp"
             android:textColor="@color/white_ffffff"
             android:textSize="15sp" />
 
@@ -92,9 +92,26 @@
             android:layout_below="@id/tv_sync_switch"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp"
-            tools:itemCount="5"
             android:background="@color/white_ffffff"
+            tools:itemCount="5"
             tools:listitem="@layout/ps101m_item_log_data" />
 
     </RelativeLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        android:background="@color/white_ffffff">
+
+        <TextView
+            android:id="@+id/tvContent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:lineSpacingMultiplier="1.1"
+            android:textColor="@color/black_333333"
+            android:textSize="14sp" />
+    </androidx.core.widget.NestedScrollView>
+
 </LinearLayout>

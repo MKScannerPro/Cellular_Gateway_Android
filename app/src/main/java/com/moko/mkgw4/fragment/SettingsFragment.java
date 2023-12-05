@@ -11,10 +11,12 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.moko.ble.lib.task.OrderTask;
+import com.moko.mkgw4.AppConstants;
 import com.moko.mkgw4.R;
 import com.moko.mkgw4.activity.DeviceInfoActivity;
-import com.moko.mkgw4.activity.device.LogDataActivity;
-import com.moko.mkgw4.activity.device.SystemInfoActivity;
+import com.moko.mkgw4.activity.setting.LogDataActivity;
+import com.moko.mkgw4.activity.setting.SystemInfoActivity;
+import com.moko.mkgw4.activity.setting.BatteryManagementActivity;
 import com.moko.mkgw4.activity.setting.BleParametersActivity;
 import com.moko.mkgw4.activity.setting.HeartReportSettingActivity;
 import com.moko.mkgw4.activity.setting.LedSettingsActivity;
@@ -32,6 +34,7 @@ public class SettingsFragment extends Fragment {
     private FragmentSettingsBinding mBind;
     private DeviceInfoActivity activity;
     private boolean isNotifyEnable;
+    private String mac;
 
     public SettingsFragment() {
     }
@@ -49,6 +52,10 @@ public class SettingsFragment extends Fragment {
         return mBind.getRoot();
     }
 
+    public void setMac(String mac) {
+        this.mac = mac;
+    }
+
     private void initView() {
         mBind.ivPowerNotification.setOnClickListener(v -> {
             activity.showSyncingProgressDialog();
@@ -61,9 +68,13 @@ public class SettingsFragment extends Fragment {
         mBind.tvBleParams.setOnClickListener(v -> start(BleParametersActivity.class));
         mBind.tvHeartReportSeting.setOnClickListener(v -> start(HeartReportSettingActivity.class));
         mBind.tvSystemTime.setOnClickListener(v -> start(SystemTimeActivity.class));
-        mBind.layoutBattery.setOnClickListener(v -> start(BleParametersActivity.class));
+        mBind.layoutBattery.setOnClickListener(v -> start(BatteryManagementActivity.class));
         mBind.tvDeviceInfo.setOnClickListener(v -> start(SystemInfoActivity.class));
-        mBind.tvDebugMode.setOnClickListener(v -> start(LogDataActivity.class));
+        mBind.tvDebugMode.setOnClickListener(v -> {
+            Intent intent = new Intent(requireActivity(), LogDataActivity.class);
+            intent.putExtra(AppConstants.EXTRA_KEY_DEVICE_MAC, mac);
+            startActivity(intent);
+        });
         mBind.tvDeleteBufferData.setOnClickListener(v -> deleteBufferData());
         mBind.tvReboot.setOnClickListener(v -> reboot());
         mBind.tvPowerOff.setOnClickListener(v -> powerOff());
@@ -133,7 +144,7 @@ public class SettingsFragment extends Fragment {
     }
 
     public void setBattery(int battery) {
-        mBind.tvBattery.setText(String.valueOf(battery));
+        mBind.tvBattery.setText(battery + "mV");
     }
 
     public void setPowerLossNotify(int enable) {

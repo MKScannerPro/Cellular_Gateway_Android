@@ -16,6 +16,7 @@ import com.moko.mkgw4.R;
 import com.moko.mkgw4.activity.BaseActivity;
 import com.moko.mkgw4.adapter.OtherPayloadAdapter;
 import com.moko.mkgw4.databinding.ActivityOtherPayloadBinding;
+import com.moko.mkgw4.entity.OtherTypePayloadBean;
 import com.moko.mkgw4.utils.ToastUtils;
 import com.moko.support.mkgw4.MokoSupport;
 import com.moko.support.mkgw4.OrderTaskAssembler;
@@ -38,7 +39,7 @@ import java.util.List;
 public class OtherPayloadActivity extends BaseActivity implements BaseQuickAdapter.OnItemChildClickListener {
     private ActivityOtherPayloadBinding mBind;
     private boolean isParamsError;
-    private final List<String> otherData = new ArrayList<>();
+    private final List<OtherTypePayloadBean> otherData = new ArrayList<>();
     private OtherPayloadAdapter adapter;
 
     @Override
@@ -58,6 +59,7 @@ public class OtherPayloadActivity extends BaseActivity implements BaseQuickAdapt
         adapter = new OtherPayloadAdapter();
         mBind.rvList.setAdapter(adapter);
         adapter.replaceData(otherData);
+        adapter.setOnItemChildClickListener(this);
     }
 
     @Subscribe(threadMode = ThreadMode.POSTING, priority = 200)
@@ -126,7 +128,7 @@ public class OtherPayloadActivity extends BaseActivity implements BaseQuickAdapt
                                         byte[] bytes = Arrays.copyOfRange(value, 4, length + 4);
                                         int index = 0;
                                         for (int i = 0; i < bytes.length / 3; i++) {
-                                            otherData.add(MokoUtils.bytesToHexString(Arrays.copyOfRange(bytes, index, index + 3)));
+                                            otherData.add(new OtherTypePayloadBean(MokoUtils.bytesToHexString(Arrays.copyOfRange(bytes, index, index + 3))));
                                             index += 3;//3  6
                                         }
                                         adapter.replaceData(otherData);
@@ -146,7 +148,7 @@ public class OtherPayloadActivity extends BaseActivity implements BaseQuickAdapt
             ToastUtils.showToast(this, "You can set up to 10 filters!");
             return;
         }
-        otherData.add("000000");
+        otherData.add(new OtherTypePayloadBean("000000"));
         adapter.replaceData(otherData);
     }
 
@@ -173,26 +175,24 @@ public class OtherPayloadActivity extends BaseActivity implements BaseQuickAdapt
             // 发送设置的过滤RawData
             payloadOther.clear();
             for (int i = 0; i < count; i++) {
-                EditText etDataType = (EditText) adapter.getViewByPosition(i, R.id.et_data_type);
-                EditText etMin = (EditText) adapter.getViewByPosition(i, R.id.et_min);
-                EditText etMax = (EditText) adapter.getViewByPosition(i, R.id.et_max);
+                EditText etDataType = (EditText) adapter.getViewByPosition(mBind.rvList, i, R.id.et_data_type);
+                EditText etMin = (EditText) adapter.getViewByPosition(mBind.rvList, i, R.id.et_min);
+                EditText etMax = (EditText) adapter.getViewByPosition(mBind.rvList, i, R.id.et_max);
                 final String dataTypeStr = !TextUtils.isEmpty(etDataType.getText()) ? etDataType.getText().toString() : null;
                 final String minStr = !TextUtils.isEmpty(etMin.getText()) ? etMin.getText().toString() : null;
                 final String maxStr = !TextUtils.isEmpty(etMax.getText()) ? etMax.getText().toString() : null;
-
+                if (TextUtils.isEmpty(minStr) || TextUtils.isEmpty(maxStr)) return false;
                 final int dataType = TextUtils.isEmpty(dataTypeStr) ? 0 : Integer.parseInt(dataTypeStr, 16);
                 if (dataType < 0 || dataType > 0xFF) return false;
                 int min = 0;
                 int max = 0;
-                if (dataType != 0) {
-                    if (!TextUtils.isEmpty(minStr))
-                        min = Integer.parseInt(minStr);
-                    if (!TextUtils.isEmpty(maxStr))
-                        max = Integer.parseInt(maxStr);
-                    if (min < 1 || max < 1) return false;
-                    if (min > 29 || max > 29) return false;
-                    if (max < min) return false;
-                }
+                if (!TextUtils.isEmpty(minStr))
+                    min = Integer.parseInt(minStr);
+                if (!TextUtils.isEmpty(maxStr))
+                    max = Integer.parseInt(maxStr);
+                if (min < 1 || max < 1) return false;
+                if (min > 29 || max > 29) return false;
+                if (max < min) return false;
                 String sb = MokoUtils.int2HexString(dataType) +
                         MokoUtils.int2HexString(min) +
                         MokoUtils.int2HexString(max);
@@ -212,6 +212,7 @@ public class OtherPayloadActivity extends BaseActivity implements BaseQuickAdapt
     @Override
     public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
         otherData.remove(position);
-        this.adapter.replaceData(otherData);
+        this.adapter.remove(position);
+//        this.adapter.replaceData(otherData);
     }
 }

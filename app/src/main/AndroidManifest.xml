@@ -51,15 +51,6 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name="com.moko.mkgw4.activity.setting.MotionModeActivity"
-            android:hardwareAccelerated="true"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan" />
-        <activity
-            android:name="com.moko.mkgw4.activity.setting.AuxiliaryOperationActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan" />
-        <activity
             android:name="com.moko.mkgw4.activity.setting.SyncTimeFromNtpActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
@@ -77,11 +68,11 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name="com.moko.mkgw4.activity.device.SystemInfoActivity"
+            android:name="com.moko.mkgw4.activity.setting.SystemInfoActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name="com.moko.mkgw4.activity.device.LogDataActivity"
+            android:name="com.moko.mkgw4.activity.setting.LogDataActivity"
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
@@ -102,10 +93,6 @@
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name="com.moko.mkgw4.activity.filter.FilterIBeaconActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan" />
-        <activity
-            android:name="com.moko.mkgw4.activity.filter.FilterBXPIBeaconActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
@@ -135,19 +122,7 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name="com.moko.mkgw4.activity.device.SelfTestActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan" />
-        <activity
             android:name="com.moko.mkgw4.activity.FixModeActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan" />
-        <activity
-            android:name="com.moko.mkgw4.activity.device.ExportDataActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan" />
-        <activity
-            android:name="com.moko.mkgw4.activity.device.IndicatorSettingsActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
 
@@ -166,16 +141,7 @@
         <activity android:name="com.moko.mkgw4.activity.setting.HeartReportSettingActivity"
             android:screenOrientation="portrait"/>
 
-        <activity android:name="com.moko.mkgw4.activity.device.OnOffSettingsActivity"
-            android:screenOrientation="portrait"/>
-
         <activity android:name="com.moko.mkgw4.activity.setting.MqttSettingsActivity"
-            android:screenOrientation="portrait"/>
-
-        <activity android:name=".activity.setting.ThreeAxisDataReportActivity"
-            android:screenOrientation="portrait"/>
-
-        <activity android:name=".activity.setting.NtpSeverSettingActivity"
             android:screenOrientation="portrait"/>
 
         <activity android:name="com.moko.mkgw4.activity.setting.NetworkSettingsActivity"

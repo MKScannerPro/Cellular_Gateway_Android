@@ -31,6 +31,7 @@ public class ScannerFragment extends Fragment {
     private boolean modeEnable;
     private final String[] priorityValue = {"Latest data", "privious data"};
     private int prioritySelect;
+    private String advName;
 
     public ScannerFragment() {
     }
@@ -45,6 +46,10 @@ public class ScannerFragment extends Fragment {
         mBind = FragmentScannerBinding.inflate(inflater, container, false);
         initListener();
         return mBind.getRoot();
+    }
+
+    public void setAdvName(String advName) {
+        this.advName = advName;
     }
 
     private void initListener() {
@@ -72,7 +77,11 @@ public class ScannerFragment extends Fragment {
                 dialog.show(getActivity().getSupportFragmentManager());
             }
         });
-        mBind.tvScannerFilter.setOnClickListener(v -> startActivity(new Intent(requireActivity(), ScannerFilterSettingsActivity.class)));
+        mBind.tvScannerFilter.setOnClickListener(v -> {
+            Intent intent = new Intent(requireActivity(), ScannerFilterSettingsActivity.class);
+            intent.putExtra("advName", advName);
+            startActivity(intent);
+        });
         mBind.tvUpPayload.setOnClickListener(v -> startActivity(new Intent(requireActivity(), PayloadSettingsActivity.class)));
     }
 

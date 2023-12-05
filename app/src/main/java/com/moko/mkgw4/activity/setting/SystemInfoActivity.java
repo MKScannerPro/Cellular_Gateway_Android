@@ -1,4 +1,4 @@
-package com.moko.mkgw4.activity.device;
+package com.moko.mkgw4.activity.setting;
 
 import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
@@ -85,7 +85,6 @@ public class SystemInfoActivity extends BaseActivity {
 
     @Subscribe(threadMode = ThreadMode.POSTING, priority = 200)
     public void onConnectStatusEvent(ConnectStatusEvent event) {
-        EventBus.getDefault().cancelEventDelivery(event);
         final String action = event.getAction();
         runOnUiThread(() -> {
             if (MokoConstants.ACTION_DISCONNECTED.equals(action)) {

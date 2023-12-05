@@ -135,8 +135,7 @@ public class MokoSupport extends MokoBleLib {
         if (responseUUID.equals(OrderCHAR.CHAR_LOG.getUuid())) {
             orderCHAR = OrderCHAR.CHAR_LOG;
         }
-        if (orderCHAR == null)
-            return false;
+        if (orderCHAR == null) return false;
         XLog.i(orderCHAR.name());
         OrderTaskResponse response = new OrderTaskResponse();
         response.orderCHAR = orderCHAR;
