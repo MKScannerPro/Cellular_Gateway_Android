@@ -9,7 +9,7 @@ android {
 
     defaultConfig {
         if (!isLibrary.toBoolean()) {
-            applicationId "com.moko.ps101m"
+            applicationId "com.moko.mkgw4"
         }
         minSdkVersion 18
         targetSdkVersion 33
@@ -18,7 +18,7 @@ android {
         multiDexEnabled true
 
         def formatDate = new Date().format("yyyyMMddHHmm")
-        setProperty("archivesBaseName", "PS101M_${versionName}_${formatDate}")
+        setProperty("archivesBaseName", "MKGW4_${versionName}_${formatDate}")
     }
 
     buildTypes {
@@ -74,7 +74,7 @@ android {
                 // 修改aar名称
                 variant.outputs.all { output ->
                     def formatDate = new Date().format("yyyyMMddHHmm")
-                    outputFileName = "PS101M_${android.defaultConfig.versionName}_${formatDate}.aar"
+                    outputFileName = "MKGW4_${android.defaultConfig.versionName}_${formatDate}.aar"
                 }
                 // 复制aar到指定目录
                 variant.assemble.doLast {

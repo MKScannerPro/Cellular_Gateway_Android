@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.moko.ps101m">
+    package="com.moko.mkgw4">
     <!-- SDCard中创建与删除文件权限 -->
     <uses-permission
         android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"
@@ -29,137 +29,137 @@
         android:required="true" />
     <application android:allowBackup="true">
         <activity
-            android:name="com.moko.ps101m.activity.PS101MainActivity"
+            android:name="com.moko.mkgw4.activity.MKGW4MainActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name="com.moko.ps101m.activity.AboutActivity"
+            android:name="com.moko.mkgw4.activity.AboutActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name="com.moko.ps101m.activity.DeviceInfoActivity"
+            android:name="com.moko.mkgw4.activity.DeviceInfoActivity"
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name="com.moko.ps101m.activity.ScannerFilterSettingsActivity"
+            android:name="com.moko.mkgw4.activity.ScannerFilterSettingsActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name="com.moko.ps101m.activity.GpsFixActivity"
+            android:name="com.moko.mkgw4.activity.GpsFixActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name="com.moko.ps101m.activity.setting.ScanReportModeActivity"
+            android:name="com.moko.mkgw4.activity.setting.ScanReportModeActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name="com.moko.ps101m.activity.setting.PeriodicScanPeriodicReportActivity"
+            android:name="com.moko.mkgw4.activity.setting.PeriodicScanPeriodicReportActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name="com.moko.ps101m.activity.setting.RealScanPeriodicReportActivity"
+            android:name="com.moko.mkgw4.activity.setting.RealScanPeriodicReportActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name="com.moko.ps101m.activity.setting.MotionModeActivity"
+            android:name="com.moko.mkgw4.activity.setting.MotionModeActivity"
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name="com.moko.ps101m.activity.setting.AuxiliaryOperationActivity"
+            android:name="com.moko.mkgw4.activity.setting.AuxiliaryOperationActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name="com.moko.ps101m.activity.setting.SyncTimeFromNtpActivity"
+            android:name="com.moko.mkgw4.activity.setting.SyncTimeFromNtpActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name="com.moko.ps101m.activity.setting.BatteryManagementActivity"
+            android:name="com.moko.mkgw4.activity.setting.BatteryManagementActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name="com.moko.ps101m.activity.setting.SystemTimeActivity"
+            android:name="com.moko.mkgw4.activity.setting.SystemTimeActivity"
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name="com.moko.ps101m.activity.setting.AxisParameterActivity"
+            android:name="com.moko.mkgw4.activity.setting.AxisParameterActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name="com.moko.ps101m.activity.device.SystemInfoActivity"
+            android:name="com.moko.mkgw4.activity.device.SystemInfoActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name="com.moko.ps101m.activity.device.LogDataActivity"
+            android:name="com.moko.mkgw4.activity.device.LogDataActivity"
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name="com.moko.ps101m.activity.filter.FilterMacAddressActivity"
+            android:name="com.moko.mkgw4.activity.filter.FilterMacAddressActivity"
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name="com.moko.ps101m.activity.filter.FilterAdvNameActivity"
+            android:name="com.moko.mkgw4.activity.filter.FilterAdvNameActivity"
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name="com.moko.ps101m.activity.filter.FilterRawDataActivity"
+            android:name="com.moko.mkgw4.activity.filter.FilterRawDataActivity"
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name="com.moko.ps101m.activity.filter.FilterIBeaconActivity"
+            android:name="com.moko.mkgw4.activity.filter.FilterIBeaconActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name="com.moko.ps101m.activity.filter.FilterBXPIBeaconActivity"
+            android:name="com.moko.mkgw4.activity.filter.FilterBXPIBeaconActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name="com.moko.ps101m.activity.filter.FilterUIDActivity"
+            android:name="com.moko.mkgw4.activity.filter.FilterUIDActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name="com.moko.ps101m.activity.filter.FilterUrlActivity"
+            android:name="com.moko.mkgw4.activity.filter.FilterUrlActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name="com.moko.ps101m.activity.filter.FilterTLMActivity"
+            android:name="com.moko.mkgw4.activity.filter.FilterTLMActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name="com.moko.ps101m.activity.filter.FilterBXPTagActivity"
+            android:name="com.moko.mkgw4.activity.filter.FilterBXPTagActivity"
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name="com.moko.ps101m.activity.filter.FilterBXPButtonActivity"
+            android:name="com.moko.mkgw4.activity.filter.FilterBXPButtonActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name="com.moko.ps101m.activity.filter.FilterOtherActivity"
+            android:name="com.moko.mkgw4.activity.filter.FilterOtherActivity"
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name="com.moko.ps101m.activity.device.SelfTestActivity"
+            android:name="com.moko.mkgw4.activity.device.SelfTestActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name="com.moko.ps101m.activity.FixModeActivity"
+            android:name="com.moko.mkgw4.activity.FixModeActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name="com.moko.ps101m.activity.device.ExportDataActivity"
+            android:name="com.moko.mkgw4.activity.device.ExportDataActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name="com.moko.ps101m.activity.device.IndicatorSettingsActivity"
+            android:name="com.moko.mkgw4.activity.device.IndicatorSettingsActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
 
@@ -236,6 +236,6 @@
             android:screenOrientation="portrait"/>
 
 
-        <service android:name="com.moko.ps101m.service.DfuService" />
+        <service android:name="com.moko.mkgw4.service.DfuService" />
     </application>
 </manifest>
