@@ -4,8 +4,8 @@ package com.moko.support.mkgw4.entity;
 import java.io.Serializable;
 
 public enum ParamsKeyEnum implements Serializable {
-    KEY_CLOSE(0x02),
     KEY_REBOOT(0x01),
+    KEY_CLOSE(0x02),
     KEY_MANUFACTURER(0x05),
     KEY_CHIP_MAC(0x06),
     KEY_PCBA_STATUS(0x09),

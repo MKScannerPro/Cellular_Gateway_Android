@@ -29,7 +29,6 @@ import com.moko.ble.lib.utils.MokoUtils;
 import com.moko.mkgw4.ExcelHelper;
 import com.moko.mkgw4.R;
 import com.moko.mkgw4.activity.MkGw4BaseActivity;
-import com.moko.mkgw4.activity.MKGW4MainActivity;
 import com.moko.mkgw4.adapter.NetworkFragmentAdapter;
 import com.moko.mkgw4.databinding.ActivityMqttSettingsMkgw4Binding;
 import com.moko.mkgw4.dialog.AlertMessageDialog;
@@ -107,7 +106,7 @@ public class MkGw4MqttSettingsActivity extends MkGw4BaseActivity implements Radi
         });
         mBind.vpMqtt.setOffscreenPageLimit(4);
         mBind.rgMqtt.setOnCheckedChangeListener(this);
-        expertFilePath = MKGW4MainActivity.PATH_LOGCAT + File.separator + "export" + File.separator + "Settings_for_Device.xls";
+        expertFilePath = getExternalFilesDir("mqttSetting").getAbsolutePath() + File.separator + "Settings_for_Device.xls";
         showSyncingProgressDialog();
         mBind.title.postDelayed(() -> {
             List<OrderTask> orderTasks = new ArrayList<>();
@@ -163,16 +162,8 @@ public class MkGw4MqttSettingsActivity extends MkGw4BaseActivity implements Radi
                                 switch (configKeyEnum) {
                                     case KEY_MQTT_CA:
                                     case KEY_MQTT_CLIENT_CERT:
-                                        if (result != 1) {
-                                            mSavedParamsError = true;
-                                        }
-                                        break;
                                     case KEY_MQTT_CLIENT_KEY:
-                                        if (mSavedParamsError) {
-                                            ToastUtils.showToast(this, "Setup failed！");
-                                        } else {
-                                            ToastUtils.showToast(this, "Setup succeed！");
-                                        }
+                                        if (result != 1) mSavedParamsError = true;
                                         break;
                                 }
                             }
@@ -207,6 +198,13 @@ public class MkGw4MqttSettingsActivity extends MkGw4BaseActivity implements Radi
                                             ToastUtils.showToast(this, "Setup failed！");
                                         } else {
                                             ToastUtils.showToast(this, "Setup succeed！");
+                                            //发送重启指令
+                                            MokoSupport.getInstance().sendOrder(OrderTaskAssembler.reboot());
+                                        }
+                                        break;
+                                    case KEY_REBOOT:
+                                        if (result == 1) {
+                                            MokoSupport.getInstance().disConnectBle();
                                         }
                                         break;
                                 }
@@ -354,8 +352,6 @@ public class MkGw4MqttSettingsActivity extends MkGw4BaseActivity implements Radi
             orderTasks.add(OrderTaskAssembler.setMQTTQos(generalFragment.getQos()));
             orderTasks.add(OrderTaskAssembler.setMQTTKeepAlive(generalFragment.getKeepAlive()));
             orderTasks.add(OrderTaskAssembler.setMQTTUsername(userFragment.getUsername()));
-            orderTasks.add(OrderTaskAssembler.setMQTTPassword(userFragment.getPassword()));
-            orderTasks.add(OrderTaskAssembler.setMQTTConnectMode(sslFragment.getConnectMode()));
             if (sslFragment.getConnectMode() == 2) {
                 //ca证书
                 File file = null;
@@ -374,6 +370,8 @@ public class MkGw4MqttSettingsActivity extends MkGw4BaseActivity implements Radi
                     clientCertFile = new File(sslFragment.getClientCertPath());
                 orderTasks.add(OrderTaskAssembler.setClientCert(clientCertFile));
             }
+            orderTasks.add(OrderTaskAssembler.setMQTTPassword(userFragment.getPassword()));
+            orderTasks.add(OrderTaskAssembler.setMQTTConnectMode(sslFragment.getConnectMode()));
             MokoSupport.getInstance().sendOrder(orderTasks.toArray(new OrderTask[]{}));
         } catch (Exception e) {
             ToastUtils.showToast(this, "File is missing");
