@@ -25,10 +25,14 @@ public class OtherPayloadAdapter extends BaseQuickAdapter<OtherTypePayloadBean, 
         EditText etMin = helper.getView(R.id.et_min);
         EditText etMax = helper.getView(R.id.et_max);
         if (!"000000".equals(item.payload)) {
-            etType.setText(data.substring(0, 2).toUpperCase());
+            if ("00".equals(data.substring(0,2))){
+                etType.setText("");
+            }else {
+                etType.setText(data.substring(0, 2).toUpperCase());
+                etType.setSelection(etType.getText().length());
+            }
             etMin.setText(String.valueOf(Integer.parseInt(data.substring(2, 4), 16)));
             etMax.setText(String.valueOf(Integer.parseInt(data.substring(4), 16)));
-            etType.setSelection(etType.getText().length());
             etMin.setSelection(etMin.getText().length());
             etMax.setSelection(etMax.getText().length());
         }else {

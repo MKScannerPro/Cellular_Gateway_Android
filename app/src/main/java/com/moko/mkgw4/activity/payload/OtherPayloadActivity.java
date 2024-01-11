@@ -158,11 +158,13 @@ public class OtherPayloadActivity extends MkGw4BaseActivity implements BaseQuick
         if (isWindowLocked()) return;
         if (isValid()) {
             showSyncingProgressDialog();
+            isParamsError = false;
             int payload = (mBind.cbRssi.isChecked() ? 1 : 0) | (mBind.cbTimestamp.isChecked() ? 1 << 1 : 0) |
                     (mBind.cbRawDataAdv.isChecked() ? 1 << 2 : 0) | (mBind.cbRawDataRes.isChecked() ? 1 << 3 : 0);
             List<OrderTask> orderTasks = new ArrayList<>(4);
             orderTasks.add(OrderTaskAssembler.setOtherPayload(payload));
             orderTasks.add(OrderTaskAssembler.setOtherPayloadData(payloadOther));
+            orderTasks.add(OrderTaskAssembler.getOtherPayloadData());
             MokoSupport.getInstance().sendOrder(orderTasks.toArray(new OrderTask[0]));
         } else {
             ToastUtils.showToast(this, "Parameter Error");

@@ -9,6 +9,7 @@ import com.moko.mkgw4.databinding.DialogScanFilterMkgw4Binding;
 public class MkGw4ScanFilterDialog extends BaseDialog<DialogScanFilterMkgw4Binding> {
     private int filterRssi;
     private String filterName;
+    private String filterMac;
 
     @Override
     protected DialogScanFilterMkgw4Binding getViewBind() {
@@ -46,9 +47,14 @@ public class MkGw4ScanFilterDialog extends BaseDialog<DialogScanFilterMkgw4Bindi
             mBind.etFilterName.setSelection(filterName.length());
         }
         setDismissEnable(true);
-        mBind.ivFilterDelete.setOnClickListener(v -> mBind.etFilterName.setText(""));
+        if (!TextUtils.isEmpty(filterMac)) {
+            mBind.etFilterMac.setText(filterMac);
+            mBind.etFilterMac.setSelection(filterMac.length());
+        }
+        mBind.ivFilterMacDelete.setOnClickListener(v -> mBind.etFilterMac.setText(""));
+        mBind.ivFilterNameDelete.setOnClickListener(v -> mBind.etFilterName.setText(""));
         mBind.tvDone.setOnClickListener(v -> {
-            listener.onDone(mBind.etFilterName.getText().toString(), filterRssi);
+            listener.onDone(mBind.etFilterName.getText().toString(), mBind.etFilterMac.getText().toString(), filterRssi);
             dismiss();
         });
     }
@@ -63,11 +69,15 @@ public class MkGw4ScanFilterDialog extends BaseDialog<DialogScanFilterMkgw4Bindi
         this.filterName = filterName;
     }
 
+    public void setFilterMac(String filterMac) {
+        this.filterMac = filterMac;
+    }
+
     public void setFilterRssi(int filterRssi) {
         this.filterRssi = filterRssi;
     }
 
     public interface OnScanFilterListener {
-        void onDone(String filterName, int filterRssi);
+        void onDone(String filterName, String filterMac, int filterRssi);
     }
 }

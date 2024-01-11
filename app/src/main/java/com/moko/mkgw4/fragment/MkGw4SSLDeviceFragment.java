@@ -15,6 +15,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import com.moko.mkgw4.R;
 import com.moko.mkgw4.activity.MkGw4BaseActivity;
 import com.moko.mkgw4.databinding.FragmentSslDeviceMkgw4Binding;
 import com.moko.mkgw4.dialog.MkGw4BottomDialog;
@@ -79,6 +80,29 @@ public class MkGw4SSLDeviceFragment extends Fragment {
             mBind.llClientCert.setVisibility(View.VISIBLE);
         }
         return mBind.getRoot();
+    }
+
+    public boolean isValid() {
+        if (mConnectMode == 2) {
+            if (TextUtils.isEmpty(mBind.tvCaFile.getText())) {
+                ToastUtils.showToast(activity, getString(R.string.mqtt_verify_ca));
+                return false;
+            }
+        } else if (mConnectMode == 3) {
+            if (TextUtils.isEmpty(mBind.tvCaFile.getText())) {
+                ToastUtils.showToast(activity, getString(R.string.mqtt_verify_ca));
+                return false;
+            }
+            if (TextUtils.isEmpty(mBind.tvClientKeyFile.getText())) {
+                ToastUtils.showToast(activity, getString(R.string.mqtt_verify_client_key));
+                return false;
+            }
+            if (TextUtils.isEmpty(mBind.tvClientCertFile.getText())) {
+                ToastUtils.showToast(activity, getString(R.string.mqtt_verify_client_cert));
+                return false;
+            }
+        }
+        return true;
     }
 
     public void setConnectMode(int connectMode) {

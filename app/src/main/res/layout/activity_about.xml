@@ -47,7 +47,7 @@
         android:layout_below="@id/iv_logo"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="15dp"
-        android:text="PS101-M"
+        android:text="MKGW4"
         android:textColor="@color/grey_888888"
         android:textSize="20sp" />
 
@@ -58,7 +58,7 @@
         android:layout_below="@id/app_name"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
-        android:text="APP Version:V1.0.3"
+        android:text="APP Version:V1.0.1"
         android:textColor="@color/grey_a8a8a8"
         android:textSize="17sp" />
 

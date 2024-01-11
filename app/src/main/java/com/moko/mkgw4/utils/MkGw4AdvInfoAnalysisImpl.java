@@ -26,17 +26,17 @@ public class MkGw4AdvInfoAnalysisImpl implements DeviceInfoParseable<MkGw4AdvInf
         ScanResult result = deviceInfo.scanResult;
         ScanRecord record = result.getScanRecord();
         if (null == record) return null;
-        byte[] manufacturerSpecificData = record.getManufacturerSpecificData(0xAA11);
+        byte[] manufacturerSpecificData = record.getManufacturerSpecificData(0x004C);
         byte[] bytes = record.getServiceData(new ParcelUuid(OrderServices.SERVICE_ADV.getUuid()));
-        if (null == manufacturerSpecificData || manufacturerSpecificData.length < 8) return null;
-        if ((manufacturerSpecificData[0] & 0xff) != 0) return null;
-        boolean verifyEnable = (manufacturerSpecificData[7] & 0xff) == 1;
+        if (null == bytes || bytes.length < 8) return null;
+        if ((bytes[0] & 0xff) != 0) return null;
+        boolean verifyEnable = (bytes[7] & 0xff) == 1;
         String uuid = null;
         String major = null;
         String minor = null;
         String rssi1M = null;
-        if (null != bytes && bytes.length == 23) {
-            String data = MokoUtils.bytesToHexString(bytes);
+        if (null != manufacturerSpecificData && manufacturerSpecificData.length == 23) {
+            String data = MokoUtils.bytesToHexString(manufacturerSpecificData);
             StringBuilder stringBuilder = new StringBuilder(data.substring(4, 36).toLowerCase());
             stringBuilder.insert(8, "-");
             stringBuilder.insert(13, "-");

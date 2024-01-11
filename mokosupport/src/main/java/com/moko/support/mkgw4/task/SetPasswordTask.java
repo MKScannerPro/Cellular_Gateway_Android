@@ -11,16 +11,14 @@ public class SetPasswordTask extends OrderTask {
     }
 
     public void setData(String password) {
-        this.data = new byte[12];
         byte[] passwordBytes = password.getBytes();
         int length = passwordBytes.length;
+        data = new byte[length + 4];
         data[0] = (byte) 0xED;
         data[1] = (byte) 0x01;
         data[2] = (byte) 0x01;
         data[3] = (byte) length;
-        for (int i = 0; i < length; i++) {
-            data[i + 4] = passwordBytes[i];
-        }
+        System.arraycopy(passwordBytes, 0, data, 4, length);
     }
 
     @Override

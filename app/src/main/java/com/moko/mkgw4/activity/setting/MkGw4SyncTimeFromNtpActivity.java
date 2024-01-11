@@ -167,6 +167,7 @@ public class MkGw4SyncTimeFromNtpActivity extends MkGw4BaseActivity {
         if (isWindowLocked()) return;
         if (isValid()) {
             showSyncingProgressDialog();
+            savedParamsError = false;
             List<OrderTask> orderTasks = new ArrayList<>(4);
             orderTasks.add(OrderTaskAssembler.setNtpEnable(mBind.cbSwitch.isChecked() ? 1 : 0));
             if (mBind.cbSwitch.isChecked()) {

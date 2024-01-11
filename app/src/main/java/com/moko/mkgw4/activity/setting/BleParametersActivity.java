@@ -251,6 +251,7 @@ public class BleParametersActivity extends MkGw4BaseActivity implements SeekBar.
         if (isWindowLocked()) return;
         if (isValid()) {
             showSyncingProgressDialog();
+            isParamsError = false;
             List<OrderTask> orderTasks = new ArrayList<>(12);
             orderTasks.add(OrderTaskAssembler.setAdvName(mBind.etAdvName.getText().toString().trim()));
             int interval = Integer.parseInt(mBind.etAdvInterval.getText().toString());

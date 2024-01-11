@@ -160,10 +160,24 @@ public class MkGw4MqttSettingsActivity extends MkGw4BaseActivity implements Radi
                                 // write
                                 int result = value[4] & 0xFF;
                                 switch (configKeyEnum) {
+                                    case KEY_MQTT_USERNAME:
+                                    case KEY_MQTT_PASSWORD:
                                     case KEY_MQTT_CA:
                                     case KEY_MQTT_CLIENT_CERT:
                                     case KEY_MQTT_CLIENT_KEY:
                                         if (result != 1) mSavedParamsError = true;
+                                        break;
+                                }
+                            }
+                            if (flag == 0x00) {
+                                int length = MokoUtils.toInt(Arrays.copyOfRange(value, 3, 5));
+                                // read
+                                switch (configKeyEnum) {
+                                    case KEY_MQTT_USERNAME:
+                                        userFragment.setUserName(new String(Arrays.copyOfRange(value, 5, 5 + length)));
+                                        break;
+                                    case KEY_MQTT_PASSWORD:
+                                        userFragment.setPassword(new String(Arrays.copyOfRange(value, 5, 5 + length)));
                                         break;
                                 }
                             }
@@ -184,8 +198,6 @@ public class MkGw4MqttSettingsActivity extends MkGw4BaseActivity implements Radi
                                     case KEY_MQTT_CLEAN_SESSION:
                                     case KEY_MQTT_QOS:
                                     case KEY_MQTT_KEEP_ALIVE:
-                                    case KEY_MQTT_USERNAME:
-                                    case KEY_MQTT_PASSWORD:
                                         if (result != 1) {
                                             mSavedParamsError = true;
                                         }
@@ -242,12 +254,6 @@ public class MkGw4MqttSettingsActivity extends MkGw4BaseActivity implements Radi
                                         break;
                                     case KEY_MQTT_KEEP_ALIVE:
                                         generalFragment.setKeepAlive(value[4] & 0xff);
-                                        break;
-                                    case KEY_MQTT_USERNAME:
-                                        userFragment.setUserName(new String(Arrays.copyOfRange(value, 4, value.length)));
-                                        break;
-                                    case KEY_MQTT_PASSWORD:
-                                        userFragment.setPassword(new String(Arrays.copyOfRange(value, 4, value.length)));
                                         break;
                                     case KEY_CONNECT_MODE:
                                         sslFragment.setConnectMode(value[4] & 0xff);
@@ -324,7 +330,8 @@ public class MkGw4MqttSettingsActivity extends MkGw4BaseActivity implements Radi
             ToastUtils.showToast(this, "Subscribed and published topic can't be same !");
             return true;
         }
-        return !generalFragment.isValid();
+        if (!generalFragment.isValid()) return true;
+        return !sslFragment.isValid();
     }
 
     @Override
@@ -342,6 +349,7 @@ public class MkGw4MqttSettingsActivity extends MkGw4BaseActivity implements Radi
     private void setMQTTDeviceConfig() {
         try {
             showSyncingProgressDialog();
+            mSavedParamsError = false;
             ArrayList<OrderTask> orderTasks = new ArrayList<>(16);
             orderTasks.add(OrderTaskAssembler.setMQTTHost(mBind.etMqttHost.getText().toString().trim()));
             orderTasks.add(OrderTaskAssembler.setMQTTPort(Integer.parseInt(mBind.etMqttPort.getText().toString().trim())));

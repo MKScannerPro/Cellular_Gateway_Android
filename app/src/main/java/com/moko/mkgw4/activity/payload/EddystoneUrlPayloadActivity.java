@@ -101,7 +101,7 @@ public class EddystoneUrlPayloadActivity extends MkGw4BaseActivity {
         showSyncingProgressDialog();
         int payload = (mBind.cbRssi.isChecked() ? 1 : 0) | (mBind.cbTimestamp.isChecked() ? 1 << 1 : 0) |
                 (mBind.cbRssi0m.isChecked() ? 1 << 2 : 0) | (mBind.cbUrl.isChecked() ? 1 << 3 : 0) |
-                (mBind.cbRawDataAdv.isChecked() ? 1 << 5 : 0) | (mBind.cbRawDataRes.isChecked() ? 1 << 5 : 0);
+                (mBind.cbRawDataAdv.isChecked() ? 1 << 4 : 0) | (mBind.cbRawDataRes.isChecked() ? 1 << 5 : 0);
         MokoSupport.getInstance().sendOrder(OrderTaskAssembler.setEddystoneUrlPayload(payload));
     }
 

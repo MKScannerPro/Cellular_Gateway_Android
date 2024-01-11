@@ -173,6 +173,7 @@ public class ScannerFilterSettingsActivity extends MkGw4BaseActivity implements 
     public void onSave(View view) {
         if (isWindowLocked()) return;
         showSyncingProgressDialog();
+        savedParamsError = false;
         List<OrderTask> orderTasks = new ArrayList<>(6);
         orderTasks.add(OrderTaskAssembler.setFilterRSSI(mBind.sbRssiFilter.getProgress() - 127));
         orderTasks.add(OrderTaskAssembler.setFilterBleScanPhy(mFilterTypeSelected));

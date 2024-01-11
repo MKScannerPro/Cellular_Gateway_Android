@@ -178,6 +178,7 @@ public class BatteryManagementActivity extends MkGw4BaseActivity {
     public void onSave(View view) {
         if (isWindowLocked()) return;
         showSyncingProgressDialog();
+        saveParamError = false;
         List<OrderTask> orderTasks = new ArrayList<>(2);
         if (mBind.cbLowPowerNotify.isChecked()) {
             orderTasks.add(OrderTaskAssembler.setLowPowerPercent(mSelected));

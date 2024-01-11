@@ -54,8 +54,8 @@ public class MkGw4NetworkSettingsActivity extends MkGw4BaseActivity {
             return null;
         };
         mBind.etApn.setFilters(new InputFilter[]{new InputFilter.LengthFilter(100), inputFilter});
-        mBind.etUsername.setFilters(new InputFilter[]{new InputFilter.LengthFilter(127), inputFilter});
-        mBind.etPwd.setFilters(new InputFilter[]{new InputFilter.LengthFilter(127), inputFilter});
+        mBind.etUsername.setFilters(new InputFilter[]{new InputFilter.LengthFilter(100), inputFilter});
+        mBind.etPwd.setFilters(new InputFilter[]{new InputFilter.LengthFilter(100), inputFilter});
 
         showSyncingProgressDialog();
         List<OrderTask> orderTasks = new ArrayList<>(6);
@@ -174,7 +174,7 @@ public class MkGw4NetworkSettingsActivity extends MkGw4BaseActivity {
         back();
     }
 
-    private void back(){
+    private void back() {
         EventBus.getDefault().unregister(this);
         finish();
     }
@@ -182,7 +182,7 @@ public class MkGw4NetworkSettingsActivity extends MkGw4BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (EventBus.getDefault().isRegistered(this)){
+        if (EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().unregister(this);
         }
     }
@@ -191,6 +191,7 @@ public class MkGw4NetworkSettingsActivity extends MkGw4BaseActivity {
         if (isWindowLocked()) return;
         if (isValid()) {
             showSyncingProgressDialog();
+            mSavedParamsError = false;
             List<OrderTask> orderTasks = new ArrayList<>(6);
             orderTasks.add(OrderTaskAssembler.setNetworkPriority(netPrioritySelect));
             String apn = TextUtils.isEmpty(mBind.etApn.getText()) ? null : mBind.etApn.getText().toString();

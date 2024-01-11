@@ -138,6 +138,7 @@ public class MkGw4FilterTLMActivity extends MkGw4BaseActivity {
     private void onSave() {
         if (isWindowLocked()) return;
         showSyncingProgressDialog();
+        savedParamsError =false;
         List<OrderTask> orderTasks = new ArrayList<>();
         orderTasks.add(OrderTaskAssembler.setFilterEddystoneTlmVersion(mSelected));
         orderTasks.add(OrderTaskAssembler.setFilterEddystoneTlmEnable(mBind.cbTlm.isChecked() ? 1 : 0));

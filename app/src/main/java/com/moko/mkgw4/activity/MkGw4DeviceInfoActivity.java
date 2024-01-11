@@ -53,7 +53,6 @@ public class MkGw4DeviceInfoActivity extends MkGw4BaseActivity implements RadioG
     private SettingsFragment settingsFragment;
     private boolean mReceiverTag;
     private int disConnectType;
-    private boolean savedParamsError;
     private String advName;
     private String mac;
 
@@ -170,9 +169,6 @@ public class MkGw4DeviceInfoActivity extends MkGw4BaseActivity implements RadioG
                                 case KEY_POWER_LOSS_NOTIFY:
                                 case KEY_DELETE_BUFFER_DATA:
                                     if (result != 1) {
-                                        savedParamsError = true;
-                                    }
-                                    if (savedParamsError) {
                                         ToastUtils.showToast(this, "Setup failed");
                                     } else {
                                         ToastUtils.showToast(this, "Setup succeed");
@@ -182,10 +178,10 @@ public class MkGw4DeviceInfoActivity extends MkGw4BaseActivity implements RadioG
                                 case KEY_RESET:
                                 case KEY_REBOOT:
                                 case KEY_CLOSE:
-                                    if (result == 1){
+                                    if (result == 1) {
                                         ToastUtils.showToast(this, "Setup succeed");
                                         MokoSupport.getInstance().disConnectBle();
-                                    }else {
+                                    } else {
                                         ToastUtils.showToast(this, "Setup failed");
                                     }
                                     break;

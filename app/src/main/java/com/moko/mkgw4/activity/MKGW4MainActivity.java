@@ -77,6 +77,7 @@ public class MKGW4MainActivity extends MkGw4BaseActivity implements MokoScanDevi
     private MkGw4AdvInfoAnalysisImpl beaconInfoParseable;
     public String filterName;
     public int filterRssi = -127;
+    public String filterMac;
     private String advName;
     private String selectMac;
 
@@ -170,32 +171,31 @@ public class MKGW4MainActivity extends MkGw4BaseActivity implements MokoScanDevi
 
     private void updateDevices() {
         beaconInfos.clear();
-        if (!TextUtils.isEmpty(filterName) || filterRssi != -127) {
-            ArrayList<MkGw4AdvInfo> beaconInfosFilter = new ArrayList<>(beaconInfoHashMap.values());
-            Iterator<MkGw4AdvInfo> iterator = beaconInfosFilter.iterator();
+        if (!TextUtils.isEmpty(filterName)
+                || !TextUtils.isEmpty(filterMac)
+                || filterRssi != -127) {
+            ArrayList<MkGw4AdvInfo> advInfoListFilter = new ArrayList<>(beaconInfoHashMap.values());
+            Iterator<MkGw4AdvInfo> iterator = advInfoListFilter.iterator();
             while (iterator.hasNext()) {
-                MkGw4AdvInfo beaconInfo = iterator.next();
-                if (beaconInfo.rssi > filterRssi) {
-                    if (TextUtils.isEmpty(filterName)) {
-                        continue;
-                    } else {
-                        if (TextUtils.isEmpty(beaconInfo.name) && TextUtils.isEmpty(beaconInfo.mac)) {
-                            iterator.remove();
-                        } else if (TextUtils.isEmpty(beaconInfo.name) && beaconInfo.mac.toLowerCase().replaceAll(":", "").contains(filterName.toLowerCase())) {
-                            continue;
-                        } else if (TextUtils.isEmpty(beaconInfo.mac) && beaconInfo.name.toLowerCase().contains(filterName.toLowerCase())) {
-                            continue;
-                        } else if (!TextUtils.isEmpty(beaconInfo.name) && !TextUtils.isEmpty(beaconInfo.mac) && (beaconInfo.name.toLowerCase().contains(filterName.toLowerCase()) || beaconInfo.mac.toLowerCase().replaceAll(":", "").contains(filterName.toLowerCase()))) {
-                            continue;
-                        } else {
-                            iterator.remove();
-                        }
+                MkGw4AdvInfo advInfo = iterator.next();
+                if (advInfo.rssi > filterRssi) {
+                    if (!TextUtils.isEmpty(filterMac) && TextUtils.isEmpty(advInfo.mac)) {
+                        iterator.remove();
+                    }
+                    if (!TextUtils.isEmpty(filterMac) && !advInfo.mac.toLowerCase().replaceAll(":", "").contains(filterMac.toLowerCase())) {
+                        iterator.remove();
+                    }
+                    if (!TextUtils.isEmpty(filterName) && TextUtils.isEmpty(advInfo.name)) {
+                        iterator.remove();
+                    }
+                    if (!TextUtils.isEmpty(filterName) && !advInfo.name.toLowerCase().contains(filterName.toLowerCase())) {
+                        iterator.remove();
                     }
                 } else {
                     iterator.remove();
                 }
             }
-            beaconInfos.addAll(beaconInfosFilter);
+            beaconInfos.addAll(advInfoListFilter);
         } else {
             beaconInfos.addAll(beaconInfoHashMap.values());
         }
@@ -256,16 +256,34 @@ public class MKGW4MainActivity extends MkGw4BaseActivity implements MokoScanDevi
         }
         MkGw4ScanFilterDialog scanFilterDialog = new MkGw4ScanFilterDialog(this);
         scanFilterDialog.setFilterName(filterName);
+        scanFilterDialog.setFilterMac(filterMac);
         scanFilterDialog.setFilterRssi(filterRssi);
-        scanFilterDialog.setOnScanFilterListener((filterName, filterRssi) -> {
+        scanFilterDialog.setOnScanFilterListener((filterName, filterMac,filterRssi) -> {
             MKGW4MainActivity.this.filterName = filterName;
             MKGW4MainActivity.this.filterRssi = filterRssi;
-            if (!TextUtils.isEmpty(filterName) || filterRssi != -127) {
+            MKGW4MainActivity.this.filterMac = filterMac;
+            String showFilterMac = "";
+            if (filterMac.length() == 12) {
+                StringBuffer stringBuffer = new StringBuffer(filterMac);
+                stringBuffer.insert(2, ":");
+                stringBuffer.insert(5, ":");
+                stringBuffer.insert(8, ":");
+                stringBuffer.insert(11, ":");
+                stringBuffer.insert(14, ":");
+                showFilterMac = stringBuffer.toString();
+            } else {
+                showFilterMac = filterMac;
+            }
+            if (!TextUtils.isEmpty(filterName) || filterRssi != -127|| !TextUtils.isEmpty(showFilterMac)) {
                 mBind.rlFilter.setVisibility(View.VISIBLE);
                 mBind.rlEditFilter.setVisibility(View.GONE);
                 StringBuilder stringBuilder = new StringBuilder();
                 if (!TextUtils.isEmpty(filterName)) {
                     stringBuilder.append(filterName);
+                    stringBuilder.append(";");
+                }
+                if (!TextUtils.isEmpty(showFilterMac)) {
+                    stringBuilder.append(showFilterMac);
                     stringBuilder.append(";");
                 }
                 if (filterRssi != -127) {
@@ -296,6 +314,7 @@ public class MKGW4MainActivity extends MkGw4BaseActivity implements MokoScanDevi
         mBind.rlEditFilter.setVisibility(View.VISIBLE);
         filterName = "";
         filterRssi = -127;
+        filterMac = "";
         if (isWindowLocked()) return;
         if (animation == null) startScan();
     }

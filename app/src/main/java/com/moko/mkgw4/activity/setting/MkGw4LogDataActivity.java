@@ -105,15 +105,15 @@ public class MkGw4LogDataActivity extends MkGw4BaseActivity implements BaseQuick
     @Subscribe(threadMode = ThreadMode.POSTING, priority = 300)
     public void onConnectStatusEvent(ConnectStatusEvent event) {
         final String action = event.getAction();
-        EventBus.getDefault().cancelEventDelivery(event);
         runOnUiThread(() -> {
             if (MokoConstants.ACTION_DISCONNECTED.equals(action)) {
                 isDisconnected = true;
                 // 中途断开，要先保存数据
                 mBind.tvSyncSwitch.setEnabled(false);
                 if (isSync) {
+                    isBack = true;
                     stopSync();
-                }else {
+                } else {
                     finish();
                 }
             }
@@ -132,7 +132,7 @@ public class MkGw4LogDataActivity extends MkGw4BaseActivity implements BaseQuick
                 if (Objects.requireNonNull(orderCHAR) == OrderCHAR.CHAR_LOG) {
                     String log = new String(value);
                     storeString.append(log);
-                    builder.insert(0,log);
+                    builder.insert(0, log);
                     mBind.tvContent.setText(builder.toString());
                 }
             }
@@ -163,6 +163,7 @@ public class MkGw4LogDataActivity extends MkGw4BaseActivity implements BaseQuick
             MokoSupport.getInstance().enableLogNotify();
             Calendar calendar = Calendar.getInstance();
             syncTime = Utils.calendar2strDate(calendar, "yyyy-MM-dd HH-mm-ss");
+            mBind.nestScrollView.setVisibility(View.VISIBLE);
         } else {
             MokoSupport.getInstance().disableLogNotify();
             stopSync();
@@ -227,8 +228,7 @@ public class MkGw4LogDataActivity extends MkGw4BaseActivity implements BaseQuick
             // 发送邮件
             String address = "Development@mokotechnology.com";
             String title = "Debugger Log";
-            String content = title;
-            Utils.sendEmail(MkGw4LogDataActivity.this, address, content, title, "Choose Email Client", files);
+            Utils.sendEmail(this, address, title, title, "Choose Email Client", files);
         }
     }
 
@@ -288,8 +288,7 @@ public class MkGw4LogDataActivity extends MkGw4BaseActivity implements BaseQuick
         LogData.filePath = logFilePath;
         LogDatas.add(LogData);
         adapter.replaceData(LogDatas);
-        if (isBack)
-            finish();
+        if (isBack) finish();
     }
 
     @Override

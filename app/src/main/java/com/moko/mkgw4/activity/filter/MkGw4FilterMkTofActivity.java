@@ -171,7 +171,7 @@ public class MkGw4FilterMkTofActivity extends MkGw4BaseActivity {
     private void saveParams() {
         savedParamsError = false;
         List<OrderTask> orderTasks = new ArrayList<>(4);
-        orderTasks.add(OrderTaskAssembler.setFilterOtherEnable(mBind.cbEnable.isChecked() ? 1 : 0));
+        orderTasks.add(OrderTaskAssembler.setFilterMkTofEnable(mBind.cbEnable.isChecked() ? 1 : 0));
         orderTasks.add(OrderTaskAssembler.setFilterMkTofRules(filterTof));
         MokoSupport.getInstance().sendOrder(orderTasks.toArray(new OrderTask[]{}));
     }

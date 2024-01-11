@@ -42,6 +42,15 @@ public class ParamsTask extends OrderTask {
         };
     }
 
+    public void getLongData(ParamsKeyEnum key){
+        response.responseValue = data = new byte[]{
+                (byte) 0xEE,
+                (byte) 0x00,
+                (byte) key.getParamsKey(),
+                (byte) 0x00
+        };
+    }
+
     public void getFilterName() {
         response.responseValue = data = new byte[]{
                 (byte) 0xEE,
@@ -297,7 +306,7 @@ public class ParamsTask extends OrderTask {
                     (byte) 0xEE,
                     (byte) 0x01,
                     (byte) ParamsKeyEnum.KEY_MQTT_USERNAME.getParamsKey(),
-                    (byte) 0x00,
+                    (byte) 0x01,
                     (byte) 0x00,
                     (byte) 0x00
             };
@@ -312,7 +321,7 @@ public class ParamsTask extends OrderTask {
                     (byte) 0xEE,
                     (byte) 0x01,
                     (byte) ParamsKeyEnum.KEY_MQTT_PASSWORD.getParamsKey(),
-                    (byte) 0x00,
+                    (byte) 0x01,
                     (byte) 0x00,
                     (byte) 0x00
             };
@@ -1710,7 +1719,9 @@ public class ParamsTask extends OrderTask {
             data[3] = (byte) packetCount;
             data[4] = (byte) packetIndex;
             data[5] = (byte) dataLength;
-            System.arraycopy(dataBytes, 0, data, 6, dataLength);
+            for (int i = 0; i < dataLength; i++) {
+                data[i + 6] = dataBytes[i];
+            }
         }
     }
 

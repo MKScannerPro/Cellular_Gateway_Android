@@ -161,6 +161,7 @@ public class MkGw4MotionFixActivity extends MkGw4BaseActivity {
         if (isWindowLocked()) return;
         if (isValid()) {
             showSyncingProgressDialog();
+            mSavedParamsError = false;
             List<OrderTask> orderTasks = new ArrayList<>();
             orderTasks.add(OrderTaskAssembler.setMotionFixEnableStart(mBind.cbStartFix.isChecked() ? 1 : 0));
             orderTasks.add(OrderTaskAssembler.setMotionFixEnableTrip(mBind.cbFixInTrip.isChecked() ? 1 : 0));
