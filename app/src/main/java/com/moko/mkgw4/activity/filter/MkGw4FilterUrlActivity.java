@@ -43,7 +43,7 @@ public class MkGw4FilterUrlActivity extends MkGw4BaseActivity {
             }
             return null;
         };
-        mBind.etUrl.setFilters(new InputFilter[]{new InputFilter.LengthFilter(114), inputFilter});
+        mBind.etUrl.setFilters(new InputFilter[]{new InputFilter.LengthFilter(37), inputFilter});
         showSyncingProgressDialog();
         List<OrderTask> orderTasks = new ArrayList<>();
         orderTasks.add(OrderTaskAssembler.getFilterEddystoneUrlEnable());

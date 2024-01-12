@@ -34,6 +34,7 @@ public class SettingsFragment extends Fragment {
     private FragmentSettingsBinding mBind;
     private MkGw4DeviceInfoActivity activity;
     private boolean isNotifyEnable;
+    private boolean isPowerChargeEnable;
     private String mac;
 
     public SettingsFragment() {
@@ -64,6 +65,14 @@ public class SettingsFragment extends Fragment {
             orderTasks.add(OrderTaskAssembler.getPowerLossNotify());
             MokoSupport.getInstance().sendOrder(orderTasks.toArray(new OrderTask[0]));
         });
+        mBind.ivPowerCharge.setOnClickListener(v -> {
+            activity.showSyncingProgressDialog();
+            List<OrderTask> orderTasks = new ArrayList<>(4);
+            orderTasks.add(OrderTaskAssembler.setAutoPowerOn(isPowerChargeEnable ? 0 : 1));
+            orderTasks.add(OrderTaskAssembler.getAutoPowerOn());
+            MokoSupport.getInstance().sendOrder(orderTasks.toArray(new OrderTask[0]));
+        });
+
         mBind.tvLedSetting.setOnClickListener(v -> start(LedSettingsActivity.class));
         mBind.tvBleParams.setOnClickListener(v -> start(BleParametersActivity.class));
         mBind.tvHeartReportSeting.setOnClickListener(v -> start(HeartReportSettingActivity.class));
@@ -150,5 +159,10 @@ public class SettingsFragment extends Fragment {
     public void setPowerLossNotify(int enable) {
         isNotifyEnable = enable == 1;
         mBind.ivPowerNotification.setImageResource(enable == 1 ? R.drawable.ic_checked : R.drawable.ps101_ic_unchecked);
+    }
+
+    public void setPowerChargeNotify(int enable) {
+        isPowerChargeEnable = enable == 1;
+        mBind.ivPowerCharge.setImageResource(enable == 1 ? R.drawable.ic_checked : R.drawable.ps101_ic_unchecked);
     }
 }

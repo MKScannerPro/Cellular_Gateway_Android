@@ -179,17 +179,20 @@ public class MKGW4MainActivity extends MkGw4BaseActivity implements MokoScanDevi
             while (iterator.hasNext()) {
                 MkGw4AdvInfo advInfo = iterator.next();
                 if (advInfo.rssi > filterRssi) {
-                    if (!TextUtils.isEmpty(filterMac) && TextUtils.isEmpty(advInfo.mac)) {
-                        iterator.remove();
-                    }
-                    if (!TextUtils.isEmpty(filterMac) && !advInfo.mac.toLowerCase().replaceAll(":", "").contains(filterMac.toLowerCase())) {
-                        iterator.remove();
-                    }
-                    if (!TextUtils.isEmpty(filterName) && TextUtils.isEmpty(advInfo.name)) {
-                        iterator.remove();
-                    }
-                    if (!TextUtils.isEmpty(filterName) && !advInfo.name.toLowerCase().contains(filterName.toLowerCase())) {
-                        iterator.remove();
+                    if (TextUtils.isEmpty(filterName) && TextUtils.isEmpty(filterMac)) {
+                        continue;
+                    } else {
+                        if (!TextUtils.isEmpty(filterMac) && TextUtils.isEmpty(advInfo.mac)) {
+                            iterator.remove();
+                        } else if (!TextUtils.isEmpty(filterMac) && advInfo.mac.toLowerCase().replaceAll(":", "").contains(filterMac.toLowerCase())) {
+                            continue;
+                        } else if (!TextUtils.isEmpty(filterName) && TextUtils.isEmpty(advInfo.name)) {
+                            iterator.remove();
+                        } else if (!TextUtils.isEmpty(filterName) && advInfo.name.toLowerCase().contains(filterName.toLowerCase())) {
+                            continue;
+                        } else {
+                            iterator.remove();
+                        }
                     }
                 } else {
                     iterator.remove();
@@ -258,7 +261,7 @@ public class MKGW4MainActivity extends MkGw4BaseActivity implements MokoScanDevi
         scanFilterDialog.setFilterName(filterName);
         scanFilterDialog.setFilterMac(filterMac);
         scanFilterDialog.setFilterRssi(filterRssi);
-        scanFilterDialog.setOnScanFilterListener((filterName, filterMac,filterRssi) -> {
+        scanFilterDialog.setOnScanFilterListener((filterName, filterMac, filterRssi) -> {
             MKGW4MainActivity.this.filterName = filterName;
             MKGW4MainActivity.this.filterRssi = filterRssi;
             MKGW4MainActivity.this.filterMac = filterMac;
@@ -274,7 +277,7 @@ public class MKGW4MainActivity extends MkGw4BaseActivity implements MokoScanDevi
             } else {
                 showFilterMac = filterMac;
             }
-            if (!TextUtils.isEmpty(filterName) || filterRssi != -127|| !TextUtils.isEmpty(showFilterMac)) {
+            if (!TextUtils.isEmpty(filterName) || filterRssi != -127 || !TextUtils.isEmpty(showFilterMac)) {
                 mBind.rlFilter.setVisibility(View.VISIBLE);
                 mBind.rlEditFilter.setVisibility(View.GONE);
                 StringBuilder stringBuilder = new StringBuilder();
@@ -419,7 +422,7 @@ public class MKGW4MainActivity extends MkGw4BaseActivity implements MokoScanDevi
                 XLog.i("Success");
                 Intent i = new Intent(this, MkGw4DeviceInfoActivity.class);
                 i.putExtra("advName", advName);
-                i.putExtra("mac",selectMac);
+                i.putExtra("mac", selectMac);
                 launcher.launch(i);
                 return;
             }
@@ -463,7 +466,7 @@ public class MKGW4MainActivity extends MkGw4BaseActivity implements MokoScanDevi
                             XLog.i("Success");
                             Intent i = new Intent(this, MkGw4DeviceInfoActivity.class);
                             i.putExtra("advName", advName);
-                            i.putExtra("mac",selectMac);
+                            i.putExtra("mac", selectMac);
                             launcher.launch(i);
                         } else {
                             isPasswordError = true;

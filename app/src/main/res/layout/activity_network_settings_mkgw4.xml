@@ -90,7 +90,7 @@
             android:layout_marginTop="15dp"
             android:background="@drawable/shape_radius_edit_bg"
             android:hint="0-100 Characters"
-            android:lines="1"
+            android:singleLine="true"
             android:maxLength="100"
             android:paddingLeft="5dp"
             android:paddingRight="5dp"

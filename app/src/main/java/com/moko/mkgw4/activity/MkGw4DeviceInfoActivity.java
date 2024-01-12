@@ -226,6 +226,12 @@ public class MkGw4DeviceInfoActivity extends MkGw4BaseActivity implements RadioG
                                         settingsFragment.setPowerLossNotify(value[4] & 0xff);
                                     }
                                     break;
+
+                                case KEY_AUTO_POWER_ON_ENABLE:
+                                    if (length > 0) {
+                                        settingsFragment.setPowerChargeNotify(value[4] & 0xff);
+                                    }
+                                    break;
                             }
                         }
                     }
@@ -336,6 +342,7 @@ public class MkGw4DeviceInfoActivity extends MkGw4BaseActivity implements RadioG
         // device
         orderTasks.add(OrderTaskAssembler.getBattery());
         orderTasks.add(OrderTaskAssembler.getPowerLossNotify());
+        orderTasks.add(OrderTaskAssembler.getAutoPowerOn());
         MokoSupport.getInstance().sendOrder(orderTasks.toArray(new OrderTask[]{}));
     }
 
