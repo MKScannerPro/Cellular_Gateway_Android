@@ -108,21 +108,19 @@ public class MkGw4MqttSettingsActivity extends MkGw4BaseActivity implements Radi
         mBind.rgMqtt.setOnCheckedChangeListener(this);
         expertFilePath = getExternalFilesDir("mqttSetting").getAbsolutePath() + File.separator + "Settings_for_Device.xls";
         showSyncingProgressDialog();
-        mBind.title.postDelayed(() -> {
-            List<OrderTask> orderTasks = new ArrayList<>();
-            orderTasks.add(OrderTaskAssembler.getMQTTHost());
-            orderTasks.add(OrderTaskAssembler.getMQTTPort());
-            orderTasks.add(OrderTaskAssembler.getMQTTClientId());
-            orderTasks.add(OrderTaskAssembler.getMQTTSubscribeTopic());
-            orderTasks.add(OrderTaskAssembler.getMQTTPublishTopic());
-            orderTasks.add(OrderTaskAssembler.getMQTTCleanSession());
-            orderTasks.add(OrderTaskAssembler.getMQTTQos());
-            orderTasks.add(OrderTaskAssembler.getMQTTKeepAlive());
-            orderTasks.add(OrderTaskAssembler.getMQTTUsername());
-            orderTasks.add(OrderTaskAssembler.getMQTTPassword());
-            orderTasks.add(OrderTaskAssembler.getMQTTConnectMode());
-            MokoSupport.getInstance().sendOrder(orderTasks.toArray(new OrderTask[]{}));
-        }, 500);
+        List<OrderTask> orderTasks = new ArrayList<>();
+        orderTasks.add(OrderTaskAssembler.getMQTTHost());
+        orderTasks.add(OrderTaskAssembler.getMQTTPort());
+        orderTasks.add(OrderTaskAssembler.getMQTTClientId());
+        orderTasks.add(OrderTaskAssembler.getMQTTSubscribeTopic());
+        orderTasks.add(OrderTaskAssembler.getMQTTPublishTopic());
+        orderTasks.add(OrderTaskAssembler.getMQTTCleanSession());
+        orderTasks.add(OrderTaskAssembler.getMQTTQos());
+        orderTasks.add(OrderTaskAssembler.getMQTTKeepAlive());
+        orderTasks.add(OrderTaskAssembler.getMQTTUsername());
+        orderTasks.add(OrderTaskAssembler.getMQTTPassword());
+        orderTasks.add(OrderTaskAssembler.getMQTTConnectMode());
+        MokoSupport.getInstance().sendOrder(orderTasks.toArray(new OrderTask[]{}));
     }
 
     @Subscribe(threadMode = ThreadMode.POSTING, priority = 200)
@@ -198,14 +196,10 @@ public class MkGw4MqttSettingsActivity extends MkGw4BaseActivity implements Radi
                                     case KEY_MQTT_CLEAN_SESSION:
                                     case KEY_MQTT_QOS:
                                     case KEY_MQTT_KEEP_ALIVE:
-                                        if (result != 1) {
-                                            mSavedParamsError = true;
-                                        }
+                                        if (result != 1) mSavedParamsError = true;
                                         break;
                                     case KEY_CONNECT_MODE:
-                                        if (result != 1) {
-                                            mSavedParamsError = true;
-                                        }
+                                        if (result != 1) mSavedParamsError = true;
                                         if (mSavedParamsError) {
                                             ToastUtils.showToast(this, "Setup failed！");
                                         } else {
@@ -435,7 +429,6 @@ public class MkGw4MqttSettingsActivity extends MkGw4BaseActivity implements Radi
 
     public void onExportSettings(View view) {
         if (isWindowLocked()) return;
-        if (isParaError()) return;
         if (null == helper) helper = new ExcelHelper();
         NetworkSettings networkBean = new NetworkSettings();
         networkBean.host = mBind.etMqttHost.getText().toString();

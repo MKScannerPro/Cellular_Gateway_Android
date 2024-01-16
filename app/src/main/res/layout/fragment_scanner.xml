@@ -77,36 +77,4 @@
         android:text="Upload payload settings"
         android:textColor="@color/black_333333"
         android:textSize="15sp" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginTop="1dp"
-        android:background="@color/white_ffffff"
-        android:gravity="center_vertical"
-        android:paddingStart="10dp"
-        android:paddingEnd="10dp">
-
-        <TextView
-            android:layout_width="0px"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center_vertical"
-            android:text="Data upload priority"
-            android:textColor="@color/black_333333"
-            android:textSize="15sp" />
-
-        <TextView
-            android:id="@+id/tvUploadPriority"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:background="@drawable/shape_radius_blue_btn_bg"
-            android:gravity="center"
-            android:paddingStart="15dp"
-            android:paddingEnd="15dp"
-            android:text="Latest data"
-            android:textColor="@color/white_ffffff"
-            android:textSize="15sp" />
-
-    </LinearLayout>
 </LinearLayout>

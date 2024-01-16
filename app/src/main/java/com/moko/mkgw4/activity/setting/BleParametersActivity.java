@@ -133,15 +133,11 @@ public class BleParametersActivity extends MkGw4BaseActivity implements SeekBar.
                                 case KEY_IBEACON_RSSI1M:
                                 case KEY_PASSWORD_VERIFY_ENABLE:
                                 case KEY_PASSWORD:
-                                    if (result != 1) {
-                                        isParamsError = true;
-                                    }
+                                    if (result != 1) isParamsError = true;
                                     break;
 
                                 case KEY_ADV_TX_POWER:
-                                    if (result != 1) {
-                                        isParamsError = true;
-                                    }
+                                    if (result != 1) isParamsError = true;
                                     ToastUtils.showToast(this, !isParamsError ? "Setup succeed" : "Setup failed");
                                     break;
                             }

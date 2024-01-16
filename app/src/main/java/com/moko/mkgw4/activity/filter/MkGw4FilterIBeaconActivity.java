@@ -84,14 +84,10 @@ public class MkGw4FilterIBeaconActivity extends MkGw4BaseActivity {
                                 case KEY_FILTER_IBEACON_UUID:
                                 case KEY_FILTER_IBEACON_MAJOR_RANGE:
                                 case KEY_FILTER_IBEACON_MINOR_RANGE:
-                                    if (result != 1) {
-                                        savedParamsError = true;
-                                    }
+                                    if (result != 1) savedParamsError = true;
                                     break;
                                 case KEY_FILTER_IBEACON_ENABLE:
-                                    if (result != 1) {
-                                        savedParamsError = true;
-                                    }
+                                    if (result != 1) savedParamsError = true;
                                     ToastUtils.showToast(this, !savedParamsError ? "Setup succeed" : "Setup failed");
                                     break;
                             }

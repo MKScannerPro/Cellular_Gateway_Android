@@ -42,7 +42,7 @@ public class BxpTagPayloadActivity extends MkGw4BaseActivity {
         mBind.ivSave.setOnClickListener(v -> onSave());
     }
 
-    @Subscribe(threadMode = ThreadMode.POSTING, priority = 200)
+    @Subscribe(threadMode = ThreadMode.POSTING, priority = 300)
     public void onConnectStatusEvent(ConnectStatusEvent event) {
         final String action = event.getAction();
         runOnUiThread(() -> {
@@ -52,7 +52,7 @@ public class BxpTagPayloadActivity extends MkGw4BaseActivity {
         });
     }
 
-    @Subscribe(threadMode = ThreadMode.POSTING, priority = 200)
+    @Subscribe(threadMode = ThreadMode.POSTING, priority = 300)
     public void onOrderTaskResponseEvent(OrderTaskResponseEvent event) {
         final String action = event.getAction();
         if (!MokoConstants.ACTION_CURRENT_DATA.equals(action))

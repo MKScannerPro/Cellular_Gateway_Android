@@ -117,19 +117,11 @@ public class MkGw4NetworkSettingsActivity extends MkGw4BaseActivity {
                                 case KEY_APN:
                                 case KEY_APN_NAME:
                                 case KEY_APN_PASSWORD:
-                                    if (result != 1) {
-                                        mSavedParamsError = true;
-                                    }
+                                    if (result != 1) mSavedParamsError = true;
                                     break;
                                 case KEY_CONNECT_NETWORK_TIMEOUT:
-                                    if (result != 1) {
-                                        mSavedParamsError = true;
-                                    }
-                                    if (mSavedParamsError) {
-                                        ToastUtils.showToast(this, "Setup failed！");
-                                    } else {
-                                        ToastUtils.showToast(this, "Setup succeed！");
-                                    }
+                                    if (result != 1) mSavedParamsError = true;
+                                    ToastUtils.showToast(this, mSavedParamsError ? "Setup failed！" : "Setup succeed！");
                                     break;
                             }
                         } else if (flag == 0x00) {

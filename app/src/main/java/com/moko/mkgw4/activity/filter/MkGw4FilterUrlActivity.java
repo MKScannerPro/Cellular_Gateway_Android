@@ -90,14 +90,10 @@ public class MkGw4FilterUrlActivity extends MkGw4BaseActivity {
                             int result = value[4] & 0xFF;
                             switch (configKeyEnum) {
                                 case KEY_FILTER_EDDYSTONE_URL:
-                                    if (result != 1) {
-                                        savedParamsError = true;
-                                    }
+                                    if (result != 1) savedParamsError = true;
                                     break;
                                 case KEY_FILTER_EDDYSTONE_URL_ENABLE:
-                                    if (result != 1) {
-                                        savedParamsError = true;
-                                    }
+                                    if (result != 1) savedParamsError = true;
                                     ToastUtils.showToast(this, !savedParamsError ? "Setup succeed" : "Setup failed");
                                     break;
                             }

@@ -85,14 +85,10 @@ public class MkGw4FilterUIDActivity extends MkGw4BaseActivity {
                             switch (configKeyEnum) {
                                 case KEY_FILTER_EDDYSTONE_UID_NAMESPACE:
                                 case KEY_FILTER_EDDYSTONE_UID_INSTANCE:
-                                    if (result != 1) {
-                                        savedParamsError = true;
-                                    }
+                                    if (result != 1) savedParamsError = true;
                                     break;
                                 case KEY_FILTER_EDDYSTONE_UID_ENABLE:
-                                    if (result != 1) {
-                                        savedParamsError = true;
-                                    }
+                                    if (result != 1) savedParamsError = true;
                                     ToastUtils.showToast(this, !savedParamsError ? "Setup succeed" : "Setup failed");
                                     break;
                             }

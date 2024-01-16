@@ -63,12 +63,12 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="@id/tv_name" />
 
-    <include
+   <!-- <include
         android:id="@+id/layoutIBeacon"
         layout="@layout/adv_ibeacon"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
         android:visibility="gone"
-        app:layout_constraintTop_toBottomOf="@+id/tv_mac" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_mac" />-->
 </androidx.constraintlayout.widget.ConstraintLayout>

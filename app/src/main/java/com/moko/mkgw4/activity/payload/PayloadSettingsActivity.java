@@ -3,8 +3,14 @@ package com.moko.mkgw4.activity.payload;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.moko.ble.lib.MokoConstants;
+import com.moko.ble.lib.event.ConnectStatusEvent;
 import com.moko.mkgw4.activity.MkGw4BaseActivity;
 import com.moko.mkgw4.databinding.ActivityPayloadSettingsBinding;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 /**
  * @author: jun.liu
@@ -31,11 +37,29 @@ public class PayloadSettingsActivity extends MkGw4BaseActivity {
         mBind.tvPirPayload.setOnClickListener(v -> startActivity(PirPayloadActivity.class));
         mBind.tvTofPayload.setOnClickListener(v -> startActivity(MkTofPayloadActivity.class));
         mBind.tvOtherPayload.setOnClickListener(v -> startActivity(OtherPayloadActivity.class));
+        EventBus.getDefault().register(this);
     }
 
     private void startActivity(Class<?> clz) {
         if (isWindowLocked()) return;
         Intent intent = new Intent(this, clz);
         startActivity(intent);
+    }
+
+    @Subscribe(threadMode = ThreadMode.POSTING, priority = 200)
+    public void onConnectStatusEvent(ConnectStatusEvent event) {
+        final String action = event.getAction();
+        runOnUiThread(() -> {
+            if (MokoConstants.ACTION_DISCONNECTED.equals(action)) {
+                finish();
+            }
+        });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (EventBus.getDefault().isRegistered(this))
+            EventBus.getDefault().unregister(this);
     }
 }

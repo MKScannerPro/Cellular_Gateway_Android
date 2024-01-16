@@ -79,19 +79,11 @@ public class MkGw4GpsFixActivity extends MkGw4BaseActivity {
                             int result = value[4] & 0xFF;
                             switch (configKeyEnum) {
                                 case KEY_GPS_TIMEOUT:
-                                    if (result != 1) {
-                                        savedParamsError = true;
-                                    }
+                                    if (result != 1) savedParamsError = true;
                                     break;
                                 case KEY_GPS_PDOP:
-                                    if (result != 1) {
-                                        savedParamsError = true;
-                                    }
-                                    if (savedParamsError) {
-                                        ToastUtils.showToast(MkGw4GpsFixActivity.this, "Opps！Save failed. Please check the input characters and try again.");
-                                    } else {
-                                        ToastUtils.showToast(this, "Save Successfully！");
-                                    }
+                                    if (result != 1) savedParamsError = true;
+                                    ToastUtils.showToast(this, savedParamsError ? "Setup failed！" : "Setup succeed！");
                                     break;
                             }
                         }

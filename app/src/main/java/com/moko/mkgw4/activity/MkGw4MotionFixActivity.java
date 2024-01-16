@@ -25,7 +25,6 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- *
  * @author: jun.liu
  * @date: 2023/11/28 10:32
  * @des:
@@ -97,19 +96,11 @@ public class MkGw4MotionFixActivity extends MkGw4BaseActivity {
                                 case KEY_MOTION_FIX_ENABLE_WHEN_STOP:
                                 case KEY_MOTION_FIX_TIMEOUT_WHEN_STOP:
                                 case KEY_MOTION_FIX_ENABLE_WHEN_STATIONARY:
-                                    if (result != 1) {
-                                        mSavedParamsError = true;
-                                    }
+                                    if (result != 1) mSavedParamsError = true;
                                     break;
                                 case KEY_MOTION_FIX_INTERVAL_WHEN_STATIONARY:
-                                    if (result != 1) {
-                                        mSavedParamsError = true;
-                                    }
-                                    if (mSavedParamsError) {
-                                        ToastUtils.showToast(this, "Setup failed！");
-                                    } else {
-                                        ToastUtils.showToast(this, "Setup succeed！");
-                                    }
+                                    if (result != 1) mSavedParamsError = true;
+                                    ToastUtils.showToast(this, mSavedParamsError ? "Setup failed！" : "Setup succeed！");
                                     break;
                             }
                         } else if (flag == 0x00) {

@@ -180,10 +180,8 @@ public class BatteryManagementActivity extends MkGw4BaseActivity {
         showSyncingProgressDialog();
         saveParamError = false;
         List<OrderTask> orderTasks = new ArrayList<>(2);
-        if (mBind.cbLowPowerNotify.isChecked()) {
-            orderTasks.add(OrderTaskAssembler.setLowPowerPercent(mSelected));
-        }
         orderTasks.add(OrderTaskAssembler.setLowPowerReportEnable(mBind.cbLowPowerNotify.isChecked() ? 1 : 0));
+        orderTasks.add(OrderTaskAssembler.setLowPowerPercent(mSelected));
         MokoSupport.getInstance().sendOrder(orderTasks.toArray(new OrderTask[0]));
     }
 }

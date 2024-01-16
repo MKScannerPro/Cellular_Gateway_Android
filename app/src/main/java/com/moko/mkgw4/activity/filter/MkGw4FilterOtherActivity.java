@@ -89,14 +89,10 @@ public class MkGw4FilterOtherActivity extends MkGw4BaseActivity {
                             switch (configKeyEnum) {
                                 case KEY_FILTER_OTHER_RELATIONSHIP:
                                 case KEY_FILTER_OTHER_RULES:
-                                    if (result != 1) {
-                                        savedParamsError = true;
-                                    }
+                                    if (result != 1) savedParamsError = true;
                                     break;
                                 case KEY_FILTER_OTHER_ENABLE:
-                                    if (result != 1) {
-                                        savedParamsError = true;
-                                    }
+                                    if (result != 1) savedParamsError = true;
                                     ToastUtils.showToast(this, !savedParamsError ? "Setup succeed" : "Setup failed");
                                     break;
                             }

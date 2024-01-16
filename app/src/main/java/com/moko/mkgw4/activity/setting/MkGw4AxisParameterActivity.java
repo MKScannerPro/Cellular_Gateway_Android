@@ -89,19 +89,11 @@ public class MkGw4AxisParameterActivity extends MkGw4BaseActivity {
                             int result = value[4] & 0xFF;
                             switch (configKeyEnum) {
                                 case KEY_ACC_WAKEUP_CONDITION:
-                                    if (result != 1) {
-                                        savedParamsError = true;
-                                    }
+                                    if (result != 1) savedParamsError = true;
                                     break;
                                 case KEY_ACC_MOTION_CONDITION:
-                                    if (result != 1) {
-                                        savedParamsError = true;
-                                    }
-                                    if (savedParamsError) {
-                                        ToastUtils.showToast(this, "Setup failed");
-                                    } else {
-                                        ToastUtils.showToast(this, "Setup succeed");
-                                    }
+                                    if (result != 1) savedParamsError = true;
+                                    ToastUtils.showToast(this, savedParamsError ? "Setup failed" : "Setup succeed");
                                     break;
                             }
                         }

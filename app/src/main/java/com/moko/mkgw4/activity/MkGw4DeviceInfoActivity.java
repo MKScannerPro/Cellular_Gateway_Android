@@ -11,8 +11,6 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.RadioGroup;
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.IdRes;
 import androidx.fragment.app.FragmentManager;
 
@@ -22,7 +20,6 @@ import com.moko.ble.lib.event.OrderTaskResponseEvent;
 import com.moko.ble.lib.task.OrderTask;
 import com.moko.ble.lib.task.OrderTaskResponse;
 import com.moko.ble.lib.utils.MokoUtils;
-import com.moko.mkgw4.AppConstants;
 import com.moko.mkgw4.R;
 import com.moko.mkgw4.databinding.ActivityDeviceInfoMkgw4Binding;
 import com.moko.mkgw4.dialog.AlertMessageDialog;
@@ -77,12 +74,10 @@ public class MkGw4DeviceInfoActivity extends MkGw4BaseActivity implements RadioG
             MokoSupport.getInstance().enableBluetooth();
         } else {
             showSyncingProgressDialog();
-            mBind.frameContainer.postDelayed(() -> {
-                List<OrderTask> orderTasks = new ArrayList<>();
-                orderTasks.add(OrderTaskAssembler.getNetworkStatus());
-                orderTasks.add(OrderTaskAssembler.getMqttConnectionStatus());
-                MokoSupport.getInstance().sendOrder(orderTasks.toArray(new OrderTask[]{}));
-            }, 300);
+            List<OrderTask> orderTasks = new ArrayList<>();
+            orderTasks.add(OrderTaskAssembler.getNetworkStatus());
+            orderTasks.add(OrderTaskAssembler.getMqttConnectionStatus());
+            MokoSupport.getInstance().sendOrder(orderTasks.toArray(new OrderTask[]{}));
         }
     }
 
@@ -165,7 +160,6 @@ public class MkGw4DeviceInfoActivity extends MkGw4BaseActivity implements RadioG
                             int result = value[4] & 0xFF;
                             switch (configKeyEnum) {
                                 case KEY_SCAN_REPORT_ENABLE:
-                                case KEY_UPLOAD_PRIORITY:
                                 case KEY_POWER_LOSS_NOTIFY:
                                 case KEY_DELETE_BUFFER_DATA:
                                     if (result != 1) {
@@ -205,12 +199,6 @@ public class MkGw4DeviceInfoActivity extends MkGw4BaseActivity implements RadioG
                                 case KEY_SCAN_REPORT_ENABLE:
                                     if (length == 1) {
                                         scannerFragment.setModeSwitch(value[4] & 0xff);
-                                    }
-                                    break;
-
-                                case KEY_UPLOAD_PRIORITY:
-                                    if (length > 0) {
-                                        scannerFragment.setUpLoadPriority(value[4] & 0xff);
                                     }
                                     break;
 
@@ -355,10 +343,7 @@ public class MkGw4DeviceInfoActivity extends MkGw4BaseActivity implements RadioG
                 .hide(settingsFragment)
                 .commit();
         showSyncingProgressDialog();
-        List<OrderTask> orderTasks = new ArrayList<>(4);
-        orderTasks.add(OrderTaskAssembler.getScanReportEnable());
-        orderTasks.add(OrderTaskAssembler.getUploadPriority());
-        MokoSupport.getInstance().sendOrder(orderTasks.toArray(new OrderTask[0]));
+        MokoSupport.getInstance().sendOrder(OrderTaskAssembler.getScanReportEnable());
     }
 
     private void showPosAndGetData() {
@@ -385,30 +370,4 @@ public class MkGw4DeviceInfoActivity extends MkGw4BaseActivity implements RadioG
         orderTasks.add(OrderTaskAssembler.getMqttConnectionStatus());
         MokoSupport.getInstance().sendOrder(orderTasks.toArray(new OrderTask[]{}));
     }
-
-    private final ActivityResultLauncher<Intent> launcher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
-        int resultCode = result.getResultCode();
-        if (resultCode == RESULT_OK) {
-            AlertMessageDialog dialog = new AlertMessageDialog();
-            dialog.setTitle("Update Firmware");
-            dialog.setMessage("Update firmware successfully!\nPlease reconnect the device.");
-            dialog.setConfirm("OK");
-            dialog.setCancelGone();
-            dialog.setOnAlertConfirmListener(() -> {
-                setResult(RESULT_OK);
-                finish();
-            });
-            dialog.show(getSupportFragmentManager());
-        } else if (resultCode == RESULT_FIRST_USER) {
-            if (null == result.getData()) return;
-            String mac = result.getData().getStringExtra(AppConstants.EXTRA_KEY_DEVICE_MAC);
-            mBind.frameContainer.postDelayed(() -> {
-                if (MokoSupport.getInstance().isConnDevice(mac)) {
-                    MokoSupport.getInstance().disConnectBle();
-                    return;
-                }
-                showDisconnectDialog();
-            }, 500);
-        }
-    });
 }
