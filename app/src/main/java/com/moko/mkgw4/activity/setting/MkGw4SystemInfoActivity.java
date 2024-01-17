@@ -2,19 +2,18 @@ package com.moko.mkgw4.activity.setting;
 
 import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
-import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.Window;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.elvishew.xlog.XLog;
@@ -50,7 +49,6 @@ import no.nordicsemi.android.dfu.DfuServiceInitiator;
 import no.nordicsemi.android.dfu.DfuServiceListenerHelper;
 
 public class MkGw4SystemInfoActivity extends MkGw4BaseActivity {
-    public static final int REQUEST_CODE_SELECT_FIRMWARE = 0x10;
     private ActivitySystemInfoMkgw4Binding mBind;
     private boolean mReceiverTag = false;
     private String mDeviceMac;
@@ -227,14 +225,7 @@ public class MkGw4SystemInfoActivity extends MkGw4BaseActivity {
     public void onUpdateFirmware(View view) {
         if (isWindowLocked()) return;
         if (TextUtils.isEmpty(mDeviceName) || TextUtils.isEmpty(mDeviceMac)) return;
-        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-        intent.setType("*/*");//设置类型，我这里是任意类型，任意后缀的可以这样写。
-        intent.addCategory(Intent.CATEGORY_OPENABLE);
-        try {
-            startActivityForResult(intent, REQUEST_CODE_SELECT_FIRMWARE);
-        } catch (ActivityNotFoundException ex) {
-            ToastUtils.showToast(this, "install file manager app");
-        }
+        launcher.launch("*/*");
     }
 
     private ProgressDialog mDFUDialog;
@@ -331,30 +322,22 @@ public class MkGw4SystemInfoActivity extends MkGw4BaseActivity {
         }
     };
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_CODE_SELECT_FIRMWARE) {
-            if (resultCode == RESULT_OK && null != data) {
-                //得到uri，后面就是将uri转化成file的过程。
-                Uri uri = data.getData();
-                String firmwareFilePath = FileUtils.getPath(this, uri);
-                if (TextUtils.isEmpty(firmwareFilePath))
-                    return;
-                final File firmwareFile = new File(firmwareFilePath);
-                if (!firmwareFile.exists() || !firmwareFilePath.toLowerCase().endsWith("zip") || firmwareFile.length() == 0) {
-                    ToastUtils.showToast(this, "File error!");
-                    return;
-                }
-                final DfuServiceInitiator starter = new DfuServiceInitiator(mDeviceMac)
-                        .setDeviceName(mDeviceName)
-                        .setKeepBond(false)
-                        .setForeground(false)
-                        .setDisableNotification(true);
-                starter.setZip(null, firmwareFilePath);
-                starter.start(this, DfuService.class);
-                showDFUProgressDialog("Waiting...");
-            }
+    private final ActivityResultLauncher<String> launcher = registerForActivityResult(new ActivityResultContracts.GetContent(), result -> {
+        if (null == result) return;
+        String firmwareFilePath = FileUtils.getPath(this, result);
+        if (TextUtils.isEmpty(firmwareFilePath)) return;
+        final File firmwareFile = new File(firmwareFilePath);
+        if (!firmwareFile.exists() || !firmwareFilePath.toLowerCase().endsWith("zip") || firmwareFile.length() == 0) {
+            ToastUtils.showToast(this, "File error!");
+            return;
         }
-    }
+        final DfuServiceInitiator starter = new DfuServiceInitiator(mDeviceMac)
+                .setDeviceName(mDeviceName)
+                .setKeepBond(false)
+                .setForeground(false)
+                .setDisableNotification(true);
+        starter.setZip(null, firmwareFilePath);
+        starter.start(this, DfuService.class);
+        showDFUProgressDialog("Waiting...");
+    });
 }

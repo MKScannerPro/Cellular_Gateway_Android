@@ -5,21 +5,22 @@ if (!isLibrary.toBoolean()) {
 }
 
 android {
-    compileSdkVersion 33
+    compileSdk 34
 
     defaultConfig {
         if (!isLibrary.toBoolean()) {
             applicationId "com.moko.mkgw4"
         }
-        minSdkVersion 18
-        targetSdkVersion 33
+        namespace = "com.moko.mkgw4"
+        minSdkVersion 21
+        targetSdkVersion 34
         versionCode 2
         versionName "1.0.1"
-        multiDexEnabled true
 
         def formatDate = new Date().format("yyyyMMddHHmm")
         setProperty("archivesBaseName", "MKGW4_${versionName}_${formatDate}")
     }
+    android.buildFeatures.buildConfig true
 
     buildTypes {
         release {
@@ -40,10 +41,10 @@ android {
         }
     }
 
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
+//    compileOptions {
+//        sourceCompatibility JavaVersion.VERSION_1_8
+//        targetCompatibility JavaVersion.VERSION_1_8
+//    }
 
     viewBinding {
         enabled = true
@@ -90,6 +91,9 @@ android {
             }
         }
     }
+    packagingOptions {
+        exclude 'META-INF/kotlinx_coroutines_core.version'
+    }
 }
 
 dependencies {
@@ -111,7 +115,7 @@ dependencies {
         implementation 'no.nordicsemi.android:dfu:2.3.0'
         implementation 'org.greenrobot:eventbus:3.2.0'
         implementation 'com.elvishew:xlog:1.6.1'
-        implementation 'no.nordicsemi.android:ble:2.5.1'
+        implementation 'no.nordicsemi.android:ble:2.7.2'
         implementation 'androidx.appcompat:appcompat:1.0.0'
     }
 }

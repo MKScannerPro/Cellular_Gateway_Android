@@ -15,8 +15,6 @@ import com.moko.ble.lib.utils.MokoUtils;
 import com.moko.support.mkgw4.entity.OrderCHAR;
 import com.moko.support.mkgw4.entity.OrderServices;
 
-import java.util.UUID;
-
 final class MokoBleConfig extends MokoBleManager {
 
     private final MokoResponseCallback mMokoResponseCallback;
@@ -24,6 +22,7 @@ final class MokoBleConfig extends MokoBleManager {
     private BluetoothGattCharacteristic disconnectedCharacteristic;
     private BluetoothGattCharacteristic paramsCharacteristic;
     private BluetoothGattCharacteristic logCharacteristic;
+    private BluetoothGatt gatt;
 
     public MokoBleConfig(@NonNull Context context, MokoResponseCallback callback) {
         super(context);
@@ -31,17 +30,23 @@ final class MokoBleConfig extends MokoBleManager {
     }
 
     @Override
-    public boolean init(BluetoothGatt gatt) {
-        final BluetoothGattService service = gatt.getService(OrderServices.SERVICE_CUSTOM.getUuid());
+    public void init() {
+        enablePasswordNotify();
+        enableDisconnectedNotify();
+        enableParamNotify();
+        requestMtu(247).with((device, mtu) -> {}).then(device -> mMokoResponseCallback.onServicesDiscovered(gatt)).enqueue();
+    }
+
+    @Override
+    public boolean checkServiceCharacteristicSupported(BluetoothGatt bluetoothGatt) {
+        final BluetoothGattService service = bluetoothGatt.getService(OrderServices.SERVICE_CUSTOM.getUuid());
         if (service != null) {
+            this.gatt = bluetoothGatt;
             passwordCharacteristic = service.getCharacteristic(OrderCHAR.CHAR_PASSWORD.getUuid());
             disconnectedCharacteristic = service.getCharacteristic(OrderCHAR.CHAR_DISCONNECTED_NOTIFY.getUuid());
             paramsCharacteristic = service.getCharacteristic(OrderCHAR.CHAR_PARAMS.getUuid());
             logCharacteristic = service.getCharacteristic(OrderCHAR.CHAR_LOG.getUuid());
-            enablePasswordNotify();
-            enableDisconnectedNotify();
-            enableParamNotify();
-            return true;
+            return null != passwordCharacteristic && null != disconnectedCharacteristic && null != paramsCharacteristic && null != logCharacteristic;
         }
         return false;
     }
@@ -53,13 +58,6 @@ final class MokoBleConfig extends MokoBleManager {
     @Override
     public void read(BluetoothGattCharacteristic characteristic, byte[] value) {
         mMokoResponseCallback.onCharacteristicRead(characteristic, value);
-    }
-
-    @Override
-    public void discovered(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic) {
-        UUID lastCharacteristicUUID = characteristic.getUuid();
-        if (paramsCharacteristic.getUuid().equals(lastCharacteristicUUID))
-            mMokoResponseCallback.onServicesDiscovered(gatt);
     }
 
     @Override

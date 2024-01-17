@@ -31,6 +31,7 @@
         android:allowBackup="true"
         android:supportsRtl="true">
 
+        <service android:name=".DfuBaseService" />
     </application>
 
 </manifest>
