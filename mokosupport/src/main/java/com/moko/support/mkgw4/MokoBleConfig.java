@@ -34,7 +34,8 @@ final class MokoBleConfig extends MokoBleManager {
         enablePasswordNotify();
         enableDisconnectedNotify();
         enableParamNotify();
-        requestMtu(247).with((device, mtu) -> {}).then(device -> mMokoResponseCallback.onServicesDiscovered(gatt)).enqueue();
+        requestMtu(247).with((device, mtu) -> {
+        }).then(device -> mMokoResponseCallback.onServicesDiscovered(gatt)).enqueue();
     }
 
     @Override
@@ -91,7 +92,7 @@ final class MokoBleConfig extends MokoBleManager {
     }
 
     public void enablePasswordNotify() {
-        setIndicationCallback(passwordCharacteristic).with((device, data) -> {
+        setNotificationCallback(passwordCharacteristic).with((device, data) -> {
             final byte[] value = data.getValue();
             XLog.e("onDataReceived");
             XLog.e("device to app : " + MokoUtils.bytesToHexString(value));
@@ -105,7 +106,7 @@ final class MokoBleConfig extends MokoBleManager {
     }
 
     public void enableDisconnectedNotify() {
-        setIndicationCallback(disconnectedCharacteristic).with((device, data) -> {
+        setNotificationCallback(disconnectedCharacteristic).with((device, data) -> {
             final byte[] value = data.getValue();
             XLog.e("onDataReceived");
             XLog.e("device to app : " + MokoUtils.bytesToHexString(value));
@@ -119,7 +120,7 @@ final class MokoBleConfig extends MokoBleManager {
     }
 
     public void enableParamNotify() {
-        setIndicationCallback(paramsCharacteristic).with((device, data) -> {
+        setNotificationCallback(paramsCharacteristic).with((device, data) -> {
             final byte[] value = data.getValue();
             XLog.e("onDataReceived");
             XLog.e("device to app : " + MokoUtils.bytesToHexString(value));
@@ -133,7 +134,7 @@ final class MokoBleConfig extends MokoBleManager {
     }
 
     public void enableLogNotify() {
-        setIndicationCallback(logCharacteristic).with((device, data) -> {
+        setNotificationCallback(logCharacteristic).with((device, data) -> {
             final byte[] value = data.getValue();
             XLog.e("onDataReceived");
             XLog.e("device to app : " + MokoUtils.bytesToHexString(value));
