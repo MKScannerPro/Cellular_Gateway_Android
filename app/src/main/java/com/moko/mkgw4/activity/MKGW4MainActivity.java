@@ -107,7 +107,7 @@ public class MKGW4MainActivity extends MkGw4BaseActivity implements MokoScanDevi
             PATH_LOGCAT = getFilesDir().getAbsolutePath() + File.separator + (BuildConfig.IS_LIBRARY ? "MKScannerPro" : "MKGW4");
         }
         if (!BuildConfig.IS_LIBRARY) {
-            StringBuffer buffer = new StringBuffer();
+            StringBuilder buffer = new StringBuilder();
             // 记录机型
             buffer.append("机型：");
             buffer.append(android.os.Build.MODEL);
@@ -299,7 +299,7 @@ public class MKGW4MainActivity extends MkGw4BaseActivity implements MokoScanDevi
             } else {
                 showFilterMac = filterMac;
             }
-            if (!TextUtils.isEmpty(filterName) || filterRssi != -127 || !TextUtils.isEmpty(showFilterMac)) {
+            if (!TextUtils.isEmpty(filterName) || filterRssi != -100 || !TextUtils.isEmpty(showFilterMac)) {
                 mBind.rlFilter.setVisibility(View.VISIBLE);
                 mBind.rlEditFilter.setVisibility(View.GONE);
                 StringBuilder stringBuilder = new StringBuilder();
