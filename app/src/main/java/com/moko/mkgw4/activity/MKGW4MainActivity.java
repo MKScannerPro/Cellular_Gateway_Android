@@ -42,6 +42,7 @@ import com.moko.mkgw4.entity.MkGw4AdvInfo;
 import com.moko.mkgw4.utils.MkGw4AdvInfoAnalysisImpl;
 import com.moko.mkgw4.utils.SPUtiles;
 import com.moko.mkgw4.utils.ToastUtils;
+import com.moko.mkgw4.utils.Utils;
 import com.moko.support.mkgw4.MokoBleScanner;
 import com.moko.support.mkgw4.MokoSupport;
 import com.moko.support.mkgw4.OrderTaskAssembler;
@@ -60,6 +61,12 @@ import java.util.Iterator;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.ConcurrentHashMap;
+
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 public class MKGW4MainActivity extends MkGw4BaseActivity implements MokoScanDeviceCallback, BaseQuickAdapter.OnItemChildClickListener {
     private ActivityMainMkgw4Binding mBind;
@@ -99,8 +106,23 @@ public class MKGW4MainActivity extends MkGw4BaseActivity implements MokoScanDevi
             // 如果SD卡不存在，就保存到本应用的目录下
             PATH_LOGCAT = getFilesDir().getAbsolutePath() + File.separator + (BuildConfig.IS_LIBRARY ? "MKScannerPro" : "MKGW4");
         }
+        if (!BuildConfig.IS_LIBRARY) {
+            StringBuffer buffer = new StringBuffer();
+            // 记录机型
+            buffer.append("机型：");
+            buffer.append(android.os.Build.MODEL);
+            buffer.append("=====");
+            // 记录版本号
+            buffer.append("手机系统版本：");
+            buffer.append(android.os.Build.VERSION.RELEASE);
+            buffer.append("=====");
+            // 记录APP版本
+            buffer.append("APP版本：");
+            buffer.append(Utils.getVersionInfo(this));
+            XLog.d(buffer.toString());
+        }
         MokoSupport.getInstance().init(getApplicationContext());
-        mSavedPassword = SPUtiles.getStringValue(this, AppConstants.SP_KEY_SAVED_PASSWORD_LW006, "");
+        mSavedPassword = SPUtiles.getStringValue(this, AppConstants.SP_KEY_SAVED_PASSWORD_MKGW4, "");
         beaconInfoHashMap = new ConcurrentHashMap<>();
         beaconInfos = new ArrayList<>();
         adapter = new MkGw4DeviceListAdapter();
@@ -462,7 +484,7 @@ public class MKGW4MainActivity extends MkGw4BaseActivity implements MokoScanDevi
                         int result = value[4] & 0xFF;
                         if (1 == result) {
                             mSavedPassword = mPassword;
-                            SPUtiles.setStringValue(this, AppConstants.SP_KEY_SAVED_PASSWORD_LW006, mSavedPassword);
+                            SPUtiles.setStringValue(this, AppConstants.SP_KEY_SAVED_PASSWORD_MKGW4, mSavedPassword);
                             XLog.i("Success");
                             Intent i = new Intent(this, MkGw4DeviceInfoActivity.class);
                             i.putExtra("advName", advName);

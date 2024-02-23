@@ -36,9 +36,9 @@ public class Utils {
                 uri = IOUtils.insertDownloadFile(context, files[0]);
             } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 if (BuildConfig.IS_LIBRARY) {
-                    uri = FileProvider.getUriForFile(context, "com.moko.mklora.fileprovider", files[0]);
+                    uri = FileProvider.getUriForFile(context, "com.moko.mkscannerpro.fileprovider", files[0]);
                 } else {
-                    uri = FileProvider.getUriForFile(context, "com.moko.ps101m.fileprovider", files[0]);
+                    uri = FileProvider.getUriForFile(context, "com.moko.mkgw4.fileprovider", files[0]);
                 }
                 intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             } else {
@@ -56,9 +56,9 @@ public class Utils {
                 }else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                     Uri uri;
                     if (BuildConfig.IS_LIBRARY) {
-                        uri = FileProvider.getUriForFile(context, "com.moko.mklora.fileprovider", files[0]);
+                        uri = FileProvider.getUriForFile(context, "com.moko.mkscannerpro.fileprovider", files[0]);
                     } else {
-                        uri = FileProvider.getUriForFile(context, "com.moko.ps101m.fileprovider", files[0]);
+                        uri = FileProvider.getUriForFile(context, "com.moko.mkgw4.fileprovider", files[0]);
                     }
                     uris.add(uri);
                 } else {

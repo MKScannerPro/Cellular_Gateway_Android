@@ -168,23 +168,23 @@ public class WheelView extends View {
      */
     private void init(Context context, AttributeSet attrs) {
 
-        TypedArray attribute = context.obtainStyledAttributes(attrs, R.styleable.LW006WheelView);
-        unitHeight = (int) attribute.getDimension(R.styleable.LW006WheelView_unitHeight, unitHeight);
-        itemNumber = attribute.getInt(R.styleable.LW006WheelView_itemNumber, itemNumber);
+        TypedArray attribute = context.obtainStyledAttributes(attrs, R.styleable.WheelView);
+        unitHeight = (int) attribute.getDimension(R.styleable.WheelView_unitHeight, unitHeight);
+        itemNumber = attribute.getInt(R.styleable.WheelView_itemNumber, itemNumber);
 
-        normalFont = attribute.getDimension(R.styleable.LW006WheelView_normalTextSize, normalFont);
-        selectedFont = attribute.getDimension(R.styleable.LW006WheelView_selectedTextSize, selectedFont);
-        normalColor = attribute.getColor(R.styleable.LW006WheelView_normalTextColor, normalColor);
-        selectedColor = attribute.getColor(R.styleable.LW006WheelView_selectedTextColor, selectedColor);
+        normalFont = attribute.getDimension(R.styleable.WheelView_normalTextSize, normalFont);
+        selectedFont = attribute.getDimension(R.styleable.WheelView_selectedTextSize, selectedFont);
+        normalColor = attribute.getColor(R.styleable.WheelView_normalTextColor, normalColor);
+        selectedColor = attribute.getColor(R.styleable.WheelView_selectedTextColor, selectedColor);
 
-        lineColor = attribute.getColor(R.styleable.LW006WheelView_lineColor, lineColor);
-        lineHeight = attribute.getDimension(R.styleable.LW006WheelView_lineHeight, lineHeight);
+        lineColor = attribute.getColor(R.styleable.WheelView_lineColor, lineColor);
+        lineHeight = attribute.getDimension(R.styleable.WheelView_lineHeight, lineHeight);
 
-        selectedBgColor = attribute.getColor(R.styleable.LW006WheelView_selectedBgColor, selectedBgColor);
+        selectedBgColor = attribute.getColor(R.styleable.WheelView_selectedBgColor, selectedBgColor);
 
-        maskHeight = attribute.getDimension(R.styleable.LW006WheelView_maskHeight, maskHeight);
-        noEmpty = attribute.getBoolean(R.styleable.LW006WheelView_noEmpty, true);
-        isEnable = attribute.getBoolean(R.styleable.LW006WheelView_isEnable, true);
+        maskHeight = attribute.getDimension(R.styleable.WheelView_maskHeight, maskHeight);
+        noEmpty = attribute.getBoolean(R.styleable.WheelView_noEmpty, true);
+        isEnable = attribute.getBoolean(R.styleable.WheelView_isEnable, true);
 
         attribute.recycle();
 
