@@ -137,7 +137,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ps101_ic_wifi" />
+                android:src="@drawable/ic_wifi" />
 
             <SeekBar
                 android:id="@+id/sb_rssi"
@@ -148,7 +148,6 @@
                 android:layout_weight="1.0"
                 android:max="100"
                 android:progress="0" />
-
         </LinearLayout>
 
         <TextView

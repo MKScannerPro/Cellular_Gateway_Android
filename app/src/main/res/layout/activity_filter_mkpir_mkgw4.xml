@@ -18,7 +18,7 @@
             android:paddingLeft="12dp"
             android:paddingRight="12dp"
             android:scaleType="fitCenter"
-            android:src="@drawable/ps101_ic_back" />
+            android:src="@drawable/ic_back" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -35,7 +35,7 @@
             android:onClick="onSave"
             android:paddingLeft="16dp"
             android:paddingRight="16dp"
-            android:src="@drawable/ps101_ic_save" />
+            android:src="@drawable/ic_save" />
     </RelativeLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout

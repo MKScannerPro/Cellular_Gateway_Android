@@ -26,7 +26,7 @@ public class MkGw4ScanFilterDialog extends BaseDialog<DialogScanFilterMkgw4Bindi
         mBind.sbRssi.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                int rssi = progress - 127;
+                int rssi = progress * -1;
                 mBind.tvRssi.setText(String.format("%sdBm", rssi + ""));
                 filterRssi = rssi;
             }
@@ -41,7 +41,7 @@ public class MkGw4ScanFilterDialog extends BaseDialog<DialogScanFilterMkgw4Bindi
 
             }
         });
-        mBind.sbRssi.setProgress(filterRssi + 127);
+        mBind.sbRssi.setProgress(Math.abs(filterRssi));
         if (!TextUtils.isEmpty(filterName)) {
             mBind.etFilterName.setText(filterName);
             mBind.etFilterName.setSelection(filterName.length());

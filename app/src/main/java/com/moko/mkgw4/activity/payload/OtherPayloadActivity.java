@@ -149,7 +149,7 @@ public class OtherPayloadActivity extends MkGw4BaseActivity implements BaseQuick
             return;
         }
         otherData.add(new OtherTypePayloadBean("000000"));
-        adapter.replaceData(otherData);
+        adapter.addData(otherData.size() - 1, otherData.get(otherData.size() - 1));
     }
 
     private final List<String> payloadOther = new ArrayList<>();

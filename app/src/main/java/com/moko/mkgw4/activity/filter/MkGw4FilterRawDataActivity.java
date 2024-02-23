@@ -98,9 +98,9 @@ public class MkGw4FilterRawDataActivity extends MkGw4BaseActivity {
                                     mBind.tvFilterByUid.setText((data >> 1 & 0x01) == 1 ? "ON" : "OFF");
                                     mBind.tvFilterByUrl.setText((data >> 2 & 0x01) == 1 ? "ON" : "OFF");
                                     mBind.tvFilterByTlm.setText((data >> 3 & 0x01) == 1 ? "ON" : "OFF");
-                                    mBind.ivFilterByBxpDevice.setImageResource((data >> 4 & 0x01) == 1 ? R.drawable.ic_checked : R.drawable.ps101_ic_unchecked);
-                                    mBind.ivFilterByBxpAcc.setImageResource((data >> 5 & 0x01) == 1 ? R.drawable.ic_checked : R.drawable.ps101_ic_unchecked);
-                                    mBind.ivFilterByBxpTh.setImageResource((data >> 6 & 0x01) == 1 ? R.drawable.ic_checked : R.drawable.ps101_ic_unchecked);
+                                    mBind.ivFilterByBxpDevice.setImageResource((data >> 4 & 0x01) == 1 ? R.drawable.ic_checked : R.drawable.ic_unchecked);
+                                    mBind.ivFilterByBxpAcc.setImageResource((data >> 5 & 0x01) == 1 ? R.drawable.ic_checked : R.drawable.ic_unchecked);
+                                    mBind.ivFilterByBxpTh.setImageResource((data >> 6 & 0x01) == 1 ? R.drawable.ic_checked : R.drawable.ic_unchecked);
                                     mBind.tvFilterByBxpButton.setText((data >> 7 & 0x01) == 1 ? "ON" : "OFF");
                                     mBind.tvFilterByBxpTag.setText((data >> 8 & 0x01) == 1 ? "ON" : "OFF");
                                     mBind.tvFilterByPir.setText((data >> 9 & 0x01) == 1 ? "ON" : "OFF");

@@ -69,6 +69,6 @@ public class ScannerFragment extends Fragment {
 
     public void setModeSwitch(int modeSwitch) {
         modeEnable = modeSwitch == 1;
-        mBind.ivModeSwitch.setImageResource(modeSwitch == 1 ? R.drawable.ic_checked : R.drawable.ps101_ic_unchecked);
+        mBind.ivModeSwitch.setImageResource(modeSwitch == 1 ? R.drawable.ic_checked : R.drawable.ic_unchecked);
     }
 }

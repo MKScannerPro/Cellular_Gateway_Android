@@ -18,6 +18,7 @@ import android.view.animation.AnimationUtils;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -76,7 +77,7 @@ public class MKGW4MainActivity extends MkGw4BaseActivity implements MokoScanDevi
     private String mSavedPassword;
     private MkGw4AdvInfoAnalysisImpl beaconInfoParseable;
     public String filterName;
-    public int filterRssi = -127;
+    public int filterRssi = -100;
     public String filterMac;
     private String advName;
     private String selectMac;
@@ -106,9 +107,8 @@ public class MKGW4MainActivity extends MkGw4BaseActivity implements MokoScanDevi
         adapter.replaceData(beaconInfos);
         adapter.setOnItemChildClickListener(this);
         adapter.openLoadAnimation();
-        mBind.rvDevices.setLayoutManager(new LinearLayoutManager(this));
         DividerItemDecoration itemDecoration = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
-        itemDecoration.setDrawable(ContextCompat.getDrawable(this, R.drawable.shape_recycleview_divider));
+        itemDecoration.setDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.shape_recycleview_divider,null));
         mBind.rvDevices.addItemDecoration(itemDecoration);
         mBind.rvDevices.setAdapter(adapter);
         mHandler = new Handler(Looper.getMainLooper());
@@ -173,7 +173,7 @@ public class MKGW4MainActivity extends MkGw4BaseActivity implements MokoScanDevi
         beaconInfos.clear();
         if (!TextUtils.isEmpty(filterName)
                 || !TextUtils.isEmpty(filterMac)
-                || filterRssi != -127) {
+                || filterRssi != -100) {
             ArrayList<MkGw4AdvInfo> advInfoListFilter = new ArrayList<>(beaconInfoHashMap.values());
             Iterator<MkGw4AdvInfo> iterator = advInfoListFilter.iterator();
             while (iterator.hasNext()) {
@@ -265,15 +265,15 @@ public class MKGW4MainActivity extends MkGw4BaseActivity implements MokoScanDevi
             MKGW4MainActivity.this.filterName = filterName;
             MKGW4MainActivity.this.filterRssi = filterRssi;
             MKGW4MainActivity.this.filterMac = filterMac;
-            String showFilterMac = "";
+            String showFilterMac;
             if (filterMac.length() == 12) {
-                StringBuffer stringBuffer = new StringBuffer(filterMac);
-                stringBuffer.insert(2, ":");
-                stringBuffer.insert(5, ":");
-                stringBuffer.insert(8, ":");
-                stringBuffer.insert(11, ":");
-                stringBuffer.insert(14, ":");
-                showFilterMac = stringBuffer.toString();
+                StringBuilder builder = new StringBuilder(filterMac);
+                builder.insert(2, ":");
+                builder.insert(5, ":");
+                builder.insert(8, ":");
+                builder.insert(11, ":");
+                builder.insert(14, ":");
+                showFilterMac = builder.toString();
             } else {
                 showFilterMac = filterMac;
             }

@@ -16,7 +16,7 @@
             android:paddingLeft="12dp"
             android:paddingRight="12dp"
             android:scaleType="fitCenter"
-            android:src="@drawable/ps101_ic_back" />
+            android:src="@drawable/ic_back" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -194,7 +194,7 @@
                     android:layout_centerVertical="true"
                     android:paddingLeft="12dp"
                     android:paddingRight="12dp"
-                    android:src="@drawable/ps101_ic_unchecked" />
+                    android:src="@drawable/ic_unchecked" />
             </RelativeLayout>
 
             <View style="@style/divider_line" />
@@ -222,7 +222,7 @@
                     android:layout_centerVertical="true"
                     android:paddingLeft="12dp"
                     android:paddingRight="12dp"
-                    android:src="@drawable/ps101_ic_unchecked" />
+                    android:src="@drawable/ic_unchecked" />
             </RelativeLayout>
 
             <View style="@style/divider_line" />
@@ -250,7 +250,7 @@
                     android:layout_centerVertical="true"
                     android:paddingLeft="12dp"
                     android:paddingRight="12dp"
-                    android:src="@drawable/ps101_ic_unchecked" />
+                    android:src="@drawable/ic_unchecked" />
             </RelativeLayout>
 
             <View style="@style/divider_line" />

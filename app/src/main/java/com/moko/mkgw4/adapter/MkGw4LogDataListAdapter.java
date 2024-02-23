@@ -14,6 +14,6 @@ public class MkGw4LogDataListAdapter extends BaseQuickAdapter<LogData, BaseViewH
     @Override
     protected void convert(BaseViewHolder helper, LogData item) {
         helper.setText(R.id.tv_time, item.name);
-        helper.setImageResource(R.id.iv_checked, item.isSelected ? R.drawable.ps101_ic_selected : R.drawable.ps101_ic_unselected);
+        helper.setImageResource(R.id.iv_checked, item.isSelected ? R.drawable.ic_selected : R.drawable.ic_unselected);
     }
 }

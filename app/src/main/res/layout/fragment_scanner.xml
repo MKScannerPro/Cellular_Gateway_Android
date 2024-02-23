@@ -46,7 +46,7 @@
             android:paddingTop="5dp"
             android:paddingEnd="10dp"
             android:paddingBottom="5dp"
-            android:src="@drawable/ps101_ic_unchecked" />
+            android:src="@drawable/ic_unchecked" />
 
     </LinearLayout>
 

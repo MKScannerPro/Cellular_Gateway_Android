@@ -18,7 +18,7 @@
             android:paddingLeft="12dp"
             android:paddingRight="12dp"
             android:scaleType="fitCenter"
-            android:src="@drawable/ps101_ic_back" />
+            android:src="@drawable/ic_back" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -35,7 +35,7 @@
             android:onClick="onSave"
             android:paddingLeft="16dp"
             android:paddingRight="16dp"
-            android:src="@drawable/ps101_ic_save" />
+            android:src="@drawable/ic_save" />
     </RelativeLayout>
 
     <ScrollView
@@ -86,7 +86,7 @@
                     android:layout_height="0dp"
                     android:onClick="onDel"
                     android:padding="12dp"
-                    android:src="@drawable/ps101_ic_del"
+                    android:src="@drawable/ic_del"
                     app:layout_constraintBottom_toBottomOf="@id/iv_add"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="@id/iv_add" />

@@ -158,11 +158,11 @@ public class SettingsFragment extends Fragment {
 
     public void setPowerLossNotify(int enable) {
         isNotifyEnable = enable == 1;
-        mBind.ivPowerNotification.setImageResource(enable == 1 ? R.drawable.ic_checked : R.drawable.ps101_ic_unchecked);
+        mBind.ivPowerNotification.setImageResource(enable == 1 ? R.drawable.ic_checked : R.drawable.ic_unchecked);
     }
 
     public void setPowerChargeNotify(int enable) {
         isPowerChargeEnable = enable == 1;
-        mBind.ivPowerCharge.setImageResource(enable == 1 ? R.drawable.ic_checked : R.drawable.ps101_ic_unchecked);
+        mBind.ivPowerCharge.setImageResource(enable == 1 ? R.drawable.ic_checked : R.drawable.ic_unchecked);
     }
 }

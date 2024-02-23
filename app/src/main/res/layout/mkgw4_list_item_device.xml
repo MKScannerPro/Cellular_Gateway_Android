@@ -38,7 +38,7 @@
         android:id="@+id/tv_rssi"
         android:layout_width="50dp"
         android:layout_height="wrap_content"
-        android:drawableTop="@drawable/ps101_ic_rssi"
+        android:drawableTop="@drawable/ic_rssi"
         android:drawablePadding="5dp"
         android:gravity="center_horizontal"
         android:text="N/A"

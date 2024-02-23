@@ -95,7 +95,7 @@
                 android:paddingTop="6dp"
                 android:paddingEnd="12dp"
                 android:paddingBottom="6dp"
-                android:src="@drawable/ps101_ic_unchecked" />
+                android:src="@drawable/ic_unchecked" />
         </LinearLayout>
 
         <LinearLayout
@@ -124,7 +124,7 @@
                 android:paddingTop="6dp"
                 android:paddingEnd="12dp"
                 android:paddingBottom="6dp"
-                android:src="@drawable/ps101_ic_unchecked" />
+                android:src="@drawable/ic_unchecked" />
         </LinearLayout>
 
         <TextView
