@@ -70,7 +70,7 @@
             android:layout_marginRight="15dp"
             android:layout_marginLeft="40dp"
             android:gravity="center"
-            android:hint="600~86400"
+            android:hint="10~86400"
             android:inputType="number"
             android:maxLength="5"
             android:textColor="@color/black_333333"

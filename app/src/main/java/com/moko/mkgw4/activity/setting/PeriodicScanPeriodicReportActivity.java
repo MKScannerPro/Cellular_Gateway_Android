@@ -202,10 +202,10 @@ public class PeriodicScanPeriodicReportActivity extends MkGw4BaseActivity {
         if (scanDuration < 3 || scanDuration > 3600) return false;
         if (TextUtils.isEmpty(mBind.etScanInterval.getText())) return false;
         int scanInterval = Integer.parseInt(mBind.etScanInterval.getText().toString());
-        if (scanInterval < 600 || scanInterval > 86400) return false;
+        if (scanInterval < 10 || scanInterval > 86400) return false;
         if (TextUtils.isEmpty(mBind.etReportInterval.getText())) return false;
         int reportInterval = Integer.parseInt(mBind.etReportInterval.getText().toString());
-        return reportInterval >= 600 && reportInterval <= 86400;
+        return reportInterval >= 10 && reportInterval <= 86400;
     }
 
 }

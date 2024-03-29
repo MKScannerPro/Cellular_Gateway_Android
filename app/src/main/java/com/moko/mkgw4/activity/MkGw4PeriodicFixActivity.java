@@ -110,7 +110,7 @@ public class MkGw4PeriodicFixActivity extends MkGw4BaseActivity {
     private boolean isValid() {
         if (TextUtils.isEmpty(mBind.etFixInterval.getText())) return false;
         int interval = Integer.parseInt(mBind.etFixInterval.getText().toString().trim());
-        return interval >= 60 && interval <= 86400;
+        return interval >= 10 && interval <= 86400;
     }
 
     @Override

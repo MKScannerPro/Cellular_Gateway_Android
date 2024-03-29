@@ -139,7 +139,7 @@ public class RealScanPeriodicReportActivity extends MkGw4BaseActivity {
         }
         final String intervalStr = mBind.etReportInterval.getText().toString();
         final int interval = Integer.parseInt(intervalStr);
-        if (interval < 600 || interval > 86400) {
+        if (interval < 10 || interval > 86400) {
             ToastUtils.showToast(this, "Para error!");
             return;
         }

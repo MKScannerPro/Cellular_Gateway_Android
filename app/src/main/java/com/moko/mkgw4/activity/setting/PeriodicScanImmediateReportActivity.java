@@ -130,7 +130,7 @@ public class PeriodicScanImmediateReportActivity extends MkGw4BaseActivity {
         if (duration < 3 || duration > 3600) return false;
         if (TextUtils.isEmpty(mBind.etScanInetval.getText())) return false;
         int interval = Integer.parseInt(mBind.etScanInetval.getText().toString());
-        return interval >= 600 && interval <= 86400;
+        return interval >= 10 && interval <= 86400;
     }
 
     private final BroadcastReceiver mReceiver = new BroadcastReceiver() {

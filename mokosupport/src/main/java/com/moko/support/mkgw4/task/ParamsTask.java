@@ -632,7 +632,7 @@ public class ParamsTask extends OrderTask {
         };
     }
 
-    public void setRealScanPeriodicReportInterval(@IntRange(from = 600, to = 86400) int interval) {
+    public void setRealScanPeriodicReportInterval(@IntRange(from = 10, to = 86400) int interval) {
         byte[] intervalBytes = MokoUtils.toByteArray(interval, 4);
         response.responseValue = data = new byte[]{
                 (byte) 0xED,
@@ -647,7 +647,7 @@ public class ParamsTask extends OrderTask {
     }
 
     public void setPeriodicScanImmediateReport(@IntRange(from = 3, to = 3600) int duration,
-                                               @IntRange(from = 600, to = 86400) int interval) {
+                                               @IntRange(from = 10, to = 86400) int interval) {
         byte[] intervalBytes = MokoUtils.toByteArray(interval, 4);
         byte[] durationBytes = MokoUtils.toByteArray(duration, 2);
         response.responseValue = data = new byte[]{
@@ -665,8 +665,8 @@ public class ParamsTask extends OrderTask {
     }
 
     public void setPeriodicScanPeriodicReport(@IntRange(from = 3, to = 3600) int duration,
-                                              @IntRange(from = 600, to = 86400) int interval,
-                                              @IntRange(from = 600, to = 86400) int reportInterval) {
+                                              @IntRange(from = 10, to = 86400) int interval,
+                                              @IntRange(from = 10, to = 86400) int reportInterval) {
         byte[] durationBytes = MokoUtils.toByteArray(duration, 2);
         byte[] intervalBytes = MokoUtils.toByteArray(interval, 4);
         byte[] reportIntervalBytes = MokoUtils.toByteArray(reportInterval, 4);
@@ -708,7 +708,7 @@ public class ParamsTask extends OrderTask {
         };
     }
 
-    public void setPeriodicFixInterval(@IntRange(from = 60, to = 86400) int interval) {
+    public void setPeriodicFixInterval(@IntRange(from = 10, to = 86400) int interval) {
         byte[] bytes = MokoUtils.toByteArray(interval, 4);
         response.responseValue = data = new byte[]{
                 (byte) 0xED,

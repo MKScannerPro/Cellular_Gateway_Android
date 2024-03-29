@@ -1068,22 +1068,22 @@ public class OrderTaskAssembler {
         return task;
     }
 
-    public static OrderTask setRealScanPeriodicReportInterval(@IntRange(from = 600, to = 86400) int interval) {
+    public static OrderTask setRealScanPeriodicReportInterval(@IntRange(from = 10, to = 86400) int interval) {
         ParamsTask task = new ParamsTask();
         task.setRealScanPeriodicReportInterval(interval);
         return task;
     }
 
     public static OrderTask setPeriodicScanImmediateReport(@IntRange(from = 3, to = 3600) int duration,
-                                                           @IntRange(from = 600, to = 86400) int interval) {
+                                                           @IntRange(from = 10, to = 86400) int interval) {
         ParamsTask task = new ParamsTask();
         task.setPeriodicScanImmediateReport(duration, interval);
         return task;
     }
 
     public static OrderTask setPeriodicScanPeriodicReport(@IntRange(from = 3, to = 3600) int duration,
-                                                          @IntRange(from = 600, to = 86400) int interval,
-                                                          @IntRange(from = 600, to = 86400) int reportInterval) {
+                                                          @IntRange(from = 10, to = 86400) int interval,
+                                                          @IntRange(from = 10, to = 86400) int reportInterval) {
         ParamsTask task = new ParamsTask();
         task.setPeriodicScanPeriodicReport(duration, interval, reportInterval);
         return task;
@@ -1101,7 +1101,7 @@ public class OrderTaskAssembler {
         return task;
     }
 
-    public static OrderTask setPeriodicFixInterval(@IntRange(from = 60, to = 86400) int interval) {
+    public static OrderTask setPeriodicFixInterval(@IntRange(from = 10, to = 86400) int interval) {
         ParamsTask task = new ParamsTask();
         task.setPeriodicFixInterval(interval);
         return task;
