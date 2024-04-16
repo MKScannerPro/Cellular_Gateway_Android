@@ -165,6 +165,7 @@ public enum ParamsKeyEnum implements Serializable {
     KEY_ICC_ID(0xC2),
     KEY_NETWORK_STATUS(0xC4),
     KEY_MQTT_CONNECT_STATUS(0xC5),
+    KEY_DEVICE_MODE(0xC7),
     ;
 
     private final int paramsKey;

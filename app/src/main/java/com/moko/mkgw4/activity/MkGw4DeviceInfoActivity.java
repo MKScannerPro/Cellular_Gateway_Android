@@ -74,9 +74,10 @@ public class MkGw4DeviceInfoActivity extends MkGw4BaseActivity implements RadioG
             MokoSupport.getInstance().enableBluetooth();
         } else {
             showSyncingProgressDialog();
-            List<OrderTask> orderTasks = new ArrayList<>();
+            List<OrderTask> orderTasks = new ArrayList<>(4);
             orderTasks.add(OrderTaskAssembler.getNetworkStatus());
             orderTasks.add(OrderTaskAssembler.getMqttConnectionStatus());
+            orderTasks.add(OrderTaskAssembler.getDeviceType());
             MokoSupport.getInstance().sendOrder(orderTasks.toArray(new OrderTask[]{}));
         }
     }
@@ -193,6 +194,12 @@ public class MkGw4DeviceInfoActivity extends MkGw4BaseActivity implements RadioG
                                     if (length == 1) {
                                         int status = value[4] & 0xFF;
                                         networkFragment.setMqttConnectionStatus(status);
+                                    }
+                                    break;
+
+                                case KEY_DEVICE_MODE:
+                                    if (length == 1) {
+                                        networkFragment.setDeviceType(value[4] & 0xff);
                                     }
                                     break;
 
@@ -365,9 +372,10 @@ public class MkGw4DeviceInfoActivity extends MkGw4BaseActivity implements RadioG
                 .hide(settingsFragment)
                 .commit();
         showSyncingProgressDialog();
-        List<OrderTask> orderTasks = new ArrayList<>();
+        List<OrderTask> orderTasks = new ArrayList<>(4);
         orderTasks.add(OrderTaskAssembler.getNetworkStatus());
         orderTasks.add(OrderTaskAssembler.getMqttConnectionStatus());
+        orderTasks.add(OrderTaskAssembler.getDeviceType());
         MokoSupport.getInstance().sendOrder(orderTasks.toArray(new OrderTask[]{}));
     }
 }

@@ -38,6 +38,7 @@ public class MkGw4NetworkSettingsActivity extends MkGw4BaseActivity {
     private final String FILTER_ASCII = "[ -~]*";
     private boolean mSavedParamsError;
     private int netPrioritySelect;
+    private int deviceType;
     private final String[] netPriorityValue = {"eMTC->NB-IOT->GSM", "eMTC-> GSM -> NB-IOT", "NB-IOT->GSM-> eMTC", "NB-IOT-> eMTC-> GSM",
             "GSM -> NB-IOT-> eMTC", "GSM -> eMTC->NB-IOT", "eMTC->NB-IOT", "NB-IOT-> eMTC", "GSM", "NB-IOT", "eMTC"};
 
@@ -53,13 +54,15 @@ public class MkGw4NetworkSettingsActivity extends MkGw4BaseActivity {
             }
             return null;
         };
+        deviceType = getIntent().getIntExtra("deviceType", 0);
+        mBind.netGroup.setVisibility(deviceType == 0 ? View.VISIBLE : View.GONE);
         mBind.etApn.setFilters(new InputFilter[]{new InputFilter.LengthFilter(100), inputFilter});
         mBind.etUsername.setFilters(new InputFilter[]{new InputFilter.LengthFilter(100), inputFilter});
         mBind.etPwd.setFilters(new InputFilter[]{new InputFilter.LengthFilter(100), inputFilter});
 
         showSyncingProgressDialog();
         List<OrderTask> orderTasks = new ArrayList<>(6);
-        orderTasks.add(OrderTaskAssembler.getNetworkPriority());
+        if (deviceType == 0) orderTasks.add(OrderTaskAssembler.getNetworkPriority());
         orderTasks.add(OrderTaskAssembler.getApn());
         orderTasks.add(OrderTaskAssembler.getApnUsername());
         orderTasks.add(OrderTaskAssembler.getApnPassword());
@@ -185,7 +188,8 @@ public class MkGw4NetworkSettingsActivity extends MkGw4BaseActivity {
             showSyncingProgressDialog();
             mSavedParamsError = false;
             List<OrderTask> orderTasks = new ArrayList<>(6);
-            orderTasks.add(OrderTaskAssembler.setNetworkPriority(netPrioritySelect));
+            if (deviceType == 0)
+                orderTasks.add(OrderTaskAssembler.setNetworkPriority(netPrioritySelect));
             String apn = TextUtils.isEmpty(mBind.etApn.getText()) ? null : mBind.etApn.getText().toString();
             String apnName = TextUtils.isEmpty(mBind.etUsername.getText()) ? null : mBind.etUsername.getText().toString();
             String apnPwd = TextUtils.isEmpty(mBind.etPwd.getText()) ? null : mBind.etPwd.getText().toString();

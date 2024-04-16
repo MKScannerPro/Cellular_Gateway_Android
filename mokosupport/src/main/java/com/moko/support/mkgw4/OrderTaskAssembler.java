@@ -654,6 +654,12 @@ public class OrderTaskAssembler {
         return task;
     }
 
+    public static OrderTask getDeviceType(){
+        ParamsTask task = new ParamsTask();
+        task.setData(ParamsKeyEnum.KEY_DEVICE_MODE);
+        return task;
+    }
+
     public static OrderTask getScanReportEnable() {
         ParamsTask task = new ParamsTask();
         task.setData(ParamsKeyEnum.KEY_SCAN_REPORT_ENABLE);
