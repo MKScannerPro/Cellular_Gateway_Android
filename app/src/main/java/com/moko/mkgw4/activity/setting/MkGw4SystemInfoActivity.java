@@ -6,6 +6,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -26,7 +27,7 @@ import com.moko.ble.lib.utils.MokoUtils;
 import com.moko.mkgw4.AppConstants;
 import com.moko.mkgw4.activity.MkGw4BaseActivity;
 import com.moko.mkgw4.databinding.ActivitySystemInfoMkgw4Binding;
-import com.moko.mkgw4.service.DfuService;
+import com.moko.mkgw4.service.MkGw4DfuService;
 import com.moko.mkgw4.utils.FileUtils;
 import com.moko.mkgw4.utils.ToastUtils;
 import com.moko.support.mkgw4.MokoSupport;
@@ -265,8 +266,8 @@ public class MkGw4SystemInfoActivity extends MkGw4BaseActivity {
                 ToastUtils.showToast(MkGw4SystemInfoActivity.this, "Error:DFU Failed");
                 dismissDFUProgressDialog();
                 final LocalBroadcastManager manager = LocalBroadcastManager.getInstance(MkGw4SystemInfoActivity.this);
-                final Intent abortAction = new Intent(DfuService.BROADCAST_ACTION);
-                abortAction.putExtra(DfuService.EXTRA_ACTION, DfuService.ACTION_ABORT);
+                final Intent abortAction = new Intent(MkGw4DfuService.BROADCAST_ACTION);
+                abortAction.putExtra(MkGw4DfuService.EXTRA_ACTION, MkGw4DfuService.ACTION_ABORT);
                 manager.sendBroadcast(abortAction);
             }
         }
@@ -334,10 +335,13 @@ public class MkGw4SystemInfoActivity extends MkGw4BaseActivity {
         final DfuServiceInitiator starter = new DfuServiceInitiator(mDeviceMac)
                 .setDeviceName(mDeviceName)
                 .setKeepBond(false)
-                .setForeground(false)
-                .setDisableNotification(true);
+                .setForeground(true)
+                .setDisableNotification(false);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            DfuServiceInitiator.createDfuNotificationChannel(this);
+        }
         starter.setZip(null, firmwareFilePath);
-        starter.start(this, DfuService.class);
+        starter.start(this, MkGw4DfuService.class);
         showDFUProgressDialog("Waiting...");
     });
 }

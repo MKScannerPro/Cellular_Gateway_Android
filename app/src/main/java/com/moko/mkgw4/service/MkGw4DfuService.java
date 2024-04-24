@@ -25,7 +25,7 @@ import android.app.Activity;
 
 import no.nordicsemi.android.dfu.DfuBaseService;
 
-public class DfuService extends DfuBaseService {
+public class MkGw4DfuService extends DfuBaseService {
 
     @Override
     protected Class<? extends Activity> getNotificationTarget() {
@@ -41,7 +41,6 @@ public class DfuService extends DfuBaseService {
          *
          * This method may be used to restore the target activity in case the application was closed or is open. It may also be used to recreate an activity history (see NotificationActivity).
          */
-        return null;
+        return MkGw4NotificationActivity.class;
     }
-
 }
