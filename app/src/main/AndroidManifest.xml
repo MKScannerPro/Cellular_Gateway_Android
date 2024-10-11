@@ -6,7 +6,8 @@
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/LaunchActivityTheme">
+        android:theme="@style/LaunchActivityTheme"
+        android:usesCleartextTraffic="true">
         <activity
             android:name="com.moko.mkgw4.activity.GuideActivity"
             android:exported="true">
@@ -204,6 +205,11 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".service.MkGw4NotificationActivity"
+            android:screenOrientation="portrait" />
+
+
+        <activity
+            android:name="com.moko.mkgw4.activity.SyncDeviceActivity"
             android:screenOrientation="portrait" />
 
 
