@@ -217,6 +217,7 @@
                 android:resource="@xml/file_paths" />
         </provider>
 
-        <service android:name="com.moko.mkgw4.service.MkGw4DfuService" />
+        <service android:name="com.moko.mkgw4.service.MkGw4DfuService"
+            android:foregroundServiceType="dataSync"/>
     </application>
 </manifest>

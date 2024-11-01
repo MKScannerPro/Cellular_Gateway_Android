@@ -336,6 +336,7 @@ public class MkGw4SystemInfoActivity extends MkGw4BaseActivity {
                 .setDeviceName(mDeviceName)
                 .setKeepBond(false)
                 .setForeground(true)
+                .disableMtuRequest()
                 .setDisableNotification(false);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             DfuServiceInitiator.createDfuNotificationChannel(this);
