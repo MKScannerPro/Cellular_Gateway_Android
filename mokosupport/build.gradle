@@ -1,12 +1,12 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdk 34
+    compileSdk 33
 
     defaultConfig {
         namespace = "com.moko.support.mkgw4"
         minSdkVersion 21
-        targetSdkVersion 34
+        targetSdkVersion 33
         versionCode 3
         versionName "3.0"
     }
@@ -27,8 +27,9 @@ android {
 
 dependencies {
     api files('libs/mokoBleLib.jar')
+    api 'com.google.code.gson:gson:2.8.5'
     api 'no.nordicsemi.android.support.v18:scanner:1.6.0'
-    api 'no.nordicsemi.android:dfu:2.4.1'
+    api 'no.nordicsemi.android:dfu:2.3.0'
     api 'org.greenrobot:eventbus:3.2.0'
     api 'com.elvishew:xlog:1.6.1'
     implementation 'no.nordicsemi.android:ble:2.7.2'

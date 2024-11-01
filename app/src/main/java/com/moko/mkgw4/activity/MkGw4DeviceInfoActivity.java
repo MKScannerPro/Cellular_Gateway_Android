@@ -13,20 +13,35 @@ import android.widget.RadioGroup;
 
 import androidx.annotation.IdRes;
 import androidx.fragment.app.FragmentManager;
+import okhttp3.RequestBody;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.StringCallback;
+import com.lzy.okgo.model.Response;
+import com.lzy.okgo.request.base.Request;
 import com.moko.ble.lib.MokoConstants;
 import com.moko.ble.lib.event.ConnectStatusEvent;
 import com.moko.ble.lib.event.OrderTaskResponseEvent;
 import com.moko.ble.lib.task.OrderTask;
 import com.moko.ble.lib.task.OrderTaskResponse;
 import com.moko.ble.lib.utils.MokoUtils;
+import com.moko.mkgw4.AppConstants;
 import com.moko.mkgw4.R;
 import com.moko.mkgw4.databinding.ActivityDeviceInfoMkgw4Binding;
 import com.moko.mkgw4.dialog.AlertMessageDialog;
+import com.moko.mkgw4.dialog.LoginDialog;
+import com.moko.mkgw4.entity.MokoDevice;
 import com.moko.mkgw4.fragment.NetworkFragment;
 import com.moko.mkgw4.fragment.PositionFragment;
 import com.moko.mkgw4.fragment.ScannerFragment;
 import com.moko.mkgw4.fragment.SettingsFragment;
+import com.moko.mkgw4.net.Urls;
+import com.moko.mkgw4.net.entity.CommonResp;
+import com.moko.mkgw4.net.entity.LoginEntity;
+import com.moko.mkgw4.utils.SPUtiles;
 import com.moko.mkgw4.utils.ToastUtils;
 import com.moko.support.mkgw4.MokoSupport;
 import com.moko.support.mkgw4.OrderTaskAssembler;
@@ -37,6 +52,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -52,6 +68,10 @@ public class MkGw4DeviceInfoActivity extends MkGw4BaseActivity implements RadioG
     private int disConnectType;
     private String advName;
     private String mac;
+    public static String mAccessToken;
+
+    private String mSubscribeTopic;
+    private String mPublishTopic;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +98,8 @@ public class MkGw4DeviceInfoActivity extends MkGw4BaseActivity implements RadioG
             orderTasks.add(OrderTaskAssembler.getNetworkStatus());
             orderTasks.add(OrderTaskAssembler.getMqttConnectionStatus());
             orderTasks.add(OrderTaskAssembler.getDeviceType());
+            orderTasks.add(OrderTaskAssembler.getMQTTSubscribeTopic());
+            orderTasks.add(OrderTaskAssembler.getMQTTPublishTopic());
             MokoSupport.getInstance().sendOrder(orderTasks.toArray(new OrderTask[]{}));
         }
     }
@@ -226,6 +248,12 @@ public class MkGw4DeviceInfoActivity extends MkGw4BaseActivity implements RadioG
                                     if (length > 0) {
                                         settingsFragment.setPowerChargeNotify(value[4] & 0xff);
                                     }
+                                    break;
+                                case KEY_SUBSCRIBE_TOPIC:
+                                    mSubscribeTopic = new String(Arrays.copyOfRange(value, 4, value.length));
+                                    break;
+                                case KEY_PUBLISH_TOPIC:
+                                    mPublishTopic = new String(Arrays.copyOfRange(value, 4, value.length));
                                     break;
                             }
                         }
@@ -377,5 +405,82 @@ public class MkGw4DeviceInfoActivity extends MkGw4BaseActivity implements RadioG
         orderTasks.add(OrderTaskAssembler.getMqttConnectionStatus());
         orderTasks.add(OrderTaskAssembler.getDeviceType());
         MokoSupport.getInstance().sendOrder(orderTasks.toArray(new OrderTask[]{}));
+    }
+
+    public void mainSyncDevices(View view) {
+        if (isWindowLocked()) return;
+        // 登录
+        String account = SPUtiles.getStringValue(this, AppConstants.EXTRA_KEY_LOGIN_ACCOUNT, "");
+        String password = SPUtiles.getStringValue(this, AppConstants.EXTRA_KEY_LOGIN_PASSWORD, "");
+        int env = SPUtiles.getIntValue(this, AppConstants.EXTRA_KEY_LOGIN_ENV, 0);
+        if (TextUtils.isEmpty(account) || TextUtils.isEmpty(password)) {
+            LoginDialog dialog = new LoginDialog();
+            dialog.setOnLoginClicked(this::login);
+            dialog.show(getSupportFragmentManager());
+            return;
+        }
+        login(account, password, env);
+    }
+
+    private void login(String account, String password, int envValue) {
+        LoginEntity entity = new LoginEntity();
+        entity.username = account;
+        entity.password = password;
+        entity.source = 1;
+        if (envValue == 0)
+            Urls.setCloudEnv(getApplicationContext());
+        else
+            Urls.setTestEnv(getApplicationContext());
+        RequestBody body = RequestBody.create(Urls.JSON, new Gson().toJson(entity));
+        OkGo.<String>post(Urls.loginApi(getApplicationContext()))
+                .upRequestBody(body)
+                .execute(new StringCallback() {
+
+                    @Override
+                    public void onStart(Request<String, ? extends Request> request) {
+                        showLoadingProgressDialog();
+                    }
+
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        Type type = new TypeToken<CommonResp<JsonObject>>() {
+                        }.getType();
+                        CommonResp<JsonObject> commonResp = new Gson().fromJson(response.body(), type);
+                        if (commonResp.code != 200) {
+                            ToastUtils.showToast(MkGw4DeviceInfoActivity.this, commonResp.msg);
+                            LoginDialog dialog = new LoginDialog();
+                            dialog.setOnLoginClicked((account1, password1, env) -> login(account1, password1, env));
+                            dialog.show(getSupportFragmentManager());
+                            return;
+                        }
+                        SPUtiles.setStringValue(MkGw4DeviceInfoActivity.this, AppConstants.EXTRA_KEY_LOGIN_ACCOUNT, account);
+                        SPUtiles.setStringValue(MkGw4DeviceInfoActivity.this, AppConstants.EXTRA_KEY_LOGIN_PASSWORD, password);
+                        SPUtiles.setIntValue(MkGw4DeviceInfoActivity.this, AppConstants.EXTRA_KEY_LOGIN_ENV, envValue);
+                        mAccessToken = commonResp.data.get("access_token").getAsString();
+                        String macUpper = mac.replaceAll(":", "").toUpperCase();
+                        MokoDevice mokoDevice = new MokoDevice();
+                        mokoDevice.name = String.format("MKGW4-%s", macUpper.substring(8));
+                        mokoDevice.mac = macUpper.toLowerCase();
+                        mokoDevice.topicSubscribe = mSubscribeTopic;
+                        mokoDevice.topicPublish = mPublishTopic;
+                        mokoDevice.lwtTopic = "";
+                        Intent intent = new Intent(MkGw4DeviceInfoActivity.this, SyncDeviceActivity.class);
+                        intent.putExtra("mokoDevice", mokoDevice);
+                        startActivity(intent);
+                    }
+
+                    @Override
+                    public void onError(Response<String> response) {
+                        ToastUtils.showToast(MkGw4DeviceInfoActivity.this, R.string.request_error);
+                        LoginDialog dialog = new LoginDialog();
+                        dialog.setOnLoginClicked((account12, password12, env) -> login(account12, password12, env));
+                        dialog.show(getSupportFragmentManager());
+                    }
+
+                    @Override
+                    public void onFinish() {
+                        dismissLoadingProgressDialog();
+                    }
+                });
     }
 }

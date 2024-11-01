@@ -76,4 +76,25 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/grey_f2f2f2" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1.0" />
+
+    <TextView
+        android:id="@+id/tvSyncDevices2Cloud"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginLeft="53dp"
+        android:layout_marginRight="53dp"
+        android:layout_marginBottom="50dp"
+        android:background="@drawable/shape_corner_btn_bg"
+        android:clickable="true"
+        android:gravity="center"
+        android:onClick="mainSyncDevices"
+        android:text="@string/main_sync_device"
+        android:textColor="@color/white_ffffff"
+        android:textSize="15sp"
+        android:visibility="gone" />
 </LinearLayout>

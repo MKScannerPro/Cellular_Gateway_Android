@@ -15,6 +15,7 @@ public class AppConstants {
 
     public static final String SP_KEY_DEVICE_ADDRESS = "sp_key_device_address";
     public static final String SP_KEY_SAVED_PASSWORD_MKGW4 = "SP_KEY_SAVED_PASSWORD_MKGW4";
+    public static final String SP_URL = "SP_URL";
     // extra_key
     // 设备列表\
     public static final String EXTRA_KEY_DEVICE_PARAM = "EXTRA_KEY_DEVICE_PARAM";
@@ -33,6 +34,10 @@ public class AppConstants {
     public static final String EXTRA_KEY_DEVICE_MAC = "EXTRA_KEY_DEVICE_MAC";
     public static final String EXTRA_KEY_FROM_ACTIVITY = "EXTRA_KEY_FROM_ACTIVITY";
     public static final String EXTRA_KEY_DEVICE_TYPE = "EXTRA_KEY_DEVICE_TYPE";
+    public static final String EXTRA_KEY_LOGIN_ACCOUNT = "EXTRA_KEY_LOGIN_ACCOUNT";
+    public static final String EXTRA_KEY_LOGIN_PASSWORD = "EXTRA_KEY_LOGIN_PASSWORD";
+    public static final String EXTRA_KEY_LOGIN_ENV = "EXTRA_KEY_LOGIN_ENV";
+
     // request_code
     public static final int REQUEST_CODE_DEVICE_INFO = 101;
     public static final int REQUEST_CODE_SET_UUID = 102;

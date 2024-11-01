@@ -67,4 +67,9 @@
     <string name="low_power_prompt_tips">*When the battery is less than or equal to %s, the green LED will flash once every 10 seconds.</string>
     <string name="bxp_t_h"><![CDATA[BXP - T&H]]></string>
     <string name="battery_reset_tips">*After replace with the new battery, need to click \"Reset\", otherwise the low power prompt will be unnormal.</string>
+
+    // net
+    <string name="main_sync_device">Sync devices to cloud</string>
+    <string name="request_error">Request Error!</string>
+    <string name="account_exit">Exit</string>
 </resources>

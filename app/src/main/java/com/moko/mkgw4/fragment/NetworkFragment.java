@@ -22,6 +22,9 @@ public class NetworkFragment extends Fragment {
     private FragmentNetworkBinding mBind;
     private int deviceType = -1;
 
+    private int mNetworkStatus;
+    private int mMQTTStatus;
+
     public NetworkFragment() {
     }
 
@@ -49,7 +52,9 @@ public class NetworkFragment extends Fragment {
     }
 
     public void setMqttConnectionStatus(int status) {
+        mMQTTStatus = status;
         mBind.tvMqttStatus.setText(status == 1 ? "Connected" : "Unconnected");
+        mBind.tvSyncDevices2Cloud.setVisibility(mMQTTStatus == 1 && mNetworkStatus == 2 ? View.VISIBLE : View.GONE);
     }
 
     public void setDeviceType(int type) {
@@ -57,6 +62,7 @@ public class NetworkFragment extends Fragment {
     }
 
     public void setNetworkStatus(int networkCheck) {
+        mNetworkStatus = networkCheck;
         String networkCheckDisPlay = "";
         switch (networkCheck) {
             case 0:
