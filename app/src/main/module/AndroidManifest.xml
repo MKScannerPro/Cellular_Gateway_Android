@@ -209,7 +209,5 @@
             android:name="com.moko.mkgw4.activity.SyncDeviceActivity"
             android:screenOrientation="portrait" />
 
-
-        <service android:name="com.moko.mkgw4.service.MkGw4DfuService" />
     </application>
 </manifest>
