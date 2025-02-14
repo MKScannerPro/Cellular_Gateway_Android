@@ -42,7 +42,7 @@ public class ParamsTask extends OrderTask {
         };
     }
 
-    public void getLongData(ParamsKeyEnum key){
+    public void getLongData(ParamsKeyEnum key) {
         response.responseValue = data = new byte[]{
                 (byte) 0xEE,
                 (byte) 0x00,
@@ -288,6 +288,36 @@ public class ParamsTask extends OrderTask {
         };
     }
 
+    public void setPin(@Nullable String pin) {
+        if (TextUtils.isEmpty(pin)) {
+            response.responseValue = data = new byte[]{
+                    (byte) 0xED,
+                    (byte) 0x01,
+                    (byte) ParamsKeyEnum.KEY_PIN.getParamsKey(),
+                    (byte) 0x00
+            };
+        } else {
+            byte[] bytes = pin.getBytes();
+            data = new byte[4 + bytes.length];
+            data[0] = (byte) 0xED;
+            data[1] = 0x01;
+            data[2] = (byte) ParamsKeyEnum.KEY_PIN.getParamsKey();
+            data[3] = (byte) bytes.length;
+            System.arraycopy(bytes, 0, data, 4, bytes.length);
+            response.responseValue = data;
+        }
+    }
+
+    public void setRegion(int region) {
+        response.responseValue = data = new byte[]{
+                (byte) 0xED,
+                (byte) 0x01,
+                (byte) ParamsKeyEnum.KEY_REGION.getParamsKey(),
+                (byte) 0x01,
+                (byte) region
+        };
+    }
+
     public void setNetworkPriority(@IntRange(from = 0, to = 10) int networkFormat) {
         response.responseValue = data = new byte[]{
                 (byte) 0xED,
@@ -515,6 +545,16 @@ public class ParamsTask extends OrderTask {
                 (byte) ParamsKeyEnum.KEY_AUTO_POWER_ON_ENABLE.getParamsKey(),
                 (byte) 0x01,
                 (byte) enable
+        };
+    }
+
+    public void setPowerOnMethod(@IntRange(from = 0, to = 1) int method) {
+        response.responseValue = data = new byte[]{
+                (byte) 0xED,
+                (byte) 0x01,
+                (byte) ParamsKeyEnum.KEY_POWER_ON_METHOD.getParamsKey(),
+                (byte) 0x01,
+                (byte) method
         };
     }
 
@@ -1088,7 +1128,7 @@ public class ParamsTask extends OrderTask {
     }
 
     public void setFilterBXPTagRules(ArrayList<String> filterBXPTagRules) {
-        if (filterBXPTagRules == null || filterBXPTagRules.size() == 0) {
+        if (filterBXPTagRules == null || filterBXPTagRules.isEmpty()) {
             data = new byte[]{
                     (byte) 0xED,
                     (byte) 0x01,
@@ -1383,8 +1423,72 @@ public class ParamsTask extends OrderTask {
         response.responseValue = data;
     }
 
+    public void setFilterMkSensorEnable(@IntRange(from = 0, to = 1) int enable) {
+        response.responseValue = data = new byte[]{
+                (byte) 0xED,
+                (byte) 0x01,
+                (byte) ParamsKeyEnum.KEY_FILTER_MK_SENSOR_ENABLE.getParamsKey(),
+                (byte) 0x01,
+                (byte) enable
+        };
+    }
+
+    public void setFilterMkSensorPrecise(@IntRange(from = 0, to = 1) int enable) {
+        response.responseValue = data = new byte[]{
+                (byte) 0xED,
+                (byte) 0x01,
+                (byte) ParamsKeyEnum.KEY_FILTER_MK_SENSOR_PRECISE.getParamsKey(),
+                (byte) 0x01,
+                (byte) enable
+        };
+    }
+
+    public void setFilterMkSensorReverse(@IntRange(from = 0, to = 1) int enable) {
+        response.responseValue = data = new byte[]{
+                (byte) 0xED,
+                (byte) 0x01,
+                (byte) ParamsKeyEnum.KEY_FILTER_MK_SENSOR_REVERSE.getParamsKey(),
+                (byte) 0x01,
+                (byte) enable
+        };
+    }
+
+    public void setFilterMkSensorRules(List<String> filterRules) {
+        if (filterRules == null || filterRules.isEmpty()) {
+            data = new byte[]{
+                    (byte) 0xED,
+                    (byte) 0x01,
+                    (byte) ParamsKeyEnum.KEY_FILTER_MK_SENSOR_RULES.getParamsKey(),
+                    (byte) 0x00
+            };
+        } else {
+            int length = 0;
+            for (String mac : filterRules) {
+                length += 1;
+                length += mac.length() / 2;
+            }
+            data = new byte[4 + length];
+            data[0] = (byte) 0xED;
+            data[1] = (byte) 0x01;
+            data[2] = (byte) ParamsKeyEnum.KEY_FILTER_MK_SENSOR_RULES.getParamsKey();
+            data[3] = (byte) length;
+            int index = 0;
+            for (int i = 0, size = filterRules.size(); i < size; i++) {
+                String mac = filterRules.get(i);
+                byte[] macBytes = MokoUtils.hex2bytes(mac);
+                int l = macBytes.length;
+                data[4 + index] = (byte) l;
+                index++;
+                for (int j = 0; j < l; j++, index++) {
+                    data[4 + index] = macBytes[j];
+                }
+            }
+        }
+        response.responseValue = data;
+    }
+
     public void setFilterMkTofRules(List<String> filterTofRules) {
-        if (filterTofRules == null || filterTofRules.size() == 0) {
+        if (filterTofRules == null || filterTofRules.isEmpty()) {
             data = new byte[]{
                     (byte) 0xED,
                     (byte) 0x01,
@@ -1593,7 +1697,7 @@ public class ParamsTask extends OrderTask {
     }
 
     public void setOtherPayloadData(List<String> otherRules) {
-        if (otherRules == null || otherRules.size() == 0) {
+        if (otherRules == null || otherRules.isEmpty()) {
             data = new byte[]{
                     (byte) 0xED,
                     (byte) 0x01,
@@ -1620,6 +1724,28 @@ public class ParamsTask extends OrderTask {
         response.responseValue = data;
     }
 
+    public void setScanPayloadParams(int params) {
+        response.responseValue = data = new byte[]{
+                (byte) 0xED,
+                (byte) 0x01,
+                (byte) ParamsKeyEnum.KEY_SCAN_PAYLOAD_PARAMS.getParamsKey(),
+                (byte) 0x01,
+                (byte) params
+        };
+    }
+
+    public void setMkSensorPayload(int payload) {
+        byte[] bytes = MokoUtils.toByteArray(payload, 2);
+        response.responseValue = data = new byte[]{
+                (byte) 0xED,
+                (byte) 0x01,
+                (byte) ParamsKeyEnum.KEY_MK_SENSOR_PAYLOAD.getParamsKey(),
+                (byte) 0x02,
+                bytes[0],
+                bytes[1]
+        };
+    }
+
     public void setGPSTimeout(@IntRange(from = 60, to = 600) int timeout) {
         byte[] timeoutBytes = MokoUtils.toByteArray(timeout, 2);
         response.responseValue = data = new byte[]{
@@ -1639,7 +1765,17 @@ public class ParamsTask extends OrderTask {
                 (byte) 0x01,
                 (byte) ParamsKeyEnum.KEY_GPS_PDOP.getParamsKey(),
                 (byte) 0x01,
-                (byte) limit,
+                (byte) limit
+        };
+    }
+
+    public void setGPSPayloadSettings(int payloadSettings) {
+        response.responseValue = data = new byte[]{
+                (byte) 0xED,
+                (byte) 0x01,
+                (byte) ParamsKeyEnum.KEY_GPS_PAYLOAD_SETTINGS.getParamsKey(),
+                (byte) 0x01,
+                (byte) payloadSettings
         };
     }
 

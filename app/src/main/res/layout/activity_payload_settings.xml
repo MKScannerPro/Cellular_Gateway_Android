@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/grey_f2f2f2"
@@ -29,6 +30,17 @@
             android:textColor="@color/white_ffffff"
             android:textSize="17sp"
             android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/iv_save"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:src="@drawable/ic_save"
+            android:visibility="gone"
+            tools:visibility="visible" />
     </RelativeLayout>
 
     <androidx.core.widget.NestedScrollView
@@ -94,6 +106,14 @@
                 android:text="BXP - Tag" />
 
             <TextView
+                android:id="@+id/tvBxpSensorPayload"
+                style="@style/NormalText"
+                android:layout_marginTop="1dp"
+                android:text="BXP - Sensor"
+                android:visibility="gone"
+                tools:visibility="visible" />
+
+            <TextView
                 android:id="@+id/tvPirPayload"
                 style="@style/NormalText"
                 android:layout_marginTop="1dp"
@@ -110,6 +130,50 @@
                 style="@style/NormalText"
                 android:layout_marginTop="1dp"
                 android:text="Other type" />
+
+            <TextView
+                android:id="@+id/tvCommonItems"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:gravity="center_vertical"
+                android:paddingStart="12dp"
+                android:text="Common items"
+                android:textColor="@color/black_333333"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:visibility="gone"
+                tools:visibility="visible" />
+
+            <CheckBox
+                android:id="@+id/cbBeaconNum"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@color/white_ffffff"
+                android:button="@null"
+                android:drawableEnd="@drawable/selector_cb_btn"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
+                android:text="Beacon number"
+                android:visibility="gone"
+                tools:visibility="visible" />
+
+            <CheckBox
+                android:id="@+id/cbSequenceNum"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="1dp"
+                android:background="@color/white_ffffff"
+                android:button="@null"
+                android:drawableEnd="@drawable/selector_cb_btn"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
+                android:text="Sequence number"
+                android:visibility="gone"
+                tools:visibility="visible" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="80dp" />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </LinearLayout>

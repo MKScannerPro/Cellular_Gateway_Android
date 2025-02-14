@@ -1,5 +1,7 @@
 package com.moko.mkgw4.activity.setting;
 
+import static com.moko.mkgw4.AppConstants.TYPE_USB;
+
 import android.bluetooth.BluetoothAdapter;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -15,6 +17,7 @@ import com.moko.ble.lib.event.OrderTaskResponseEvent;
 import com.moko.ble.lib.task.OrderTask;
 import com.moko.ble.lib.task.OrderTaskResponse;
 import com.moko.ble.lib.utils.MokoUtils;
+import com.moko.mkgw4.AppConstants;
 import com.moko.mkgw4.activity.MkGw4BaseActivity;
 import com.moko.mkgw4.databinding.ActivityHeartReportSettingBinding;
 import com.moko.mkgw4.utils.ToastUtils;
@@ -40,6 +43,7 @@ public class HeartReportSettingActivity extends MkGw4BaseActivity {
     private ActivityHeartReportSettingBinding mBind;
     private boolean mReceiverTag;
     private boolean saveParError;
+    private int deviceType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,8 +56,10 @@ public class HeartReportSettingActivity extends MkGw4BaseActivity {
         filter.addAction(BluetoothAdapter.ACTION_STATE_CHANGED);
         registerReceiver(mReceiver, filter);
         mReceiverTag = true;
+        deviceType = getIntent().getIntExtra(AppConstants.DEVICE_TYPE, 0);
+        if (deviceType == TYPE_USB) mBind.cbSequenceNum.setVisibility(View.VISIBLE);
         showSyncingProgressDialog();
-        List<OrderTask> orderTasks = new ArrayList<>(4);
+        List<OrderTask> orderTasks = new ArrayList<>(2);
         orderTasks.add(OrderTaskAssembler.getDevicePayloadInterval());
         orderTasks.add(OrderTaskAssembler.getDeviceStatusChoose());
         MokoSupport.getInstance().sendOrder(orderTasks.toArray(new OrderTask[]{}));
@@ -121,6 +127,9 @@ public class HeartReportSettingActivity extends MkGw4BaseActivity {
                                         mBind.cbBattery.setChecked((status & 0x01) == 1);
                                         mBind.cbAcc.setChecked((status >> 1 & 0x01) == 1);
                                         mBind.cbVehicleStatus.setChecked((status >> 2 & 0x01) == 1);
+                                        if (deviceType == TYPE_USB) {
+                                            mBind.cbSequenceNum.setChecked((status >> 3 & 0x01) == 1);
+                                        }
                                     }
                                     break;
                             }
@@ -139,7 +148,13 @@ public class HeartReportSettingActivity extends MkGw4BaseActivity {
             int interval = Integer.parseInt(mBind.etInterval.getText().toString().trim());
             List<OrderTask> orderTasks = new ArrayList<>(4);
             orderTasks.add(OrderTaskAssembler.setDevicePayloadInterval(interval));
-            int status = (mBind.cbBattery.isChecked() ? 1 : 0) | (mBind.cbAcc.isChecked() ? 1 << 1 : 0) | (mBind.cbVehicleStatus.isChecked() ? 1 << 2 : 0);
+            int status;
+            if (deviceType == TYPE_USB) {
+                status = (mBind.cbBattery.isChecked() ? 1 : 0) | (mBind.cbAcc.isChecked() ? 1 << 1 : 0) |
+                        (mBind.cbVehicleStatus.isChecked() ? 1 << 2 : 0) | (mBind.cbSequenceNum.isChecked() ? 1 << 3 : 0);
+            } else {
+                status = (mBind.cbBattery.isChecked() ? 1 : 0) | (mBind.cbAcc.isChecked() ? 1 << 1 : 0) | (mBind.cbVehicleStatus.isChecked() ? 1 << 2 : 0);
+            }
             orderTasks.add(OrderTaskAssembler.setDeviceStatusChoose(status));
             MokoSupport.getInstance().sendOrder(orderTasks.toArray(new OrderTask[]{}));
         } else {

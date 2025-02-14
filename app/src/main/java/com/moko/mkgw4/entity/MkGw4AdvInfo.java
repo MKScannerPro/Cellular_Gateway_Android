@@ -12,4 +12,5 @@ public class MkGw4AdvInfo {
     public String rssi1M;
     public boolean verifyEnable;
     public boolean connectable;
+    public int deviceType;
 }

@@ -25,6 +25,7 @@ public enum ParamsKeyEnum implements Serializable {
     KEY_LOW_POWER_PERCENT(0x17),
     KEY_DELETE_BUFFER_DATA(0x18),
     KEY_AUTO_POWER_ON_ENABLE(0x19),
+    KEY_POWER_ON_METHOD(0x1A),
 
 
 
@@ -52,6 +53,8 @@ public enum ParamsKeyEnum implements Serializable {
     KEY_APN_NAME(0x32),
     KEY_APN_PASSWORD(0x33),
     KEY_CONNECT_NETWORK_TIMEOUT(0x34),
+    KEY_PIN(0x35),
+    KEY_REGION(0x36),
 
 
 
@@ -111,6 +114,11 @@ public enum ParamsKeyEnum implements Serializable {
     KEY_FILTER_OTHER_RELATIONSHIP(0x78),
     KEY_FILTER_OTHER_RULES(0x79),
     KEY_DUPLICATE_DATA_FILTER(0x7A),
+    KEY_FILTER_MK_SENSOR_ENABLE(0x7B),
+    KEY_FILTER_MK_SENSOR_PRECISE(0x7C),
+    KEY_FILTER_MK_SENSOR_REVERSE(0x7D),
+    KEY_FILTER_MK_SENSOR_RULES(0x7E),
+
 
 
     KEY_ADV_RESPONSE(0x80),
@@ -139,6 +147,7 @@ public enum ParamsKeyEnum implements Serializable {
     KEY_MOTION_FIX_INTERVAL_WHEN_STATIONARY(0x9A),
     KEY_GPS_TIMEOUT(0x9B),
     KEY_GPS_PDOP(0x9C),
+    KEY_GPS_PAYLOAD_SETTINGS(0x9D),
 
 
 
@@ -156,6 +165,9 @@ public enum ParamsKeyEnum implements Serializable {
     KEY_TOF_PAYLOAD(0xAA),
     KEY_OTHER_PAYLOAD(0xAB),
     KEY_OTHER_PAYLOAD_DATA(0xAC),
+    KEY_SCAN_PAYLOAD_PARAMS(0xAD),
+    KEY_MK_SENSOR_PAYLOAD(0xAE),
+
 
 
 
@@ -166,6 +178,8 @@ public enum ParamsKeyEnum implements Serializable {
     KEY_NETWORK_STATUS(0xC4),
     KEY_MQTT_CONNECT_STATUS(0xC5),
     KEY_DEVICE_MODE(0xC7),
+    KEY_BUFFER_DATA_COUNT(0xC8),
+    KEY_CELLULAR_VERSION(0xC9),
     ;
 
     private final int paramsKey;

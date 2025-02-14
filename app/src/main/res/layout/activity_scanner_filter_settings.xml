@@ -134,7 +134,7 @@
         <TextView
             android:id="@+id/tvFilterType"
             android:layout_width="wrap_content"
-            android:layout_height="35dp"
+            android:layout_height="40dp"
             android:background="@drawable/shape_radius_blue_btn_bg"
             android:gravity="center"
             android:minWidth="150dp"
@@ -208,7 +208,7 @@
         <TextView
             android:id="@+id/tv_filter_relationship"
             android:layout_width="wrap_content"
-            android:layout_height="35dp"
+            android:layout_height="40dp"
             android:background="@drawable/shape_radius_blue_btn_bg"
             android:gravity="center"
             android:minWidth="150dp"
@@ -240,7 +240,7 @@
         <TextView
             android:id="@+id/tv_filter_duplicate"
             android:layout_width="wrap_content"
-            android:layout_height="35dp"
+            android:layout_height="40dp"
             android:background="@drawable/shape_radius_blue_btn_bg"
             android:gravity="center"
             android:minWidth="150dp"

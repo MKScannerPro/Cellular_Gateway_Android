@@ -11,9 +11,10 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.moko.ble.lib.task.OrderTask;
+import com.moko.mkgw4.AppConstants;
 import com.moko.mkgw4.R;
 import com.moko.mkgw4.activity.MkGw4DeviceInfoActivity;
-import com.moko.mkgw4.activity.ScannerFilterSettingsActivity;
+import com.moko.mkgw4.activity.filter.ScannerFilterSettingsActivity;
 import com.moko.mkgw4.activity.payload.PayloadSettingsActivity;
 import com.moko.mkgw4.activity.setting.ScanReportModeActivity;
 import com.moko.mkgw4.databinding.FragmentScannerBinding;
@@ -28,6 +29,7 @@ public class ScannerFragment extends Fragment {
     private FragmentScannerBinding mBind;
     private boolean modeEnable;
     private String advName;
+    private int deviceType;
 
     public ScannerFragment() {
     }
@@ -44,8 +46,9 @@ public class ScannerFragment extends Fragment {
         return mBind.getRoot();
     }
 
-    public void setAdvName(String advName) {
+    public void setAdvName(String advName, int deviceType) {
         this.advName = advName;
+        this.deviceType = deviceType;
     }
 
     private void initListener() {
@@ -62,9 +65,14 @@ public class ScannerFragment extends Fragment {
         mBind.tvScannerFilter.setOnClickListener(v -> {
             Intent intent = new Intent(requireActivity(), ScannerFilterSettingsActivity.class);
             intent.putExtra("advName", advName);
+            intent.putExtra(AppConstants.DEVICE_TYPE, deviceType);
             startActivity(intent);
         });
-        mBind.tvUpPayload.setOnClickListener(v -> startActivity(new Intent(requireActivity(), PayloadSettingsActivity.class)));
+        mBind.tvUpPayload.setOnClickListener(v -> {
+            Intent intent = new Intent(requireActivity(), PayloadSettingsActivity.class);
+            intent.putExtra(AppConstants.DEVICE_TYPE, deviceType);
+            startActivity(intent);
+        });
     }
 
     public void setModeSwitch(int modeSwitch) {

@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white_ffffff"
+    android:background="@color/grey_f2f2f2"
     android:orientation="vertical">
 
     <LinearLayout
         android:id="@+id/layoutNetworkStatus"
         android:layout_width="match_parent"
         android:layout_height="50dp"
+        android:background="@color/white_ffffff"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:paddingStart="15dp"
@@ -37,15 +37,12 @@
             tools:text="Connected" />
     </LinearLayout>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/grey_f2f2f2" />
-
     <LinearLayout
         android:id="@+id/layoutMqttStatus"
         android:layout_width="match_parent"
         android:layout_height="50dp"
+        android:layout_marginTop="1dp"
+        android:background="@color/white_ffffff"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:paddingStart="15dp"
@@ -71,11 +68,6 @@
             android:textSize="15sp"
             tools:text="Connected" />
     </LinearLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/grey_f2f2f2" />
 
     <View
         android:layout_width="match_parent"

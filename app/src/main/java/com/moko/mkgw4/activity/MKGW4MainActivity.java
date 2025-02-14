@@ -88,6 +88,7 @@ public class MKGW4MainActivity extends MkGw4BaseActivity implements MokoScanDevi
     public String filterMac;
     private String advName;
     private String selectMac;
+    private int deviceType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -171,7 +172,7 @@ public class MKGW4MainActivity extends MkGw4BaseActivity implements MokoScanDevi
                 try {
                     Thread.sleep(500);
                 } catch (InterruptedException e) {
-                    e.printStackTrace();
+                    XLog.e(e);
                 }
                 updateDevices();
             }
@@ -359,6 +360,7 @@ public class MKGW4MainActivity extends MkGw4BaseActivity implements MokoScanDevi
             isVerifyEnable = advInfo.verifyEnable;
             advName = advInfo.name;
             selectMac = advInfo.mac;
+            this.deviceType = advInfo.deviceType;
             if (!isVerifyEnable) {
                 showLoadingProgressDialog();
                 MokoSupport.getInstance().connDevice(advInfo.mac);
@@ -445,6 +447,7 @@ public class MKGW4MainActivity extends MkGw4BaseActivity implements MokoScanDevi
                 Intent i = new Intent(this, MkGw4DeviceInfoActivity.class);
                 i.putExtra("advName", advName);
                 i.putExtra("mac", selectMac);
+                i.putExtra(AppConstants.DEVICE_TYPE, deviceType);
                 launcher.launch(i);
                 return;
             }
@@ -489,6 +492,7 @@ public class MKGW4MainActivity extends MkGw4BaseActivity implements MokoScanDevi
                             Intent i = new Intent(this, MkGw4DeviceInfoActivity.class);
                             i.putExtra("advName", advName);
                             i.putExtra("mac", selectMac);
+                            i.putExtra(AppConstants.DEVICE_TYPE, deviceType);
                             launcher.launch(i);
                         } else {
                             isPasswordError = true;

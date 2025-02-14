@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white_ffffff"
+    android:background="@color/grey_f2f2f2"
     android:orientation="vertical">
 
     <RelativeLayout
@@ -47,6 +47,7 @@
         android:layout_height="55dp"
         android:gravity="center_vertical"
         android:orientation="horizontal"
+        android:background="@color/white_ffffff"
         android:paddingStart="10dp"
         android:paddingEnd="10dp">
 
@@ -72,11 +73,6 @@
             tools:text="Periodic fix" />
     </LinearLayout>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/grey_f2f2f2" />
-
     <TextView
         android:id="@+id/tvPeriodicFix"
         android:layout_width="match_parent"
@@ -86,13 +82,10 @@
         android:paddingStart="10dp"
         android:paddingEnd="10dp"
         android:text="Periodic fix"
+        android:background="@color/white_ffffff"
+        android:layout_marginTop="1dp"
         android:textColor="@color/black_333333"
         android:textSize="15sp" />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/grey_f2f2f2" />
 
     <TextView
         android:id="@+id/tvMotionFix"
@@ -102,12 +95,9 @@
         android:gravity="center_vertical"
         android:paddingStart="10dp"
         android:paddingEnd="10dp"
+        android:background="@color/white_ffffff"
+        android:layout_marginTop="1dp"
         android:text="Motion fix"
         android:textColor="@color/black_333333"
         android:textSize="15sp" />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/grey_f2f2f2" />
 </LinearLayout>

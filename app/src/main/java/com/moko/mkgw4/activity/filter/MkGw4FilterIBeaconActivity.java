@@ -38,7 +38,7 @@ public class MkGw4FilterIBeaconActivity extends MkGw4BaseActivity {
         EventBus.getDefault().register(this);
 
         showSyncingProgressDialog();
-        List<OrderTask> orderTasks = new ArrayList<>();
+        List<OrderTask> orderTasks = new ArrayList<>(4);
         orderTasks.add(OrderTaskAssembler.getFilterIBeaconEnable());
         orderTasks.add(OrderTaskAssembler.getFilterIBeaconUUID());
         orderTasks.add(OrderTaskAssembler.getFilterIBeaconMajorRange());

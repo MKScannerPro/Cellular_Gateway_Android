@@ -29,7 +29,8 @@ public class MkGw4AdvInfoAnalysisImpl implements DeviceInfoParseable<MkGw4AdvInf
         byte[] manufacturerSpecificData = record.getManufacturerSpecificData(0x004C);
         byte[] bytes = record.getServiceData(new ParcelUuid(OrderServices.SERVICE_ADV.getUuid()));
         if (null == bytes || bytes.length < 8) return null;
-        if ((bytes[0] & 0xff) != 0) return null;
+        int deviceType = bytes[0] & 0xff;
+        if (deviceType != 0 && deviceType != 1) return null;
         boolean verifyEnable = (bytes[7] & 0xff) == 1;
         String uuid = null;
         String major = null;
@@ -63,6 +64,7 @@ public class MkGw4AdvInfoAnalysisImpl implements DeviceInfoParseable<MkGw4AdvInf
             advInfo.major = major;
             advInfo.minor = minor;
             advInfo.rssi1M = rssi1M;
+            advInfo.deviceType = deviceType;
         } else {
             advInfo = new MkGw4AdvInfo();
             advInfo.name = deviceInfo.name;
@@ -75,6 +77,7 @@ public class MkGw4AdvInfoAnalysisImpl implements DeviceInfoParseable<MkGw4AdvInf
             advInfo.major = major;
             advInfo.minor = minor;
             advInfo.rssi1M = rssi1M;
+            advInfo.deviceType = deviceType;
             advInfoHashMap.put(deviceInfo.mac, advInfo);
         }
         return advInfo;

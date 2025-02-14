@@ -1,5 +1,7 @@
 package com.moko.mkgw4.activity;
 
+import static com.moko.mkgw4.AppConstants.TYPE_USB;
+
 import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.content.BroadcastReceiver;
@@ -13,6 +15,7 @@ import android.widget.RadioGroup;
 
 import androidx.annotation.IdRes;
 import androidx.fragment.app.FragmentManager;
+
 import okhttp3.RequestBody;
 
 import com.google.gson.Gson;
@@ -56,6 +59,8 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class MkGw4DeviceInfoActivity extends MkGw4BaseActivity implements RadioGroup.OnCheckedChangeListener {
     private ActivityDeviceInfoMkgw4Binding mBind;
@@ -69,9 +74,9 @@ public class MkGw4DeviceInfoActivity extends MkGw4BaseActivity implements RadioG
     private String advName;
     private String mac;
     public static String mAccessToken;
-
     private String mSubscribeTopic;
     private String mPublishTopic;
+    private int deviceType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +86,7 @@ public class MkGw4DeviceInfoActivity extends MkGw4BaseActivity implements RadioG
         fragmentManager = getSupportFragmentManager();
         advName = getIntent().getStringExtra("advName");
         mac = getIntent().getStringExtra("mac");
+        deviceType = getIntent().getIntExtra(AppConstants.DEVICE_TYPE, 0);
         initFragment();
         mBind.radioBtnNetwork.setChecked(true);
         mBind.rgOptions.setOnCheckedChangeListener(this);
@@ -94,7 +100,7 @@ public class MkGw4DeviceInfoActivity extends MkGw4BaseActivity implements RadioG
             MokoSupport.getInstance().enableBluetooth();
         } else {
             showSyncingProgressDialog();
-            List<OrderTask> orderTasks = new ArrayList<>(4);
+            List<OrderTask> orderTasks = new ArrayList<>(6);
             orderTasks.add(OrderTaskAssembler.getNetworkStatus());
             orderTasks.add(OrderTaskAssembler.getMqttConnectionStatus());
             orderTasks.add(OrderTaskAssembler.getDeviceType());
@@ -120,8 +126,9 @@ public class MkGw4DeviceInfoActivity extends MkGw4BaseActivity implements RadioG
                 .hide(settingsFragment)
                 .commit();
         mBind.tvTitle.setText(advName);
-        scannerFragment.setAdvName(advName);
-        settingsFragment.setMac(mac);
+        scannerFragment.setAdvName(advName, deviceType);
+        posFragment.setDeviceType(deviceType);
+        settingsFragment.setMac(mac, deviceType);
     }
 
     @Subscribe(threadMode = ThreadMode.POSTING, priority = 100)
@@ -136,6 +143,7 @@ public class MkGw4DeviceInfoActivity extends MkGw4BaseActivity implements RadioG
                     MokoSupport.getInstance().startTime = 0;
                     MokoSupport.getInstance().sum = 0;
                 }
+                resetTimer();
                 showDisconnectDialog();
             }
         });
@@ -183,12 +191,14 @@ public class MkGw4DeviceInfoActivity extends MkGw4BaseActivity implements RadioG
                             int result = value[4] & 0xFF;
                             switch (configKeyEnum) {
                                 case KEY_SCAN_REPORT_ENABLE:
+                                case KEY_POWER_ON_METHOD:
                                 case KEY_POWER_LOSS_NOTIFY:
+                                    ToastUtils.showToast(this, result == 1 ? "Setup succeed" : "Setup failed");
+                                    break;
                                 case KEY_DELETE_BUFFER_DATA:
-                                    if (result != 1) {
-                                        ToastUtils.showToast(this, "Setup failed");
-                                    } else {
-                                        ToastUtils.showToast(this, "Setup succeed");
+                                    ToastUtils.showToast(this, result == 1 ? "Setup succeed" : "Setup failed");
+                                    if (deviceType == TYPE_USB) {
+                                        MokoSupport.getInstance().sendOrder(OrderTaskAssembler.getBufferDataCount());
                                     }
                                     break;
 
@@ -209,19 +219,21 @@ public class MkGw4DeviceInfoActivity extends MkGw4BaseActivity implements RadioG
                                 case KEY_NETWORK_STATUS:
                                     if (length == 1) {
                                         int networkStatus = value[4] & 0xFF;
-                                        networkFragment.setNetworkStatus(networkStatus);
+                                        networkFragment.setNetworkStatus(networkStatus, deviceType);
                                     }
                                     break;
                                 case KEY_MQTT_CONNECT_STATUS:
                                     if (length == 1) {
                                         int status = value[4] & 0xFF;
                                         networkFragment.setMqttConnectionStatus(status);
+                                        if (!isTimerStart) startTimer();
                                     }
                                     break;
 
                                 case KEY_DEVICE_MODE:
                                     if (length == 1) {
-                                        networkFragment.setDeviceType(value[4] & 0xff);
+                                        networkFragment.setCellularType(value[4] & 0xff);
+                                        settingsFragment.setCellularType(value[4] & 0xff);
                                     }
                                     break;
 
@@ -255,12 +267,25 @@ public class MkGw4DeviceInfoActivity extends MkGw4BaseActivity implements RadioG
                                 case KEY_PUBLISH_TOPIC:
                                     mPublishTopic = new String(Arrays.copyOfRange(value, 4, value.length));
                                     break;
+                                case KEY_BUFFER_DATA_COUNT:
+                                    int count = MokoUtils.toInt(Arrays.copyOfRange(value, 4, value.length));
+                                    settingsFragment.setBufferDataCount(count);
+                                    break;
+                                case KEY_POWER_ON_METHOD:
+                                    settingsFragment.setPowerOnMethod(value[4]);
+                                    break;
                             }
                         }
                     }
                 }
             }
         });
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        resetTimer();
     }
 
     private void showAlertDialog(String title, String msg, String confirm) {
@@ -322,6 +347,7 @@ public class MkGw4DeviceInfoActivity extends MkGw4BaseActivity implements RadioG
             // 注销广播
             unregisterReceiver(mReceiver);
         }
+        if (null != timer) timer.cancel();
         EventBus.getDefault().unregister(this);
     }
 
@@ -337,6 +363,32 @@ public class MkGw4DeviceInfoActivity extends MkGw4BaseActivity implements RadioG
     @Override
     public void onBackPressed() {
         back();
+    }
+    private Timer timer;
+    private boolean isTimerStart;
+
+    private void startTimer() {
+        timer = new Timer();
+        isTimerStart = true;
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                runOnUiThread(() -> {
+                    List<OrderTask> orderTasks = new ArrayList<>(2);
+                    orderTasks.add(OrderTaskAssembler.getNetworkStatus());
+                    orderTasks.add(OrderTaskAssembler.getMqttConnectionStatus());
+                    MokoSupport.getInstance().sendOrder(orderTasks.toArray(new OrderTask[0]));
+                });
+            }
+        }, 3000, 3000);
+    }
+
+    public void resetTimer() {
+        if (null != timer) {
+            timer.cancel();
+            timer = null;
+        }
+        isTimerStart = false;
     }
 
     @Override
@@ -360,23 +412,29 @@ public class MkGw4DeviceInfoActivity extends MkGw4BaseActivity implements RadioG
                 .hide(scannerFragment)
                 .show(settingsFragment)
                 .commit();
+        resetTimer();
         showSyncingProgressDialog();
-        List<OrderTask> orderTasks = new ArrayList<>(4);
+        List<OrderTask> orderTasks = new ArrayList<>(5);
         // device
         orderTasks.add(OrderTaskAssembler.getBattery());
         orderTasks.add(OrderTaskAssembler.getPowerLossNotify());
         orderTasks.add(OrderTaskAssembler.getAutoPowerOn());
+        if (deviceType == TYPE_USB) {
+            orderTasks.add(OrderTaskAssembler.getBufferDataCount());
+            orderTasks.add(OrderTaskAssembler.getPowerOnMethod());
+        }
         MokoSupport.getInstance().sendOrder(orderTasks.toArray(new OrderTask[]{}));
     }
 
     private void showScannerAndGetData() {
-        mBind.tvTitle.setText("General Settings");
+        mBind.tvTitle.setText("Scan & Report");
         fragmentManager.beginTransaction()
                 .hide(networkFragment)
                 .hide(posFragment)
                 .show(scannerFragment)
                 .hide(settingsFragment)
                 .commit();
+        resetTimer();
         showSyncingProgressDialog();
         MokoSupport.getInstance().sendOrder(OrderTaskAssembler.getScanReportEnable());
     }
@@ -389,6 +447,7 @@ public class MkGw4DeviceInfoActivity extends MkGw4BaseActivity implements RadioG
                 .hide(scannerFragment)
                 .hide(settingsFragment)
                 .commit();
+        resetTimer();
     }
 
     private void showNetworkAndGetData() {
@@ -399,11 +458,14 @@ public class MkGw4DeviceInfoActivity extends MkGw4BaseActivity implements RadioG
                 .hide(scannerFragment)
                 .hide(settingsFragment)
                 .commit();
+        getNetworkStatus();
+    }
+
+    public void getNetworkStatus(){
         showSyncingProgressDialog();
-        List<OrderTask> orderTasks = new ArrayList<>(4);
+        List<OrderTask> orderTasks = new ArrayList<>(2);
         orderTasks.add(OrderTaskAssembler.getNetworkStatus());
         orderTasks.add(OrderTaskAssembler.getMqttConnectionStatus());
-        orderTasks.add(OrderTaskAssembler.getDeviceType());
         MokoSupport.getInstance().sendOrder(orderTasks.toArray(new OrderTask[]{}));
     }
 

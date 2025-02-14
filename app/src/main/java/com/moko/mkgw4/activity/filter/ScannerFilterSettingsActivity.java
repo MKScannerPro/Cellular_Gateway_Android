@@ -1,4 +1,4 @@
-package com.moko.mkgw4.activity;
+package com.moko.mkgw4.activity.filter;
 
 import android.bluetooth.BluetoothAdapter;
 import android.content.BroadcastReceiver;
@@ -15,7 +15,9 @@ import com.moko.ble.lib.event.ConnectStatusEvent;
 import com.moko.ble.lib.event.OrderTaskResponseEvent;
 import com.moko.ble.lib.task.OrderTask;
 import com.moko.ble.lib.task.OrderTaskResponse;
+import com.moko.mkgw4.AppConstants;
 import com.moko.mkgw4.R;
+import com.moko.mkgw4.activity.MkGw4BaseActivity;
 import com.moko.mkgw4.activity.filter.MkGw4FilterAdvNameActivity;
 import com.moko.mkgw4.activity.filter.MkGw4FilterMacAddressActivity;
 import com.moko.mkgw4.activity.filter.MkGw4FilterRawDataActivity;
@@ -47,6 +49,7 @@ public class ScannerFilterSettingsActivity extends MkGw4BaseActivity implements 
     private int mFilterTypeSelected;
     private final String[] duplicateDataValues = {"None", "MAC", "MAC+Data type", "MAC+Raw data"};
     private int duplicateDataSelected;
+    private int deviceType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +58,7 @@ public class ScannerFilterSettingsActivity extends MkGw4BaseActivity implements 
         setContentView(mBind.getRoot());
         EventBus.getDefault().register(this);
         String advName = getIntent().getStringExtra("advName");
+        deviceType = getIntent().getIntExtra(AppConstants.DEVICE_TYPE, 0);
         mBind.sbRssiFilter.setOnSeekBarChangeListener(this);
         // 注册广播接收器
         IntentFilter filter = new IntentFilter();
@@ -67,7 +71,7 @@ public class ScannerFilterSettingsActivity extends MkGw4BaseActivity implements 
         mBind.tvTitle.setText(advName);
         mReceiverTag = true;
         showSyncingProgressDialog();
-        List<OrderTask> orderTasks = new ArrayList<>(8);
+        List<OrderTask> orderTasks = new ArrayList<>(4);
         orderTasks.add(OrderTaskAssembler.getFilterRSSI());
         orderTasks.add(OrderTaskAssembler.getFilterBleScanPhy());
         orderTasks.add(OrderTaskAssembler.getFilterRelationship());
@@ -261,6 +265,7 @@ public class ScannerFilterSettingsActivity extends MkGw4BaseActivity implements 
     public void onFilterByRawData(View view) {
         if (isWindowLocked()) return;
         Intent intent = new Intent(this, MkGw4FilterRawDataActivity.class);
+        intent.putExtra(AppConstants.DEVICE_TYPE, deviceType);
         startActivity(intent);
     }
 

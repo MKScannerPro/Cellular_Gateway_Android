@@ -170,6 +170,7 @@
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:paddingStart="10dp"
+        android:paddingBottom="10dp"
         android:paddingTop="15dp"
         android:paddingEnd="10dp">
 
@@ -198,10 +199,9 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white_ffffff"
         android:lineSpacingMultiplier="1.2"
         android:paddingStart="10dp"
-        android:paddingTop="15dp"
+        android:layout_marginTop="15dp"
         android:paddingEnd="10dp"
         android:paddingBottom="10dp"
         android:text="*The Bluetooth Scan Interval shouldn't be less than Bluetooth Scan Duration. And the Report Interval shouldn't be less than Bluetooth Scan Interval" />

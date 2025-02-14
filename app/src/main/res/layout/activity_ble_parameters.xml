@@ -399,6 +399,10 @@
                     android:textColor="@color/black_333333"
                     android:textSize="15sp" />
             </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="80dp" />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 </LinearLayout>

@@ -15,7 +15,7 @@ import com.moko.ble.lib.task.OrderTaskResponse;
 import com.moko.ble.lib.utils.MokoUtils;
 import com.moko.mkgw4.R;
 import com.moko.mkgw4.activity.MkGw4BaseActivity;
-import com.moko.mkgw4.databinding.ActivityFilterBxpTagMkgw4Binding;
+import com.moko.mkgw4.databinding.ActivityBxpSensorFilterBinding;
 import com.moko.mkgw4.utils.ToastUtils;
 import com.moko.support.mkgw4.MokoSupport;
 import com.moko.support.mkgw4.OrderTaskAssembler;
@@ -31,24 +31,28 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
-public class MkGw4FilterBXPTagActivity extends MkGw4BaseActivity {
-    private ActivityFilterBxpTagMkgw4Binding mBind;
+/**
+ * @author: jun.liu
+ * @date: 2025/2/13 12:14
+ * @des:
+ */
+public class BxpSensorFilterActivity extends MkGw4BaseActivity{
+    private ActivityBxpSensorFilterBinding mBind;
     private boolean savedParamsError;
-    private ArrayList<String> filterTagId;
+    private final List<String> filterTagId = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mBind = ActivityFilterBxpTagMkgw4Binding.inflate(getLayoutInflater());
+        mBind = ActivityBxpSensorFilterBinding.inflate(getLayoutInflater());
         setContentView(mBind.getRoot());
         EventBus.getDefault().register(this);
-        filterTagId = new ArrayList<>();
         showSyncingProgressDialog();
-        List<OrderTask> orderTasks = new ArrayList<>();
-        orderTasks.add(OrderTaskAssembler.getFilterBXPTagEnable());
-        orderTasks.add(OrderTaskAssembler.getFilterBXPTagPrecise());
-        orderTasks.add(OrderTaskAssembler.getFilterBXPTagReverse());
-        orderTasks.add(OrderTaskAssembler.getFilterBXPTagRules());
+        List<OrderTask> orderTasks = new ArrayList<>(4);
+        orderTasks.add(OrderTaskAssembler.getFilterMkSensorEnable());
+        orderTasks.add(OrderTaskAssembler.getFilterMkSensorPrecise());
+        orderTasks.add(OrderTaskAssembler.getFilterMkSensorReverse());
+        orderTasks.add(OrderTaskAssembler.getFilterMkSensorRules());
         MokoSupport.getInstance().sendOrder(orderTasks.toArray(new OrderTask[]{}));
     }
 
@@ -90,13 +94,13 @@ public class MkGw4FilterBXPTagActivity extends MkGw4BaseActivity {
                             // write
                             int result = value[4] & 0xFF;
                             switch (configKeyEnum) {
-                                case KEY_FILTER_BXP_TAG_ENABLE:
-                                case KEY_FILTER_BXP_TAG_PRECISE:
-                                case KEY_FILTER_BXP_TAG_REVERSE:
+                                case KEY_FILTER_MK_SENSOR_ENABLE:
+                                case KEY_FILTER_MK_SENSOR_PRECISE:
+                                case KEY_FILTER_MK_SENSOR_REVERSE:
                                     if (result != 1) savedParamsError = true;
                                     break;
 
-                                case KEY_FILTER_BXP_TAG_RULES:
+                                case KEY_FILTER_MK_SENSOR_RULES:
                                     if (result != 1) savedParamsError = true;
                                     ToastUtils.showToast(this, !savedParamsError ? "Setup succeed" : "Setup failed");
                                     break;
@@ -104,25 +108,25 @@ public class MkGw4FilterBXPTagActivity extends MkGw4BaseActivity {
                         } else if (flag == 0x00) {
                             // read
                             switch (configKeyEnum) {
-                                case KEY_FILTER_BXP_TAG_ENABLE:
+                                case KEY_FILTER_MK_SENSOR_ENABLE:
                                     if (length > 0) {
                                         int enable = value[4] & 0xFF;
                                         mBind.cbEnable.setChecked(enable == 1);
                                     }
                                     break;
-                                case KEY_FILTER_BXP_TAG_PRECISE:
+                                case KEY_FILTER_MK_SENSOR_PRECISE:
                                     if (length > 0) {
                                         int enable = value[4] & 0xFF;
                                         mBind.cbPreciseMatch.setChecked(enable == 1);
                                     }
                                     break;
-                                case KEY_FILTER_BXP_TAG_REVERSE:
+                                case KEY_FILTER_MK_SENSOR_REVERSE:
                                     if (length > 0) {
                                         int enable = value[4] & 0xFF;
                                         mBind.cbReverseFilter.setChecked(enable == 1);
                                     }
                                     break;
-                                case KEY_FILTER_BXP_TAG_RULES:
+                                case KEY_FILTER_MK_SENSOR_RULES:
                                     if (length > 0) {
                                         filterTagId.clear();
                                         byte[] tagIdBytes = Arrays.copyOfRange(value, 4, 4 + length);
@@ -134,7 +138,7 @@ public class MkGw4FilterBXPTagActivity extends MkGw4BaseActivity {
                                         }
                                         for (int i = 0, l = filterTagId.size(); i < l; i++) {
                                             String macAddress = filterTagId.get(i);
-                                            View v = LayoutInflater.from(MkGw4FilterBXPTagActivity.this).inflate(R.layout.item_tag_id_filter_mkgw4, mBind.llTagId, false);
+                                            View v = LayoutInflater.from(this).inflate(R.layout.item_tag_id_filter_mkgw4, mBind.llTagId, false);
                                             TextView title = v.findViewById(R.id.tv_tag_id_title);
                                             EditText etMacAddress = v.findViewById(R.id.et_tag_id);
                                             title.setText(String.format(Locale.getDefault(), "ID %d", i + 1));
@@ -190,11 +194,11 @@ public class MkGw4FilterBXPTagActivity extends MkGw4BaseActivity {
 
     private void saveParams() {
         savedParamsError = false;
-        List<OrderTask> orderTasks = new ArrayList<>();
-        orderTasks.add(OrderTaskAssembler.setFilterBXPTagEnable(mBind.cbEnable.isChecked() ? 1 : 0));
-        orderTasks.add(OrderTaskAssembler.setFilterBXPTagPrecise(mBind.cbPreciseMatch.isChecked() ? 1 : 0));
-        orderTasks.add(OrderTaskAssembler.setFilterBXPTagReverse(mBind.cbReverseFilter.isChecked() ? 1 : 0));
-        orderTasks.add(OrderTaskAssembler.setFilterBXPTagRules(filterTagId));
+        List<OrderTask> orderTasks = new ArrayList<>(4);
+        orderTasks.add(OrderTaskAssembler.setFilterMkSensorEnable(mBind.cbEnable.isChecked() ? 1 : 0));
+        orderTasks.add(OrderTaskAssembler.setFilterMkSensorPrecise(mBind.cbPreciseMatch.isChecked() ? 1 : 0));
+        orderTasks.add(OrderTaskAssembler.setFilterMkSensorReverse(mBind.cbReverseFilter.isChecked() ? 1 : 0));
+        orderTasks.add(OrderTaskAssembler.setFilterMkSensorRules(filterTagId));
         MokoSupport.getInstance().sendOrder(orderTasks.toArray(new OrderTask[]{}));
     }
 

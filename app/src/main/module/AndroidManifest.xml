@@ -44,7 +44,7 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name="com.moko.mkgw4.activity.ScannerFilterSettingsActivity"
+            android:name="com.moko.mkgw4.activity.filter.ScannerFilterSettingsActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan" />
         <activity
@@ -202,6 +202,14 @@
         <activity
             android:name=".service.MkGw4NotificationActivity"
             android:screenOrientation="portrait" />
+
+        <activity android:name=".activity.filter.BxpSensorFilterActivity"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".activity.payload.BxpSensorPayloadActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".activity.setting.UpPayloadSettingsActivity"
+            android:screenOrientation="portrait"/>
 
         <service android:name="com.moko.mkgw4.service.MkGw4DfuService"
             android:foregroundServiceType="dataSync"/>

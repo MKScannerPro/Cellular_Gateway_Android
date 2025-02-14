@@ -1,5 +1,7 @@
 package com.moko.mkgw4.activity.filter;
 
+import static com.moko.mkgw4.AppConstants.TYPE_USB;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -13,6 +15,7 @@ import com.moko.ble.lib.event.OrderTaskResponseEvent;
 import com.moko.ble.lib.task.OrderTask;
 import com.moko.ble.lib.task.OrderTaskResponse;
 import com.moko.ble.lib.utils.MokoUtils;
+import com.moko.mkgw4.AppConstants;
 import com.moko.mkgw4.R;
 import com.moko.mkgw4.activity.MkGw4BaseActivity;
 import com.moko.mkgw4.databinding.ActivityFilterRawDataMkgw4Binding;
@@ -36,6 +39,9 @@ public class MkGw4FilterRawDataActivity extends MkGw4BaseActivity {
     private boolean isBXPDeviceOpen;
     private boolean isBXPAccOpen;
     private boolean isBXPTHOpen;
+    private int deviceType;
+    private final String ON = "ON";
+    private final String OFF = "OFF";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +49,11 @@ public class MkGw4FilterRawDataActivity extends MkGw4BaseActivity {
         mBind = ActivityFilterRawDataMkgw4Binding.inflate(getLayoutInflater());
         setContentView(mBind.getRoot());
         EventBus.getDefault().register(this);
+        deviceType = getIntent().getIntExtra(AppConstants.DEVICE_TYPE, 0);
+        if (deviceType == TYPE_USB) {
+            mBind.layoutBxpSensor.setVisibility(View.VISIBLE);
+            mBind.layoutBxpSensor.setOnClickListener(v -> startActivity(BxpSensorFilterActivity.class));
+        }
         showSyncingProgressDialog();
         MokoSupport.getInstance().sendOrder(OrderTaskAssembler.getFilterRawData());
     }
@@ -94,18 +105,21 @@ public class MkGw4FilterRawDataActivity extends MkGw4BaseActivity {
                             if (configKeyEnum == ParamsKeyEnum.KEY_FILTER_RAW_DATA) {
                                 if (length == 2) {
                                     int data = MokoUtils.toInt(Arrays.copyOfRange(value, 4, value.length));
-                                    mBind.tvFilterByIbeacon.setText((data & 0x01) == 1 ? "ON" : "OFF");
-                                    mBind.tvFilterByUid.setText((data >> 1 & 0x01) == 1 ? "ON" : "OFF");
-                                    mBind.tvFilterByUrl.setText((data >> 2 & 0x01) == 1 ? "ON" : "OFF");
-                                    mBind.tvFilterByTlm.setText((data >> 3 & 0x01) == 1 ? "ON" : "OFF");
+                                    mBind.tvFilterByIbeacon.setText((data & 0x01) == 1 ? ON : OFF);
+                                    mBind.tvFilterByUid.setText((data >> 1 & 0x01) == 1 ? ON : OFF);
+                                    mBind.tvFilterByUrl.setText((data >> 2 & 0x01) == 1 ? ON : OFF);
+                                    mBind.tvFilterByTlm.setText((data >> 3 & 0x01) == 1 ? ON : OFF);
                                     mBind.ivFilterByBxpDevice.setImageResource((data >> 4 & 0x01) == 1 ? R.drawable.ic_checked : R.drawable.ic_unchecked);
                                     mBind.ivFilterByBxpAcc.setImageResource((data >> 5 & 0x01) == 1 ? R.drawable.ic_checked : R.drawable.ic_unchecked);
                                     mBind.ivFilterByBxpTh.setImageResource((data >> 6 & 0x01) == 1 ? R.drawable.ic_checked : R.drawable.ic_unchecked);
-                                    mBind.tvFilterByBxpButton.setText((data >> 7 & 0x01) == 1 ? "ON" : "OFF");
-                                    mBind.tvFilterByBxpTag.setText((data >> 8 & 0x01) == 1 ? "ON" : "OFF");
-                                    mBind.tvFilterByPir.setText((data >> 9 & 0x01) == 1 ? "ON" : "OFF");
-                                    mBind.tvFilterByMkTof.setText((data >> 10 & 0x01) == 1 ? "ON" : "OFF");
-                                    mBind.tvFilterByOther.setText((data >> 11 & 0x01) == 1 ? "ON" : "OFF");
+                                    mBind.tvFilterByBxpButton.setText((data >> 7 & 0x01) == 1 ? ON : OFF);
+                                    mBind.tvFilterByBxpTag.setText((data >> 8 & 0x01) == 1 ? ON : OFF);
+                                    mBind.tvFilterByPir.setText((data >> 9 & 0x01) == 1 ? ON : OFF);
+                                    mBind.tvFilterByMkTof.setText((data >> 10 & 0x01) == 1 ? ON : OFF);
+                                    mBind.tvFilterByOther.setText((data >> 11 & 0x01) == 1 ? ON : OFF);
+                                    if (deviceType == TYPE_USB) {
+                                        mBind.tvFilterByBxpSensor.setText((data >> 12 & 0x01) == 1 ? ON : OFF);
+                                    }
                                     isBXPDeviceOpen = (data >> 4 & 0x01) == 1;
                                     isBXPAccOpen = (data >> 5 & 0x01) == 1;
                                     isBXPTHOpen = (data >> 6 & 0x01) == 1;
@@ -195,7 +209,7 @@ public class MkGw4FilterRawDataActivity extends MkGw4BaseActivity {
         startActivity(MkGw4FilterMkPirActivity.class);
     }
 
-    public void onFilterByMkTof(View view){
+    public void onFilterByMkTof(View view) {
         startActivity(MkGw4FilterMkTofActivity.class);
     }
 

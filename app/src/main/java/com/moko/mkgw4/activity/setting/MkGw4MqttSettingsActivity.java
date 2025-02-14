@@ -272,6 +272,17 @@ public class MkGw4MqttSettingsActivity extends MkGw4BaseActivity implements Radi
     }
 
     public void onBack(View view) {
+        back();
+    }
+
+    @Override
+    public void onBackPressed() {
+        back();
+    }
+
+    private void back() {
+        EventBus.getDefault().unregister(this);
+        setResult(RESULT_OK);
         finish();
     }
 
@@ -336,7 +347,8 @@ public class MkGw4MqttSettingsActivity extends MkGw4BaseActivity implements Radi
             // 注销广播
             unregisterReceiver(mReceiver);
         }
-        EventBus.getDefault().unregister(this);
+        if (EventBus.getDefault().isRegistered(this))
+            EventBus.getDefault().unregister(this);
         if (null != thread) thread.shutdown();
     }
 

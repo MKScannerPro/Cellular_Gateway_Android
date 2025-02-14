@@ -77,6 +77,12 @@ public class OrderTaskAssembler {
         return task;
     }
 
+    public static OrderTask getPowerOnMethod(){
+        ParamsTask task = new ParamsTask();
+        task.setData(ParamsKeyEnum.KEY_POWER_ON_METHOD);
+        return task;
+    }
+
     public static OrderTask getLowPowerNotifyEnable() {
         ParamsTask task = new ParamsTask();
         task.setData(ParamsKeyEnum.KEY_LOW_POWER_NOTIFY_ENABLE);
@@ -528,6 +534,30 @@ public class OrderTaskAssembler {
         return task;
     }
 
+    public static OrderTask getFilterMkSensorEnable() {
+        ParamsTask task = new ParamsTask();
+        task.setData(ParamsKeyEnum.KEY_FILTER_MK_SENSOR_ENABLE);
+        return task;
+    }
+
+    public static OrderTask getFilterMkSensorPrecise() {
+        ParamsTask task = new ParamsTask();
+        task.setData(ParamsKeyEnum.KEY_FILTER_MK_SENSOR_PRECISE);
+        return task;
+    }
+
+    public static OrderTask getFilterMkSensorReverse() {
+        ParamsTask task = new ParamsTask();
+        task.setData(ParamsKeyEnum.KEY_FILTER_MK_SENSOR_REVERSE);
+        return task;
+    }
+
+    public static OrderTask getFilterMkSensorRules() {
+        ParamsTask task = new ParamsTask();
+        task.setData(ParamsKeyEnum.KEY_FILTER_MK_SENSOR_RULES);
+        return task;
+    }
+
     public static OrderTask getIBeaconPayload() {
         ParamsTask task = new ParamsTask();
         task.setData(ParamsKeyEnum.KEY_IBEACON_PAYLOAD);
@@ -606,6 +636,18 @@ public class OrderTaskAssembler {
         return task;
     }
 
+    public static OrderTask getScanPayloadParams() {
+        ParamsTask task = new ParamsTask();
+        task.setData(ParamsKeyEnum.KEY_SCAN_PAYLOAD_PARAMS);
+        return task;
+    }
+
+    public static OrderTask getMkSensorPayload() {
+        ParamsTask task = new ParamsTask();
+        task.setData(ParamsKeyEnum.KEY_MK_SENSOR_PAYLOAD);
+        return task;
+    }
+
     public static OrderTask getFilterOtherRelationship() {
         ParamsTask task = new ParamsTask();
         task.setData(ParamsKeyEnum.KEY_FILTER_OTHER_RELATIONSHIP);
@@ -627,6 +669,12 @@ public class OrderTaskAssembler {
     public static OrderTask getGPSPDOP() {
         ParamsTask task = new ParamsTask();
         task.setData(ParamsKeyEnum.KEY_GPS_PDOP);
+        return task;
+    }
+
+    public static OrderTask getGPSPayloadSettings(){
+        ParamsTask task = new ParamsTask();
+        task.setData(ParamsKeyEnum.KEY_GPS_PAYLOAD_SETTINGS);
         return task;
     }
 
@@ -654,9 +702,21 @@ public class OrderTaskAssembler {
         return task;
     }
 
-    public static OrderTask getDeviceType(){
+    public static OrderTask getDeviceType() {
         ParamsTask task = new ParamsTask();
         task.setData(ParamsKeyEnum.KEY_DEVICE_MODE);
+        return task;
+    }
+
+    public static OrderTask getBufferDataCount(){
+        ParamsTask task = new ParamsTask();
+        task.setData(ParamsKeyEnum.KEY_BUFFER_DATA_COUNT);
+        return task;
+    }
+
+    public static OrderTask getCellularVersion(){
+        ParamsTask task = new ParamsTask();
+        task.setData(ParamsKeyEnum.KEY_CELLULAR_VERSION);
         return task;
     }
 
@@ -747,6 +807,18 @@ public class OrderTaskAssembler {
     public static OrderTask getNetworkConnectTimeout() {
         ParamsTask task = new ParamsTask();
         task.setData(ParamsKeyEnum.KEY_CONNECT_NETWORK_TIMEOUT);
+        return task;
+    }
+
+    public static OrderTask getPin() {
+        ParamsTask task = new ParamsTask();
+        task.setData(ParamsKeyEnum.KEY_PIN);
+        return task;
+    }
+
+    public static OrderTask getRegion() {
+        ParamsTask task = new ParamsTask();
+        task.setData(ParamsKeyEnum.KEY_REGION);
         return task;
     }
 
@@ -902,6 +974,18 @@ public class OrderTaskAssembler {
     public static OrderTask setNetworkConnectTimeout(@IntRange(from = 30, to = 600) int timeout) {
         ParamsTask task = new ParamsTask();
         task.setNetworkConnectTimeout(timeout);
+        return task;
+    }
+
+    public static OrderTask setPin(@Nullable String pin) {
+        ParamsTask task = new ParamsTask();
+        task.setPin(pin);
+        return task;
+    }
+
+    public static OrderTask setRegion(int region) {
+        ParamsTask task = new ParamsTask();
+        task.setRegion(region);
         return task;
     }
 
@@ -1441,6 +1525,30 @@ public class OrderTaskAssembler {
         return task;
     }
 
+    public static OrderTask setFilterMkSensorEnable(@IntRange(from = 0, to = 1) int enable) {
+        ParamsTask task = new ParamsTask();
+        task.setFilterMkSensorEnable(enable);
+        return task;
+    }
+
+    public static OrderTask setFilterMkSensorPrecise(@IntRange(from = 0, to = 1) int enable) {
+        ParamsTask task = new ParamsTask();
+        task.setFilterMkSensorPrecise(enable);
+        return task;
+    }
+
+    public static OrderTask setFilterMkSensorReverse(@IntRange(from = 0, to = 1) int enable) {
+        ParamsTask task = new ParamsTask();
+        task.setFilterMkSensorReverse(enable);
+        return task;
+    }
+
+    public static OrderTask setFilterMkSensorRules(List<String> filterRules) {
+        ParamsTask task = new ParamsTask();
+        task.setFilterMkSensorRules(filterRules);
+        return task;
+    }
+
     public static OrderTask setIBeaconPayload(int payload) {
         ParamsTask task = new ParamsTask();
         task.setIBeaconPayload(payload);
@@ -1519,6 +1627,18 @@ public class OrderTaskAssembler {
         return task;
     }
 
+    public static OrderTask setScanPayloadParams(int params) {
+        ParamsTask task = new ParamsTask();
+        task.setScanPayloadParams(params);
+        return task;
+    }
+
+    public static OrderTask setMkSensorPayload(int payload) {
+        ParamsTask task = new ParamsTask();
+        task.setMkSensorPayload(payload);
+        return task;
+    }
+
     public static OrderTask setFilterNameRules(ArrayList<String> filterOtherRules) {
         ParamsTask task = new ParamsTask();
         task.setFilterNameRules(filterOtherRules);
@@ -1535,6 +1655,12 @@ public class OrderTaskAssembler {
     public static OrderTask setGPSPDOP(@IntRange(from = 25, to = 100) int limit) {
         ParamsTask task = new ParamsTask();
         task.setGPSPDOP(limit);
+        return task;
+    }
+
+    public static OrderTask setGPSPayloadSettings(int payloadSettings) {
+        ParamsTask task = new ParamsTask();
+        task.setGPSPayloadSettings(payloadSettings);
         return task;
     }
 
@@ -1555,6 +1681,12 @@ public class OrderTaskAssembler {
     public static OrderTask setAutoPowerOn(@IntRange(from = 0, to = 1) int enable) {
         ParamsTask task = new ParamsTask();
         task.setAutoPowerOn(enable);
+        return task;
+    }
+
+    public static OrderTask setPowerOnMethod(@IntRange(from = 0, to = 1) int method) {
+        ParamsTask task = new ParamsTask();
+        task.setPowerOnMethod(method);
         return task;
     }
 }

@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical">
 
     <RelativeLayout
@@ -36,12 +37,12 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/white_ffffff"
             android:orientation="vertical">
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
+                android:background="@color/white_ffffff"
                 android:onClick="onFilterByIBeacon">
 
                 <TextView
@@ -70,11 +71,11 @@
                     android:textSize="15sp" />
             </RelativeLayout>
 
-            <View style="@style/divider_line" />
-
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
+                android:background="@color/white_ffffff"
+                android:layout_marginTop="1dp"
                 android:onClick="onFilterByUid">
 
                 <TextView
@@ -103,11 +104,11 @@
                     android:textSize="15sp" />
             </RelativeLayout>
 
-            <View style="@style/divider_line" />
-
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
+                android:background="@color/white_ffffff"
+                android:layout_marginTop="1dp"
                 android:onClick="onFilterByUrl">
 
                 <TextView
@@ -136,11 +137,11 @@
                     android:textSize="15sp" />
             </RelativeLayout>
 
-            <View style="@style/divider_line" />
-
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
+                android:background="@color/white_ffffff"
+                android:layout_marginTop="1dp"
                 android:onClick="onFilterByTlm">
 
                 <TextView
@@ -169,11 +170,11 @@
                     android:textSize="15sp" />
             </RelativeLayout>
 
-            <View style="@style/divider_line" />
-
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
+                android:background="@color/white_ffffff"
+                android:layout_marginTop="1dp"
                 android:onClick="onFilterByBXPDevice">
 
                 <TextView
@@ -197,11 +198,11 @@
                     android:src="@drawable/ic_unchecked" />
             </RelativeLayout>
 
-            <View style="@style/divider_line" />
-
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
+                android:background="@color/white_ffffff"
+                android:layout_marginTop="1dp"
                 android:onClick="onFilterByBXPAcc">
 
                 <TextView
@@ -225,11 +226,11 @@
                     android:src="@drawable/ic_unchecked" />
             </RelativeLayout>
 
-            <View style="@style/divider_line" />
-
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
+                android:background="@color/white_ffffff"
+                android:layout_marginTop="1dp"
                 android:onClick="onFilterByBXPTH">
 
                 <TextView
@@ -253,11 +254,11 @@
                     android:src="@drawable/ic_unchecked" />
             </RelativeLayout>
 
-            <View style="@style/divider_line" />
-
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
+                android:background="@color/white_ffffff"
+                android:layout_marginTop="1dp"
                 android:onClick="onFilterByBXPButton">
 
                 <TextView
@@ -286,11 +287,11 @@
                     android:textSize="15sp" />
             </RelativeLayout>
 
-            <View style="@style/divider_line" />
-
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
+                android:background="@color/white_ffffff"
+                android:layout_marginTop="1dp"
                 android:onClick="onFilterByBXPTag">
 
                 <TextView
@@ -319,11 +320,46 @@
                     android:textSize="15sp" />
             </RelativeLayout>
 
-            <View style="@style/divider_line" />
+            <RelativeLayout
+                android:id="@+id/layoutBxpSensor"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:visibility="gone"
+                tools:visibility="visible"
+                android:background="@color/white_ffffff"
+                android:layout_marginTop="1dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginRight="12dp"
+                    android:text="BXP - Sensor"
+                    android:textColor="@color/black_333333"
+                    android:textSize="15sp" />
+
+                <TextView
+                    android:id="@+id/tv_filter_by_bxp_sensor"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginRight="12dp"
+                    android:drawableEnd="@drawable/ic_arrow_right"
+                    android:drawablePadding="10dp"
+                    android:gravity="center_vertical"
+                    android:text="ON"
+                    android:textColor="@color/black_333333"
+                    android:textSize="15sp" />
+            </RelativeLayout>
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
+                android:background="@color/white_ffffff"
+                android:layout_marginTop="1dp"
                 android:onClick="onFilterByPir">
 
                 <TextView
@@ -352,11 +388,11 @@
                     android:textSize="15sp" />
             </RelativeLayout>
 
-            <View style="@style/divider_line" />
-
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
+                android:background="@color/white_ffffff"
+                android:layout_marginTop="1dp"
                 android:onClick="onFilterByMkTof">
 
                 <TextView
@@ -385,11 +421,11 @@
                     android:textSize="15sp" />
             </RelativeLayout>
 
-            <View style="@style/divider_line" />
-
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
+                android:background="@color/white_ffffff"
+                android:layout_marginTop="1dp"
                 android:onClick="onFilterByOther">
 
                 <TextView

@@ -44,13 +44,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white_ffffff"
-        android:padding="12dp">
+        android:paddingEnd="12dp"
+        android:paddingBottom="10dp">
 
         <TextView
             android:id="@+id/tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
+            android:paddingStart="12dp"
             android:text="Network priority"
             android:textColor="@color/black_333333"
             android:textSize="15sp"
@@ -65,6 +67,7 @@
             android:layout_marginLeft="20dp"
             android:background="@drawable/shape_radius_blue_btn_bg"
             android:gravity="center"
+            android:layout_marginTop="10dp"
             android:textColor="@color/white_ffffff"
             android:textSize="15sp"
             app:layout_constraintLeft_toRightOf="@+id/tv"
@@ -82,6 +85,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
+            android:paddingStart="12dp"
             android:text="APN"
             android:textColor="@color/black_333333"
             android:textSize="15sp"
@@ -92,8 +96,8 @@
         <EditText
             android:id="@+id/etApn"
             android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:layout_marginTop="15dp"
+            android:layout_height="45dp"
+            android:layout_marginTop="10dp"
             android:background="@drawable/shape_radius_edit_bg"
             android:hint="0-100 Characters"
             android:maxLength="100"
@@ -111,6 +115,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
+            android:paddingStart="12dp"
             android:text="Username"
             android:textColor="@color/black_333333"
             android:textSize="15sp"
@@ -121,9 +126,9 @@
         <EditText
             android:id="@+id/etUsername"
             android:layout_width="0dp"
-            android:layout_height="50dp"
+            android:layout_height="45dp"
             android:layout_marginLeft="20dp"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="10dp"
             android:background="@drawable/shape_radius_edit_bg"
             android:hint="0-100 Characters"
             android:maxLength="100"
@@ -140,6 +145,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
+            android:paddingStart="12dp"
             android:text="Password"
             android:textColor="@color/black_333333"
             android:textSize="15sp"
@@ -150,8 +156,8 @@
         <EditText
             android:id="@+id/etPwd"
             android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:layout_marginTop="15dp"
+            android:layout_height="45dp"
+            android:layout_marginTop="10dp"
             android:background="@drawable/shape_radius_edit_bg"
             android:hint="0-100 Characters"
             android:maxLength="100"
@@ -164,11 +170,42 @@
             app:layout_constraintRight_toRightOf="@id/etUsername"
             app:layout_constraintTop_toBottomOf="@id/etUsername" />
 
+        <EditText
+            android:id="@+id/etPin"
+            android:layout_width="0dp"
+            android:layout_height="45dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/shape_radius_edit_bg"
+            android:hint="0 or 4-8 Characters"
+            android:maxLength="8"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:singleLine="true"
+            android:textColor="@color/black_333333"
+            android:textSize="15sp"
+            app:layout_constraintLeft_toLeftOf="@id/etPwd"
+            app:layout_constraintRight_toRightOf="@id/etPwd"
+            app:layout_constraintTop_toBottomOf="@id/etPwd" />
+
+        <TextView
+            android:id="@+id/tvPin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:paddingStart="12dp"
+            android:text="Pin"
+            android:textColor="@color/black_333333"
+            android:textSize="15sp"
+            app:layout_constraintBottom_toBottomOf="@id/etPin"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="@id/etPin" />
+
         <TextView
             android:id="@+id/tvConnectTimeout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
+            android:paddingStart="12dp"
             android:text="Connect timeout"
             android:textColor="@color/black_333333"
             android:textSize="15sp"
@@ -179,9 +216,9 @@
         <EditText
             android:id="@+id/etConnectTimeout"
             android:layout_width="0dp"
-            android:layout_height="50dp"
+            android:layout_height="45dp"
             android:layout_marginStart="20dp"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="10dp"
             android:layout_marginEnd="20dp"
             android:background="@drawable/shape_radius_edit_bg"
             android:hint="30-600"
@@ -193,7 +230,7 @@
             android:textSize="15sp"
             app:layout_constraintLeft_toRightOf="@+id/tvConnectTimeout"
             app:layout_constraintRight_toLeftOf="@+id/tvUnit"
-            app:layout_constraintTop_toBottomOf="@id/etPwd" />
+            app:layout_constraintTop_toBottomOf="@id/etPin" />
 
         <TextView
             android:id="@+id/tvUnit"
@@ -206,5 +243,118 @@
             app:layout_constraintBottom_toBottomOf="@id/etConnectTimeout"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="@id/etConnectTimeout" />
+
+        <TextView
+            android:id="@+id/tvBand"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:paddingStart="12dp"
+            android:text="Regions &amp; Bands"
+            android:textColor="@color/black_333333"
+            android:textSize="15sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/etConnectTimeout" />
+
+        <CheckBox
+            android:id="@+id/checkUs"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:layout_marginTop="10dp"
+            android:text="US"
+            android:textColor="@color/black_333333"
+            android:textSize="15sp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvBand" />
+
+        <CheckBox
+            android:id="@+id/checkEurope"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:text="Europe"
+            android:textColor="@color/black_333333"
+            android:textSize="15sp"
+            app:layout_constraintBottom_toBottomOf="@+id/checkUs"
+            app:layout_constraintLeft_toRightOf="@+id/checkUs"
+            app:layout_constraintRight_toLeftOf="@+id/checkKorea"
+            app:layout_constraintTop_toTopOf="@+id/checkUs" />
+
+        <CheckBox
+            android:id="@+id/checkKorea"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:text="Korea"
+            android:textColor="@color/black_333333"
+            android:textSize="15sp"
+            app:layout_constraintBottom_toBottomOf="@+id/checkUs"
+            app:layout_constraintLeft_toRightOf="@+id/checkEurope"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/checkUs" />
+
+        <CheckBox
+            android:id="@+id/checkAustralia"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Australia"
+            android:textColor="@color/black_333333"
+            android:textSize="15sp"
+            app:layout_constraintLeft_toLeftOf="@+id/checkUs"
+            app:layout_constraintTop_toBottomOf="@+id/checkUs" />
+
+        <CheckBox
+            android:id="@+id/checkMiddleEast"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="The Middle Est"
+            android:textColor="@color/black_333333"
+            android:textSize="15sp"
+            app:layout_constraintBottom_toBottomOf="@+id/checkAustralia"
+            app:layout_constraintLeft_toLeftOf="@+id/checkEurope"
+            app:layout_constraintTop_toTopOf="@+id/checkAustralia" />
+
+        <CheckBox
+            android:id="@+id/checkJapan"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Japan"
+            android:textColor="@color/black_333333"
+            android:textSize="15sp"
+            app:layout_constraintBottom_toBottomOf="@+id/checkAustralia"
+            app:layout_constraintLeft_toLeftOf="@+id/checkKorea"
+            app:layout_constraintTop_toTopOf="@+id/checkAustralia" />
+
+        <CheckBox
+            android:id="@+id/checkChina"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="China"
+            android:textColor="@color/black_333333"
+            android:textSize="15sp"
+            app:layout_constraintLeft_toLeftOf="@+id/checkUs"
+            app:layout_constraintTop_toBottomOf="@+id/checkAustralia" />
+
+        <CheckBox
+            android:id="@+id/checkAll"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="All of them"
+            android:textColor="@color/black_333333"
+            android:textSize="15sp"
+            app:layout_constraintBottom_toBottomOf="@+id/checkChina"
+            app:layout_constraintLeft_toLeftOf="@+id/checkEurope"
+            app:layout_constraintTop_toTopOf="@+id/checkChina" />
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/groupBand"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:constraint_referenced_ids="tvBand,checkUs,checkEurope,checkKorea,checkAustralia,checkMiddleEast,checkJapan,checkChina,checkAll,tvPin,etPin"
+            tools:visibility="visible" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </LinearLayout>

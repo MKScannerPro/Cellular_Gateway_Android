@@ -1,5 +1,7 @@
 package com.moko.mkgw4.activity.setting;
 
+import static com.moko.mkgw4.AppConstants.TYPE_USB;
+
 import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.content.BroadcastReceiver;
@@ -54,6 +56,7 @@ public class MkGw4SystemInfoActivity extends MkGw4BaseActivity {
     private boolean mReceiverTag = false;
     private String mDeviceMac;
     private String mDeviceName;
+    private int cellularType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,8 +69,13 @@ public class MkGw4SystemInfoActivity extends MkGw4BaseActivity {
         filter.addAction(BluetoothAdapter.ACTION_STATE_CHANGED);
         registerReceiver(mReceiver, filter);
         mReceiverTag = true;
+        int deviceType = getIntent().getIntExtra(AppConstants.DEVICE_TYPE, 0);
+        cellularType = getIntent().getIntExtra("cellularType", 0);
+        if (deviceType == TYPE_USB) {
+            mBind.layoutLteFirmware.setVisibility(View.VISIBLE);
+        }
         showSyncingProgressDialog();
-        List<OrderTask> orderTasks = new ArrayList<>();
+        List<OrderTask> orderTasks = new ArrayList<>(10);
         orderTasks.add(OrderTaskAssembler.getAdvName());
         orderTasks.add(OrderTaskAssembler.getDeviceModel());
         orderTasks.add(OrderTaskAssembler.getManufacturer());
@@ -77,7 +85,9 @@ public class MkGw4SystemInfoActivity extends MkGw4BaseActivity {
         orderTasks.add(OrderTaskAssembler.getMacAddress());
         orderTasks.add(OrderTaskAssembler.getIMEI());
         orderTasks.add(OrderTaskAssembler.getIccId());
-
+        if (deviceType == TYPE_USB) {
+            orderTasks.add(OrderTaskAssembler.getCellularVersion());
+        }
         MokoSupport.getInstance().sendOrder(orderTasks.toArray(new OrderTask[]{}));
         DfuServiceListenerHelper.registerProgressListener(this, mDfuProgressListener);
     }
@@ -108,7 +118,7 @@ public class MkGw4SystemInfoActivity extends MkGw4BaseActivity {
                 switch (orderCHAR) {
                     case CHAR_MODEL_NUMBER:
                         String productModel = new String(value);
-                        mBind.tvProdutMode.setText(productModel);
+                        mBind.tvProdutMode.setText(productModel + getCellularFormat());
                         break;
                     case CHAR_SOFTWARE_REVISION:
                         String softwareVersion = new String(value);
@@ -136,39 +146,36 @@ public class MkGw4SystemInfoActivity extends MkGw4BaseActivity {
                             int length = value[3] & 0xFF;
                             if (flag == 0x00) {
                                 // read
+                                if (length == 0) return;
                                 switch (configKeyEnum) {
                                     case KEY_ADV_NAME:
-                                        if (length > 0) {
-                                            byte[] rawDataBytes = Arrays.copyOfRange(value, 4, 4 + length);
-                                            mDeviceName = new String(rawDataBytes);
-                                            mBind.tvDeviceName.setText(mDeviceName);
-                                        }
+                                        byte[] rawDataBytes = Arrays.copyOfRange(value, 4, 4 + length);
+                                        mDeviceName = new String(rawDataBytes);
+                                        mBind.tvDeviceName.setText(mDeviceName);
                                         break;
                                     case KEY_CHIP_MAC:
-                                        if (length > 0) {
-                                            byte[] macBytes = Arrays.copyOfRange(value, 4, 4 + length);
-                                            String mac = MokoUtils.bytesToHexString(macBytes);
-                                            StringBuilder builder = new StringBuilder(mac);
-                                            builder.insert(2, ":");
-                                            builder.insert(5, ":");
-                                            builder.insert(8, ":");
-                                            builder.insert(11, ":");
-                                            builder.insert(14, ":");
-                                            mDeviceMac = builder.toString().toUpperCase();
-                                            mBind.tvMac.setText(mDeviceMac);
-                                        }
+                                        byte[] macBytes = Arrays.copyOfRange(value, 4, 4 + length);
+                                        String mac = MokoUtils.bytesToHexString(macBytes);
+                                        StringBuilder builder = new StringBuilder(mac);
+                                        builder.insert(2, ":");
+                                        builder.insert(5, ":");
+                                        builder.insert(8, ":");
+                                        builder.insert(11, ":");
+                                        builder.insert(14, ":");
+                                        mDeviceMac = builder.toString().toUpperCase();
+                                        mBind.tvMac.setText(mDeviceMac);
                                         break;
 
                                     case KEY_IMEI:
-                                        if (length > 0) {
-                                            mBind.tvImei.setText(new String(Arrays.copyOfRange(value, 4, value.length)).toUpperCase());
-                                        }
+                                        mBind.tvImei.setText(new String(Arrays.copyOfRange(value, 4, value.length)).toUpperCase());
                                         break;
 
                                     case KEY_ICC_ID:
-                                        if (length > 0) {
-                                            mBind.tvIccId.setText(new String(Arrays.copyOfRange(value, 4, value.length)).toUpperCase());
-                                        }
+                                        mBind.tvIccId.setText(new String(Arrays.copyOfRange(value, 4, value.length)).toUpperCase());
+                                        break;
+
+                                    case KEY_CELLULAR_VERSION:
+                                        mBind.tvLteFirmware.setText(new String(Arrays.copyOfRange(value, 4, value.length)));
                                         break;
                                 }
                             }
@@ -177,6 +184,14 @@ public class MkGw4SystemInfoActivity extends MkGw4BaseActivity {
                 }
             }
         });
+    }
+
+    private String getCellularFormat() {
+        if (cellularType == 0) return "-40G-GL";
+        if (cellularType == 1) return "-40E-NA";
+        if (cellularType == 2) return "-40E-EU";
+        if (cellularType == 3) return "-40E-LA";
+        return "";
     }
 
     private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
