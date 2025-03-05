@@ -177,7 +177,7 @@ public class MkGw4NetworkSettingsActivity extends MkGw4BaseActivity implements C
                                     mBind.etConnectTimeout.setSelection(mBind.etConnectTimeout.getText().length());
                                     break;
                                 case KEY_PIN:
-                                    mBind.etPin.setText(String.valueOf(MokoUtils.toInt(Arrays.copyOfRange(value, 4, value.length))));
+                                    mBind.etPin.setText(new String(Arrays.copyOfRange(value, 4, value.length)));
                                     mBind.etPin.setSelection(mBind.etPin.getText().length());
                                     break;
                                 case KEY_REGION:
