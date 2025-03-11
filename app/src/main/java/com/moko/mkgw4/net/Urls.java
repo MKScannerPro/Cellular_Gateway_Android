@@ -13,7 +13,7 @@ public class Urls {
     /**
      * 测试环境
      */
-    private static final String HOST_URL_TEST = "https://test.mokocloud.com/prod-api/";
+    private static final String HOST_URL_TEST = "http://test.mokocloud.com/prod-api/";
     /**
      * 正式环境
      */
