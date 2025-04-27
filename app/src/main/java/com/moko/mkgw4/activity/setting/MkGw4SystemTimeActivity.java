@@ -9,9 +9,9 @@ import com.moko.ble.lib.MokoConstants;
 import com.moko.ble.lib.event.ConnectStatusEvent;
 import com.moko.ble.lib.event.OrderTaskResponseEvent;
 import com.moko.ble.lib.task.OrderTaskResponse;
-import com.moko.mkgw4.activity.MkGw4BaseActivity;
+import com.moko.mkgw4.activity.BaseActivity;
 import com.moko.mkgw4.databinding.ActivitySystemTimeMkgw4Binding;
-import com.moko.mkgw4.dialog.MkGw4BottomDialog;
+import com.moko.mkgw4.dialog.BottomDialog;
 import com.moko.mkgw4.utils.ToastUtils;
 import com.moko.support.mkgw4.MokoSupport;
 import com.moko.support.mkgw4.OrderTaskAssembler;
@@ -25,7 +25,7 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MkGw4SystemTimeActivity extends MkGw4BaseActivity {
+public class MkGw4SystemTimeActivity extends BaseActivity {
     private ActivitySystemTimeMkgw4Binding mBind;
     private final List<String> mTimeZones = new ArrayList<>();
     private int mSelectedTimeZone;
@@ -42,7 +42,7 @@ public class MkGw4SystemTimeActivity extends MkGw4BaseActivity {
         mBind.tvTimezone.setOnClickListener(v -> showTimeZoneDialog());
         mBind.tvSync.setOnClickListener(v -> {
             if (isWindowLocked()) return;
-            startActivity(new Intent(this, MkGw4SyncTimeFromNtpActivity.class));
+            startActivity(new Intent(this, SyncTimeFromNtpActivity.class));
         });
     }
 
@@ -69,7 +69,7 @@ public class MkGw4SystemTimeActivity extends MkGw4BaseActivity {
     }
 
     public void showTimeZoneDialog() {
-        MkGw4BottomDialog dialog = new MkGw4BottomDialog();
+        BottomDialog dialog = new BottomDialog();
         dialog.setDatas((ArrayList<String>) mTimeZones, mSelectedTimeZone);
         dialog.setListener(value -> {
             mSelectedTimeZone = value;

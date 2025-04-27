@@ -7,16 +7,16 @@ import android.view.View;
 
 import com.moko.mkgw4.BuildConfig;
 import com.moko.mkgw4.R;
-import com.moko.mkgw4.databinding.ActivityAboutBinding;
+import com.moko.mkgw4.databinding.ActivityAboutMkgw4Binding;
 import com.moko.mkgw4.utils.Utils;
 
-public class AboutActivity extends MkGw4BaseActivity {
-    private ActivityAboutBinding mBind;
+public class AboutActivity extends BaseActivity {
+    private ActivityAboutMkgw4Binding mBind;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mBind = ActivityAboutBinding.inflate(getLayoutInflater());
+        mBind = ActivityAboutMkgw4Binding.inflate(getLayoutInflater());
         setContentView(mBind.getRoot());
         if (!BuildConfig.IS_LIBRARY) {
             mBind.appVersion.setText(String.format("APP Version:V%s", Utils.getVersionInfo(this)));

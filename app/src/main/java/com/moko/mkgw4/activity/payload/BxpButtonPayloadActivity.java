@@ -7,8 +7,8 @@ import com.moko.ble.lib.event.ConnectStatusEvent;
 import com.moko.ble.lib.event.OrderTaskResponseEvent;
 import com.moko.ble.lib.task.OrderTaskResponse;
 import com.moko.ble.lib.utils.MokoUtils;
-import com.moko.mkgw4.activity.MkGw4BaseActivity;
-import com.moko.mkgw4.databinding.ActivityBxpButtonPayloadBinding;
+import com.moko.mkgw4.activity.BaseActivity;
+import com.moko.mkgw4.databinding.ActivityBxpButtonPayloadMkgw4Binding;
 import com.moko.mkgw4.utils.ToastUtils;
 import com.moko.support.mkgw4.MokoSupport;
 import com.moko.support.mkgw4.OrderTaskAssembler;
@@ -26,13 +26,13 @@ import java.util.Arrays;
  * @date: 2023/12/1 9:58
  * @des:
  */
-public class BxpButtonPayloadActivity extends MkGw4BaseActivity {
-    private ActivityBxpButtonPayloadBinding mBind;
+public class BxpButtonPayloadActivity extends BaseActivity {
+    private ActivityBxpButtonPayloadMkgw4Binding mBind;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mBind = ActivityBxpButtonPayloadBinding.inflate(getLayoutInflater());
+        mBind = ActivityBxpButtonPayloadMkgw4Binding.inflate(getLayoutInflater());
         setContentView(mBind.getRoot());
 
         EventBus.getDefault().register(this);

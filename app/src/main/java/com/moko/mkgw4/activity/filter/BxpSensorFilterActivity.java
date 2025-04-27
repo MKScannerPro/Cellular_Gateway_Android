@@ -14,8 +14,8 @@ import com.moko.ble.lib.task.OrderTask;
 import com.moko.ble.lib.task.OrderTaskResponse;
 import com.moko.ble.lib.utils.MokoUtils;
 import com.moko.mkgw4.R;
-import com.moko.mkgw4.activity.MkGw4BaseActivity;
-import com.moko.mkgw4.databinding.ActivityBxpSensorFilterBinding;
+import com.moko.mkgw4.activity.BaseActivity;
+import com.moko.mkgw4.databinding.ActivityBxpSensorFilterMkgw4Binding;
 import com.moko.mkgw4.utils.ToastUtils;
 import com.moko.support.mkgw4.MokoSupport;
 import com.moko.support.mkgw4.OrderTaskAssembler;
@@ -36,15 +36,15 @@ import java.util.Locale;
  * @date: 2025/2/13 12:14
  * @des:
  */
-public class BxpSensorFilterActivity extends MkGw4BaseActivity{
-    private ActivityBxpSensorFilterBinding mBind;
+public class BxpSensorFilterActivity extends BaseActivity {
+    private ActivityBxpSensorFilterMkgw4Binding mBind;
     private boolean savedParamsError;
     private final List<String> filterTagId = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mBind = ActivityBxpSensorFilterBinding.inflate(getLayoutInflater());
+        mBind = ActivityBxpSensorFilterMkgw4Binding.inflate(getLayoutInflater());
         setContentView(mBind.getRoot());
         EventBus.getDefault().register(this);
         showSyncingProgressDialog();

@@ -9,7 +9,7 @@ import com.moko.mkgw4.entity.MokoDevice;
 public class SyncDeviceAdapter extends BaseQuickAdapter<MokoDevice, BaseViewHolder> {
 
     public SyncDeviceAdapter() {
-        super(R.layout.item_sync_device);
+        super(R.layout.item_sync_device_mkgw4);
     }
 
     @Override

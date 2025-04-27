@@ -18,8 +18,8 @@ import com.moko.ble.lib.task.OrderTask;
 import com.moko.ble.lib.task.OrderTaskResponse;
 import com.moko.ble.lib.utils.MokoUtils;
 import com.moko.mkgw4.AppConstants;
-import com.moko.mkgw4.activity.MkGw4BaseActivity;
-import com.moko.mkgw4.databinding.ActivityHeartReportSettingBinding;
+import com.moko.mkgw4.activity.BaseActivity;
+import com.moko.mkgw4.databinding.ActivityHeartReportSettingMkgw4Binding;
 import com.moko.mkgw4.utils.ToastUtils;
 import com.moko.support.mkgw4.MokoSupport;
 import com.moko.support.mkgw4.OrderTaskAssembler;
@@ -39,8 +39,8 @@ import java.util.List;
  * @date: 2023/12/4 17:36
  * @des:
  */
-public class HeartReportSettingActivity extends MkGw4BaseActivity {
-    private ActivityHeartReportSettingBinding mBind;
+public class HeartReportSettingActivity extends BaseActivity {
+    private ActivityHeartReportSettingMkgw4Binding mBind;
     private boolean mReceiverTag;
     private boolean saveParError;
     private int deviceType;
@@ -48,7 +48,7 @@ public class HeartReportSettingActivity extends MkGw4BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mBind = ActivityHeartReportSettingBinding.inflate(getLayoutInflater());
+        mBind = ActivityHeartReportSettingMkgw4Binding.inflate(getLayoutInflater());
         setContentView(mBind.getRoot());
         EventBus.getDefault().register(this);
         // 注册广播接收器

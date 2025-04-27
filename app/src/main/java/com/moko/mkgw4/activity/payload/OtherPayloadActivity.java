@@ -13,9 +13,9 @@ import com.moko.ble.lib.task.OrderTask;
 import com.moko.ble.lib.task.OrderTaskResponse;
 import com.moko.ble.lib.utils.MokoUtils;
 import com.moko.mkgw4.R;
-import com.moko.mkgw4.activity.MkGw4BaseActivity;
+import com.moko.mkgw4.activity.BaseActivity;
 import com.moko.mkgw4.adapter.OtherPayloadAdapter;
-import com.moko.mkgw4.databinding.ActivityOtherPayloadBinding;
+import com.moko.mkgw4.databinding.ActivityOtherPayloadMkgw4Binding;
 import com.moko.mkgw4.entity.OtherTypePayloadBean;
 import com.moko.mkgw4.utils.ToastUtils;
 import com.moko.support.mkgw4.MokoSupport;
@@ -36,8 +36,8 @@ import java.util.List;
  * @date: 2023/12/1 12:19
  * @des:
  */
-public class OtherPayloadActivity extends MkGw4BaseActivity implements BaseQuickAdapter.OnItemChildClickListener {
-    private ActivityOtherPayloadBinding mBind;
+public class OtherPayloadActivity extends BaseActivity implements BaseQuickAdapter.OnItemChildClickListener {
+    private ActivityOtherPayloadMkgw4Binding mBind;
     private boolean isParamsError;
     private final List<OtherTypePayloadBean> otherData = new ArrayList<>();
     private OtherPayloadAdapter adapter;
@@ -45,7 +45,7 @@ public class OtherPayloadActivity extends MkGw4BaseActivity implements BaseQuick
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mBind = ActivityOtherPayloadBinding.inflate(getLayoutInflater());
+        mBind = ActivityOtherPayloadMkgw4Binding.inflate(getLayoutInflater());
         setContentView(mBind.getRoot());
 
         EventBus.getDefault().register(this);

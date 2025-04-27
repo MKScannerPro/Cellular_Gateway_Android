@@ -6,8 +6,8 @@ import com.moko.ble.lib.MokoConstants;
 import com.moko.ble.lib.event.ConnectStatusEvent;
 import com.moko.ble.lib.event.OrderTaskResponseEvent;
 import com.moko.ble.lib.task.OrderTaskResponse;
-import com.moko.mkgw4.activity.MkGw4BaseActivity;
-import com.moko.mkgw4.databinding.ActivityIbeaconPayloadBinding;
+import com.moko.mkgw4.activity.BaseActivity;
+import com.moko.mkgw4.databinding.ActivityIbeaconPayloadMkgw4Binding;
 import com.moko.mkgw4.utils.ToastUtils;
 import com.moko.support.mkgw4.MokoSupport;
 import com.moko.support.mkgw4.OrderTaskAssembler;
@@ -23,13 +23,13 @@ import org.greenrobot.eventbus.ThreadMode;
  * @date: 2023/11/30 17:10
  * @des:
  */
-public class IBeaconPayloadActivity extends MkGw4BaseActivity {
-    private ActivityIbeaconPayloadBinding mBind;
+public class IBeaconPayloadActivity extends BaseActivity {
+    private ActivityIbeaconPayloadMkgw4Binding mBind;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mBind = ActivityIbeaconPayloadBinding.inflate(getLayoutInflater());
+        mBind = ActivityIbeaconPayloadMkgw4Binding.inflate(getLayoutInflater());
         setContentView(mBind.getRoot());
 
         EventBus.getDefault().register(this);

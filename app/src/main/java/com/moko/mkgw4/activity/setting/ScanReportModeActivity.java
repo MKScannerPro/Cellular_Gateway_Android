@@ -12,9 +12,9 @@ import com.moko.ble.lib.MokoConstants;
 import com.moko.ble.lib.event.ConnectStatusEvent;
 import com.moko.ble.lib.event.OrderTaskResponseEvent;
 import com.moko.ble.lib.task.OrderTaskResponse;
-import com.moko.mkgw4.activity.MkGw4BaseActivity;
-import com.moko.mkgw4.databinding.ActivityScanReportModeBinding;
-import com.moko.mkgw4.dialog.MkGw4BottomDialog;
+import com.moko.mkgw4.activity.BaseActivity;
+import com.moko.mkgw4.databinding.ActivityScanReportModeMkgw4Binding;
+import com.moko.mkgw4.dialog.BottomDialog;
 import com.moko.mkgw4.utils.ToastUtils;
 import com.moko.support.mkgw4.MokoSupport;
 import com.moko.support.mkgw4.OrderTaskAssembler;
@@ -28,8 +28,8 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class ScanReportModeActivity extends MkGw4BaseActivity {
-    private ActivityScanReportModeBinding mBind;
+public class ScanReportModeActivity extends BaseActivity {
+    private ActivityScanReportModeMkgw4Binding mBind;
     private boolean mReceiverTag;
     private final String[] mValues = {"turn off scan", "Real time scan& immediate report", "real time scan & periodic report",
             "periodic scan& immediate report", "periodic scan & periodic report"};
@@ -38,7 +38,7 @@ public class ScanReportModeActivity extends MkGw4BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mBind = ActivityScanReportModeBinding.inflate(getLayoutInflater());
+        mBind = ActivityScanReportModeMkgw4Binding.inflate(getLayoutInflater());
         setContentView(mBind.getRoot());
         EventBus.getDefault().register(this);
         // 注册广播接收器
@@ -157,7 +157,7 @@ public class ScanReportModeActivity extends MkGw4BaseActivity {
 
     private void selectDeviceMode() {
         if (isWindowLocked()) return;
-        MkGw4BottomDialog dialog = new MkGw4BottomDialog();
+        BottomDialog dialog = new BottomDialog();
         dialog.setDatas(new ArrayList<>(Arrays.asList(mValues)), mSelected);
         dialog.setListener(value -> {
             mSelected = value;

@@ -17,12 +17,9 @@ import com.moko.ble.lib.task.OrderTask;
 import com.moko.ble.lib.task.OrderTaskResponse;
 import com.moko.mkgw4.AppConstants;
 import com.moko.mkgw4.R;
-import com.moko.mkgw4.activity.MkGw4BaseActivity;
-import com.moko.mkgw4.activity.filter.MkGw4FilterAdvNameActivity;
-import com.moko.mkgw4.activity.filter.MkGw4FilterMacAddressActivity;
-import com.moko.mkgw4.activity.filter.MkGw4FilterRawDataActivity;
-import com.moko.mkgw4.databinding.ActivityScannerFilterSettingsBinding;
-import com.moko.mkgw4.dialog.MkGw4BottomDialog;
+import com.moko.mkgw4.activity.BaseActivity;
+import com.moko.mkgw4.databinding.ActivityScannerFilterSettingsMkgw4Binding;
+import com.moko.mkgw4.dialog.BottomDialog;
 import com.moko.mkgw4.utils.ToastUtils;
 import com.moko.support.mkgw4.MokoSupport;
 import com.moko.support.mkgw4.OrderTaskAssembler;
@@ -38,8 +35,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
-public class ScannerFilterSettingsActivity extends MkGw4BaseActivity implements SeekBar.OnSeekBarChangeListener {
-    private ActivityScannerFilterSettingsBinding mBind;
+public class ScannerFilterSettingsActivity extends BaseActivity implements SeekBar.OnSeekBarChangeListener {
+    private ActivityScannerFilterSettingsMkgw4Binding mBind;
     private boolean mReceiverTag = false;
     private boolean savedParamsError;
     private final String[] mRelationshipValues = {"Null", "Only MAC", "Only ADV Name", "Only Raw Data",
@@ -54,7 +51,7 @@ public class ScannerFilterSettingsActivity extends MkGw4BaseActivity implements 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mBind = ActivityScannerFilterSettingsBinding.inflate(getLayoutInflater());
+        mBind = ActivityScannerFilterSettingsMkgw4Binding.inflate(getLayoutInflater());
         setContentView(mBind.getRoot());
         EventBus.getDefault().register(this);
         String advName = getIntent().getStringExtra("advName");
@@ -219,7 +216,7 @@ public class ScannerFilterSettingsActivity extends MkGw4BaseActivity implements 
 
     public void onDuplicateFilter() {
         if (isWindowLocked()) return;
-        MkGw4BottomDialog dialog = new MkGw4BottomDialog();
+        BottomDialog dialog = new BottomDialog();
         dialog.setDatas(new ArrayList<>(Arrays.asList(duplicateDataValues)), duplicateDataSelected);
         dialog.setListener(value -> {
             duplicateDataSelected = value;
@@ -230,7 +227,7 @@ public class ScannerFilterSettingsActivity extends MkGw4BaseActivity implements 
 
     public void onFilterType() {
         if (isWindowLocked()) return;
-        MkGw4BottomDialog dialog = new MkGw4BottomDialog();
+        BottomDialog dialog = new BottomDialog();
         dialog.setDatas(new ArrayList<>(Arrays.asList(mFilterTypeValues)), mFilterTypeSelected);
         dialog.setListener(value -> {
             mFilterTypeSelected = value;
@@ -241,7 +238,7 @@ public class ScannerFilterSettingsActivity extends MkGw4BaseActivity implements 
 
     public void onFilterRelationship() {
         if (isWindowLocked()) return;
-        MkGw4BottomDialog dialog = new MkGw4BottomDialog();
+        BottomDialog dialog = new BottomDialog();
         dialog.setDatas(new ArrayList<>(Arrays.asList(mRelationshipValues)), mRelationshipSelected);
         dialog.setListener(value -> {
             mRelationshipSelected = value;
@@ -252,19 +249,19 @@ public class ScannerFilterSettingsActivity extends MkGw4BaseActivity implements 
 
     public void onFilterByMac(View view) {
         if (isWindowLocked()) return;
-        Intent intent = new Intent(this, MkGw4FilterMacAddressActivity.class);
+        Intent intent = new Intent(this, FilterMacAddressActivity.class);
         startActivity(intent);
     }
 
     public void onFilterByName(View view) {
         if (isWindowLocked()) return;
-        Intent intent = new Intent(this, MkGw4FilterAdvNameActivity.class);
+        Intent intent = new Intent(this, FilterAdvNameActivity.class);
         startActivity(intent);
     }
 
     public void onFilterByRawData(View view) {
         if (isWindowLocked()) return;
-        Intent intent = new Intent(this, MkGw4FilterRawDataActivity.class);
+        Intent intent = new Intent(this, FilterRawDataActivity.class);
         intent.putExtra(AppConstants.DEVICE_TYPE, deviceType);
         startActivity(intent);
     }

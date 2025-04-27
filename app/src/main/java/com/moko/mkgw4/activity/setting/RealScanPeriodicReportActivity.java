@@ -14,8 +14,8 @@ import com.moko.ble.lib.event.ConnectStatusEvent;
 import com.moko.ble.lib.event.OrderTaskResponseEvent;
 import com.moko.ble.lib.task.OrderTaskResponse;
 import com.moko.ble.lib.utils.MokoUtils;
-import com.moko.mkgw4.activity.MkGw4BaseActivity;
-import com.moko.mkgw4.databinding.ActivityRealScanPeriodicReportBinding;
+import com.moko.mkgw4.activity.BaseActivity;
+import com.moko.mkgw4.databinding.ActivityRealScanPeriodicReportMkgw4Binding;
 import com.moko.mkgw4.utils.ToastUtils;
 import com.moko.support.mkgw4.MokoSupport;
 import com.moko.support.mkgw4.OrderTaskAssembler;
@@ -28,14 +28,14 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.Arrays;
 
-public class RealScanPeriodicReportActivity extends MkGw4BaseActivity {
-    private ActivityRealScanPeriodicReportBinding mBind;
+public class RealScanPeriodicReportActivity extends BaseActivity {
+    private ActivityRealScanPeriodicReportMkgw4Binding mBind;
     private boolean mReceiverTag = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mBind = ActivityRealScanPeriodicReportBinding.inflate(getLayoutInflater());
+        mBind = ActivityRealScanPeriodicReportMkgw4Binding.inflate(getLayoutInflater());
         setContentView(mBind.getRoot());
         EventBus.getDefault().register(this);
         // 注册广播接收器

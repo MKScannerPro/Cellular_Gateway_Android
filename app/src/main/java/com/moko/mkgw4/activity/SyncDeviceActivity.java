@@ -5,6 +5,8 @@ import android.os.Handler;
 import android.os.Looper;
 import android.view.View;
 
+import androidx.recyclerview.widget.LinearLayoutManager;
+
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -15,7 +17,7 @@ import com.lzy.okgo.model.Response;
 import com.lzy.okgo.request.base.Request;
 import com.moko.mkgw4.R;
 import com.moko.mkgw4.adapter.SyncDeviceAdapter;
-import com.moko.mkgw4.databinding.ActivityDevicesBinding;
+import com.moko.mkgw4.databinding.ActivityDevicesMkgw4Binding;
 import com.moko.mkgw4.dialog.LogoutDialog;
 import com.moko.mkgw4.entity.MokoDevice;
 import com.moko.mkgw4.net.Urls;
@@ -27,12 +29,11 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-import androidx.recyclerview.widget.LinearLayoutManager;
 import okhttp3.RequestBody;
 
-public class SyncDeviceActivity extends MkGw4BaseActivity implements BaseQuickAdapter.OnItemClickListener {
+public class SyncDeviceActivity extends BaseActivity implements BaseQuickAdapter.OnItemClickListener {
 
-    private ActivityDevicesBinding mBind;
+    private ActivityDevicesMkgw4Binding mBind;
     private ArrayList<MokoDevice> devices;
     private SyncDeviceAdapter adapter;
     public Handler mHandler;
@@ -40,7 +41,7 @@ public class SyncDeviceActivity extends MkGw4BaseActivity implements BaseQuickAd
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mBind = ActivityDevicesBinding.inflate(getLayoutInflater());
+        mBind = ActivityDevicesMkgw4Binding.inflate(getLayoutInflater());
         setContentView(mBind.getRoot());
         MokoDevice mokoDevice = getIntent().getParcelableExtra("mokoDevice");
         devices = new ArrayList<>();
@@ -81,7 +82,7 @@ public class SyncDeviceActivity extends MkGw4BaseActivity implements BaseQuickAd
         RequestBody body = RequestBody.create(Urls.JSON, new Gson().toJson(syncDevices));
         OkGo.<String>post(Urls.syncGatewayApi(getApplicationContext()))
                 .upRequestBody(body)
-                .headers("Authorization", MkGw4DeviceInfoActivity.mAccessToken)
+                .headers("Authorization", DeviceInfoActivity.mAccessToken)
                 .execute(new StringCallback() {
 
                     @Override

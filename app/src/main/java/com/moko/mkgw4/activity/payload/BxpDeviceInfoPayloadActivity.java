@@ -7,8 +7,8 @@ import com.moko.ble.lib.event.ConnectStatusEvent;
 import com.moko.ble.lib.event.OrderTaskResponseEvent;
 import com.moko.ble.lib.task.OrderTaskResponse;
 import com.moko.ble.lib.utils.MokoUtils;
-import com.moko.mkgw4.activity.MkGw4BaseActivity;
-import com.moko.mkgw4.databinding.ActivityBxpDeviceInfoPayloadBinding;
+import com.moko.mkgw4.activity.BaseActivity;
+import com.moko.mkgw4.databinding.ActivityBxpDeviceInfoPayloadMkgw4Binding;
 import com.moko.mkgw4.utils.ToastUtils;
 import com.moko.support.mkgw4.MokoSupport;
 import com.moko.support.mkgw4.OrderTaskAssembler;
@@ -26,13 +26,13 @@ import java.util.Arrays;
  * @date: 2023/11/30 19:48
  * @des:
  */
-public class BxpDeviceInfoPayloadActivity extends MkGw4BaseActivity {
-    private ActivityBxpDeviceInfoPayloadBinding mBind;
+public class BxpDeviceInfoPayloadActivity extends BaseActivity {
+    private ActivityBxpDeviceInfoPayloadMkgw4Binding mBind;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mBind = ActivityBxpDeviceInfoPayloadBinding.inflate(getLayoutInflater());
+        mBind = ActivityBxpDeviceInfoPayloadMkgw4Binding.inflate(getLayoutInflater());
         setContentView(mBind.getRoot());
 
         EventBus.getDefault().register(this);

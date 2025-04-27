@@ -6,8 +6,8 @@ import com.moko.ble.lib.MokoConstants;
 import com.moko.ble.lib.event.ConnectStatusEvent;
 import com.moko.ble.lib.event.OrderTaskResponseEvent;
 import com.moko.ble.lib.task.OrderTaskResponse;
-import com.moko.mkgw4.activity.MkGw4BaseActivity;
-import com.moko.mkgw4.databinding.ActivityMkTofPayloadBinding;
+import com.moko.mkgw4.activity.BaseActivity;
+import com.moko.mkgw4.databinding.ActivityMkTofPayloadMkgw4Binding;
 import com.moko.mkgw4.utils.ToastUtils;
 import com.moko.support.mkgw4.MokoSupport;
 import com.moko.support.mkgw4.OrderTaskAssembler;
@@ -23,13 +23,13 @@ import org.greenrobot.eventbus.ThreadMode;
  * @date: 2023/12/1 11:33
  * @des:
  */
-public class MkTofPayloadActivity extends MkGw4BaseActivity {
-    private ActivityMkTofPayloadBinding mBind;
+public class MkTofPayloadActivity extends BaseActivity {
+    private ActivityMkTofPayloadMkgw4Binding mBind;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mBind = ActivityMkTofPayloadBinding.inflate(getLayoutInflater());
+        mBind = ActivityMkTofPayloadMkgw4Binding.inflate(getLayoutInflater());
         setContentView(mBind.getRoot());
 
         EventBus.getDefault().register(this);

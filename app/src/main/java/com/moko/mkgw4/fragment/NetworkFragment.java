@@ -1,7 +1,6 @@
 package com.moko.mkgw4.fragment;
 
 import static android.app.Activity.RESULT_OK;
-
 import static com.moko.mkgw4.AppConstants.TYPE_USB;
 
 import android.content.Intent;
@@ -17,20 +16,20 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.moko.mkgw4.AppConstants;
-import com.moko.mkgw4.activity.MkGw4DeviceInfoActivity;
-import com.moko.mkgw4.activity.setting.MkGw4MqttSettingsActivity;
-import com.moko.mkgw4.activity.setting.MkGw4NetworkSettingsActivity;
-import com.moko.mkgw4.databinding.FragmentNetworkBinding;
+import com.moko.mkgw4.activity.DeviceInfoActivity;
+import com.moko.mkgw4.activity.setting.MqttSettingsActivity;
+import com.moko.mkgw4.activity.setting.NetworkSettingsActivity;
+import com.moko.mkgw4.databinding.FragmentNetworkMkgw4Binding;
 import com.moko.support.mkgw4.MokoSupport;
 import com.moko.support.mkgw4.OrderTaskAssembler;
 
 public class NetworkFragment extends Fragment {
     private static final String TAG = NetworkFragment.class.getSimpleName();
-    private FragmentNetworkBinding mBind;
+    private FragmentNetworkMkgw4Binding mBind;
     private int cellularType = -1;
     private int mNetworkStatus;
     private int deviceType;
-    private MkGw4DeviceInfoActivity activity;
+    private DeviceInfoActivity activity;
 
     public NetworkFragment() {
     }
@@ -42,22 +41,22 @@ public class NetworkFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.i(TAG, "onCreateView: ");
-        mBind = FragmentNetworkBinding.inflate(inflater, container, false);
-        activity = (MkGw4DeviceInfoActivity) getActivity();
+        mBind = FragmentNetworkMkgw4Binding.inflate(inflater, container, false);
+        activity = (DeviceInfoActivity) getActivity();
         mBind.layoutMqttStatus.setOnClickListener(v -> {
             if (activity.isWindowLocked()) return;
             activity.resetTimer();
-            launcher.launch(new Intent(requireActivity(), MkGw4MqttSettingsActivity.class));
+            launcher.launch(new Intent(requireActivity(), MqttSettingsActivity.class));
         });
         mBind.layoutNetworkStatus.setOnClickListener(v -> {
             if (cellularType == -1) {
-                MkGw4DeviceInfoActivity activity = (MkGw4DeviceInfoActivity) getActivity();
+                DeviceInfoActivity activity = (DeviceInfoActivity) getActivity();
                 if (null != activity) activity.showSyncingProgressDialog();
                 MokoSupport.getInstance().sendOrder(OrderTaskAssembler.getDeviceType());
                 return;
             }
             activity.resetTimer();
-            Intent intent = new Intent(requireActivity(), MkGw4NetworkSettingsActivity.class);
+            Intent intent = new Intent(requireActivity(), NetworkSettingsActivity.class);
             intent.putExtra("cellularType", cellularType);
             intent.putExtra(AppConstants.DEVICE_TYPE, deviceType);
             launcher.launch(intent);

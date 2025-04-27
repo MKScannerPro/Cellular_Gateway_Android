@@ -10,12 +10,9 @@ import com.moko.ble.lib.MokoConstants;
 import com.moko.ble.lib.event.ConnectStatusEvent;
 import com.moko.ble.lib.event.OrderTaskResponseEvent;
 import com.moko.ble.lib.task.OrderTaskResponse;
-import com.moko.ble.lib.utils.MokoUtils;
 import com.moko.mkgw4.AppConstants;
-import com.moko.mkgw4.R;
-import com.moko.mkgw4.activity.MkGw4BaseActivity;
-import com.moko.mkgw4.databinding.ActivityBatteryManagementBinding;
-import com.moko.mkgw4.databinding.ActivityPayloadSettingsBinding;
+import com.moko.mkgw4.activity.BaseActivity;
+import com.moko.mkgw4.databinding.ActivityPayloadSettingsMkgw4Binding;
 import com.moko.mkgw4.utils.ToastUtils;
 import com.moko.support.mkgw4.MokoSupport;
 import com.moko.support.mkgw4.OrderTaskAssembler;
@@ -26,20 +23,18 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.util.Arrays;
-
 /**
  * @author: jun.liu
  * @date: 2023/11/30 16:46
  * @des:
  */
-public class PayloadSettingsActivity extends MkGw4BaseActivity {
-    private ActivityPayloadSettingsBinding mBind;
+public class PayloadSettingsActivity extends BaseActivity {
+    private ActivityPayloadSettingsMkgw4Binding mBind;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mBind = ActivityPayloadSettingsBinding.inflate(getLayoutInflater());
+        mBind = ActivityPayloadSettingsMkgw4Binding.inflate(getLayoutInflater());
         setContentView(mBind.getRoot());
         EventBus.getDefault().register(this);
         int deviceType = getIntent().getIntExtra(AppConstants.DEVICE_TYPE, 0);

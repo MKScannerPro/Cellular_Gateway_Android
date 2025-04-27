@@ -14,7 +14,7 @@ import com.moko.mkgw4.entity.OtherTypePayloadBean;
  */
 public class OtherPayloadAdapter extends BaseQuickAdapter<OtherTypePayloadBean, BaseViewHolder> {
     public OtherPayloadAdapter() {
-        super(R.layout.item_other_payload);
+        super(R.layout.item_other_payload_mkgw4);
     }
 
     @Override

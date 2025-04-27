@@ -18,8 +18,8 @@ import com.moko.ble.lib.task.OrderTask;
 import com.moko.ble.lib.task.OrderTaskResponse;
 import com.moko.ble.lib.utils.MokoUtils;
 import com.moko.mkgw4.R;
-import com.moko.mkgw4.activity.MkGw4BaseActivity;
-import com.moko.mkgw4.databinding.ActivityBleParametersBinding;
+import com.moko.mkgw4.activity.BaseActivity;
+import com.moko.mkgw4.databinding.ActivityBleParametersMkgw4Binding;
 import com.moko.mkgw4.utils.ToastUtils;
 import com.moko.support.mkgw4.MokoSupport;
 import com.moko.support.mkgw4.OrderTaskAssembler;
@@ -39,8 +39,8 @@ import java.util.List;
  * @date: 2023/6/8 15:14
  * @des:
  */
-public class BleParametersActivity extends MkGw4BaseActivity implements SeekBar.OnSeekBarChangeListener {
-    private ActivityBleParametersBinding mBind;
+public class BleParametersActivity extends BaseActivity implements SeekBar.OnSeekBarChangeListener {
+    private ActivityBleParametersMkgw4Binding mBind;
     private boolean mReceiverTag;
     private boolean isParamsError;
     private final int[] txPowerArray = {-40, -20, -16, -12, -8, -4, 0, 2, 3, 4, 5, 6, 7, 8};
@@ -49,7 +49,7 @@ public class BleParametersActivity extends MkGw4BaseActivity implements SeekBar.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mBind = ActivityBleParametersBinding.inflate(getLayoutInflater());
+        mBind = ActivityBleParametersMkgw4Binding.inflate(getLayoutInflater());
         setContentView(mBind.getRoot());
         EventBus.getDefault().register(this);
         // 注册广播接收器

@@ -7,7 +7,7 @@ import com.moko.ble.lib.event.ConnectStatusEvent;
 import com.moko.ble.lib.event.OrderTaskResponseEvent;
 import com.moko.ble.lib.task.OrderTaskResponse;
 import com.moko.ble.lib.utils.MokoUtils;
-import com.moko.mkgw4.activity.MkGw4BaseActivity;
+import com.moko.mkgw4.activity.BaseActivity;
 import com.moko.mkgw4.databinding.ActivityBxpSensorPayloadMkgw4Binding;
 import com.moko.mkgw4.utils.ToastUtils;
 import com.moko.support.mkgw4.MokoSupport;
@@ -26,7 +26,7 @@ import java.util.Arrays;
  * @date: 2025/2/14 9:39
  * @des:
  */
-public class BxpSensorPayloadActivity extends MkGw4BaseActivity {
+public class BxpSensorPayloadActivity extends BaseActivity {
     private ActivityBxpSensorPayloadMkgw4Binding mBind;
 
     @Override

@@ -12,8 +12,8 @@ import com.moko.ble.lib.MokoConstants;
 import com.moko.ble.lib.event.ConnectStatusEvent;
 import com.moko.ble.lib.event.OrderTaskResponseEvent;
 import com.moko.ble.lib.task.OrderTaskResponse;
-import com.moko.mkgw4.activity.MkGw4BaseActivity;
-import com.moko.mkgw4.databinding.ActivityLedSettingsBinding;
+import com.moko.mkgw4.activity.BaseActivity;
+import com.moko.mkgw4.databinding.ActivityLedSettingsMkgw4Binding;
 import com.moko.mkgw4.utils.ToastUtils;
 import com.moko.support.mkgw4.MokoSupport;
 import com.moko.support.mkgw4.OrderTaskAssembler;
@@ -29,14 +29,14 @@ import org.greenrobot.eventbus.ThreadMode;
  * @date: 2023/12/4 10:43
  * @des:
  */
-public class LedSettingsActivity extends MkGw4BaseActivity {
-    private ActivityLedSettingsBinding mBind;
+public class LedSettingsActivity extends BaseActivity {
+    private ActivityLedSettingsMkgw4Binding mBind;
     private boolean mReceiverTag;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mBind = ActivityLedSettingsBinding.inflate(getLayoutInflater());
+        mBind = ActivityLedSettingsMkgw4Binding.inflate(getLayoutInflater());
         setContentView(mBind.getRoot());
         EventBus.getDefault().register(this);
         // 注册广播接收器

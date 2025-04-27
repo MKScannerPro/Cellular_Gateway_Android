@@ -1,5 +1,6 @@
 package com.moko.mkgw4.activity;
 
+import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothAdapter;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -17,10 +18,6 @@ import android.view.animation.AnimationUtils;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.core.content.ContextCompat;
-import androidx.core.content.res.ResourcesCompat;
-import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.elvishew.xlog.XLog;
@@ -31,15 +28,15 @@ import com.moko.ble.lib.task.OrderTaskResponse;
 import com.moko.mkgw4.AppConstants;
 import com.moko.mkgw4.BuildConfig;
 import com.moko.mkgw4.R;
-import com.moko.mkgw4.activity.setting.MkGw4LogDataActivity;
-import com.moko.mkgw4.adapter.MkGw4DeviceListAdapter;
+import com.moko.mkgw4.activity.setting.LogDataActivity;
+import com.moko.mkgw4.adapter.DeviceListAdapter;
 import com.moko.mkgw4.databinding.ActivityMainMkgw4Binding;
 import com.moko.mkgw4.dialog.AlertMessageDialog;
 import com.moko.mkgw4.dialog.LoadingMessageDialog;
-import com.moko.mkgw4.dialog.MkGw4PasswordDialog;
-import com.moko.mkgw4.dialog.MkGw4ScanFilterDialog;
-import com.moko.mkgw4.entity.MkGw4AdvInfo;
-import com.moko.mkgw4.utils.MkGw4AdvInfoAnalysisImpl;
+import com.moko.mkgw4.dialog.PasswordDialog;
+import com.moko.mkgw4.dialog.ScanFilterDialog;
+import com.moko.mkgw4.entity.AdvInfo;
+import com.moko.mkgw4.utils.AdvInfoAnalysisImpl;
 import com.moko.mkgw4.utils.SPUtiles;
 import com.moko.mkgw4.utils.ToastUtils;
 import com.moko.mkgw4.utils.Utils;
@@ -62,18 +59,12 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.ConcurrentHashMap;
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.LinearLayoutManager;
-
-public class MKGW4MainActivity extends MkGw4BaseActivity implements MokoScanDeviceCallback, BaseQuickAdapter.OnItemChildClickListener {
+public class MKGW4MainActivity extends BaseActivity implements MokoScanDeviceCallback, BaseQuickAdapter.OnItemChildClickListener {
     private ActivityMainMkgw4Binding mBind;
     private boolean mReceiverTag = false;
-    private ConcurrentHashMap<String, MkGw4AdvInfo> beaconInfoHashMap;
-    private ArrayList<MkGw4AdvInfo> beaconInfos;
-    private MkGw4DeviceListAdapter adapter;
+    private final ConcurrentHashMap<String, AdvInfo> beaconInfoHashMap = new ConcurrentHashMap<>();
+    private final ArrayList<AdvInfo> beaconInfos = new ArrayList<>();
+    private final DeviceListAdapter adapter = new DeviceListAdapter();
     private Animation animation = null;
     private MokoBleScanner mokoBleScanner;
     public Handler mHandler;
@@ -82,7 +73,7 @@ public class MKGW4MainActivity extends MkGw4BaseActivity implements MokoScanDevi
     public static String PATH_LOGCAT;
     private String mPassword;
     private String mSavedPassword;
-    private MkGw4AdvInfoAnalysisImpl beaconInfoParseable;
+    private AdvInfoAnalysisImpl beaconInfoParseable;
     public String filterName;
     public int filterRssi = -100;
     public String filterMac;
@@ -124,15 +115,8 @@ public class MKGW4MainActivity extends MkGw4BaseActivity implements MokoScanDevi
         }
         MokoSupport.getInstance().init(getApplicationContext());
         mSavedPassword = SPUtiles.getStringValue(this, AppConstants.SP_KEY_SAVED_PASSWORD_MKGW4, "");
-        beaconInfoHashMap = new ConcurrentHashMap<>();
-        beaconInfos = new ArrayList<>();
-        adapter = new MkGw4DeviceListAdapter();
-        adapter.replaceData(beaconInfos);
         adapter.setOnItemChildClickListener(this);
         adapter.openLoadAnimation();
-        DividerItemDecoration itemDecoration = new DividerItemDecoration(this, DividerItemDecoration.VERTICAL);
-        itemDecoration.setDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.shape_recycleview_divider,null));
-        mBind.rvDevices.addItemDecoration(itemDecoration);
         mBind.rvDevices.setAdapter(adapter);
         mHandler = new Handler(Looper.getMainLooper());
         mokoBleScanner = new MokoBleScanner(this);
@@ -155,11 +139,12 @@ public class MKGW4MainActivity extends MkGw4BaseActivity implements MokoScanDevi
         }
         animation = AnimationUtils.loadAnimation(this, R.anim.rotate_refresh);
         mBind.ivRefresh.startAnimation(animation);
-        beaconInfoParseable = new MkGw4AdvInfoAnalysisImpl();
+        beaconInfoParseable = new AdvInfoAnalysisImpl();
         mokoBleScanner.startScanDevice(this);
         mHandler.postDelayed(() -> mokoBleScanner.stopScanDevice(), 1000 * 60);
     }
 
+    @SuppressLint("DefaultLocale")
     @Override
     public void onStartScan() {
         beaconInfoHashMap.clear();
@@ -181,7 +166,7 @@ public class MKGW4MainActivity extends MkGw4BaseActivity implements MokoScanDevi
 
     @Override
     public void onScanDevice(DeviceInfo deviceInfo) {
-        MkGw4AdvInfo beaconInfo = beaconInfoParseable.parseDeviceInfo(deviceInfo);
+        AdvInfo beaconInfo = beaconInfoParseable.parseDeviceInfo(deviceInfo);
         if (beaconInfo == null) return;
         beaconInfoHashMap.put(beaconInfo.mac, beaconInfo);
     }
@@ -197,10 +182,10 @@ public class MKGW4MainActivity extends MkGw4BaseActivity implements MokoScanDevi
         if (!TextUtils.isEmpty(filterName)
                 || !TextUtils.isEmpty(filterMac)
                 || filterRssi != -100) {
-            ArrayList<MkGw4AdvInfo> advInfoListFilter = new ArrayList<>(beaconInfoHashMap.values());
-            Iterator<MkGw4AdvInfo> iterator = advInfoListFilter.iterator();
+            ArrayList<AdvInfo> advInfoListFilter = new ArrayList<>(beaconInfoHashMap.values());
+            Iterator<AdvInfo> iterator = advInfoListFilter.iterator();
             while (iterator.hasNext()) {
-                MkGw4AdvInfo advInfo = iterator.next();
+                AdvInfo advInfo = iterator.next();
                 if (advInfo.rssi > filterRssi) {
                     if (TextUtils.isEmpty(filterName) && TextUtils.isEmpty(filterMac)) {
                         continue;
@@ -280,7 +265,7 @@ public class MKGW4MainActivity extends MkGw4BaseActivity implements MokoScanDevi
             mHandler.removeMessages(0);
             mokoBleScanner.stopScanDevice();
         }
-        MkGw4ScanFilterDialog scanFilterDialog = new MkGw4ScanFilterDialog(this);
+        ScanFilterDialog scanFilterDialog = new ScanFilterDialog(this);
         scanFilterDialog.setFilterName(filterName);
         scanFilterDialog.setFilterMac(filterMac);
         scanFilterDialog.setFilterRssi(filterRssi);
@@ -351,7 +336,7 @@ public class MKGW4MainActivity extends MkGw4BaseActivity implements MokoScanDevi
             MokoSupport.getInstance().enableBluetooth();
             return;
         }
-        MkGw4AdvInfo advInfo = (MkGw4AdvInfo) adapter.getItem(position);
+        AdvInfo advInfo = (AdvInfo) adapter.getItem(position);
         if (advInfo != null && advInfo.connectable && !isFinishing()) {
             if (animation != null) {
                 mHandler.removeMessages(0);
@@ -367,9 +352,9 @@ public class MKGW4MainActivity extends MkGw4BaseActivity implements MokoScanDevi
                 return;
             }
             // show password
-            final MkGw4PasswordDialog dialog = new MkGw4PasswordDialog(this);
+            final PasswordDialog dialog = new PasswordDialog(this);
             dialog.setData(mSavedPassword);
-            dialog.setOnPasswordClicked(new MkGw4PasswordDialog.PasswordClickListener() {
+            dialog.setOnPasswordClicked(new PasswordDialog.PasswordClickListener() {
                 @Override
                 public void onEnsureClicked(String password) {
                     if (!MokoSupport.getInstance().isBluetoothOpen()) {
@@ -444,7 +429,7 @@ public class MKGW4MainActivity extends MkGw4BaseActivity implements MokoScanDevi
             dismissLoadingProgressDialog();
             if (!isVerifyEnable) {
                 XLog.i("Success");
-                Intent i = new Intent(this, MkGw4DeviceInfoActivity.class);
+                Intent i = new Intent(this, DeviceInfoActivity.class);
                 i.putExtra("advName", advName);
                 i.putExtra("mac", selectMac);
                 i.putExtra(AppConstants.DEVICE_TYPE, deviceType);
@@ -457,7 +442,7 @@ public class MKGW4MainActivity extends MkGw4BaseActivity implements MokoScanDevi
     }
 
     private final ActivityResultLauncher<Intent> launcher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
-        if (result.getResultCode() == RESULT_OK) {
+        if (null != result && result.getResultCode() == RESULT_OK) {
             if (animation == null) startScan();
         }
     });
@@ -468,8 +453,6 @@ public class MKGW4MainActivity extends MkGw4BaseActivity implements MokoScanDevi
         if (MokoConstants.ACTION_ORDER_TIMEOUT.equals(action)) {
             dismissLoadingMessageDialog();
             MokoSupport.getInstance().disConnectBle();
-        }
-        if (MokoConstants.ACTION_ORDER_FINISH.equals(action)) {
         }
         if (MokoConstants.ACTION_ORDER_RESULT.equals(action)) {
             OrderTaskResponse response = event.getResponse();
@@ -489,7 +472,7 @@ public class MKGW4MainActivity extends MkGw4BaseActivity implements MokoScanDevi
                             mSavedPassword = mPassword;
                             SPUtiles.setStringValue(this, AppConstants.SP_KEY_SAVED_PASSWORD_MKGW4, mSavedPassword);
                             XLog.i("Success");
-                            Intent i = new Intent(this, MkGw4DeviceInfoActivity.class);
+                            Intent i = new Intent(this, DeviceInfoActivity.class);
                             i.putExtra("advName", advName);
                             i.putExtra("mac", selectMac);
                             i.putExtra(AppConstants.DEVICE_TYPE, deviceType);
@@ -540,7 +523,7 @@ public class MKGW4MainActivity extends MkGw4BaseActivity implements MokoScanDevi
         setIntent(intent);
         if (getIntent().getExtras() != null) {
             String from = getIntent().getStringExtra(AppConstants.EXTRA_KEY_FROM_ACTIVITY);
-            if (MkGw4LogDataActivity.TAG.equals(from)) {
+            if (LogDataActivity.TAG.equals(from)) {
                 if (animation == null) startScan();
             }
         }

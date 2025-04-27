@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginBottom="10dp"
     android:background="@drawable/shape_radius_white_bg"
     android:paddingBottom="15dp"
     tools:viewBindingIgnore="true">
@@ -63,12 +64,12 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="@id/tv_name" />
 
-   <!-- <include
-        android:id="@+id/layoutIBeacon"
-        layout="@layout/adv_ibeacon"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:visibility="gone"
-        app:layout_constraintTop_toBottomOf="@+id/tv_mac" />-->
+    <!-- <include
+         android:id="@+id/layoutIBeacon"
+         layout="@layout/adv_ibeacon"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:layout_marginTop="15dp"
+         android:visibility="gone"
+         app:layout_constraintTop_toBottomOf="@+id/tv_mac" />-->
 </androidx.constraintlayout.widget.ConstraintLayout>

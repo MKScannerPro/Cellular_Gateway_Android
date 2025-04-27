@@ -6,7 +6,7 @@ import com.moko.ble.lib.MokoConstants;
 import com.moko.ble.lib.event.ConnectStatusEvent;
 import com.moko.ble.lib.event.OrderTaskResponseEvent;
 import com.moko.ble.lib.task.OrderTaskResponse;
-import com.moko.mkgw4.activity.MkGw4BaseActivity;
+import com.moko.mkgw4.activity.BaseActivity;
 import com.moko.mkgw4.databinding.ActivityUpPayloadSettingsMkgw4Binding;
 import com.moko.mkgw4.utils.ToastUtils;
 import com.moko.support.mkgw4.MokoSupport;
@@ -23,7 +23,7 @@ import org.greenrobot.eventbus.ThreadMode;
  * @date: 2025/2/14 10:19
  * @des:
  */
-public class UpPayloadSettingsActivity extends MkGw4BaseActivity {
+public class UpPayloadSettingsActivity extends BaseActivity {
     private ActivityUpPayloadSettingsMkgw4Binding mBind;
 
     @Override
