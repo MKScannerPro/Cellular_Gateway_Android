@@ -48,7 +48,7 @@ public class SettingsFragment extends Fragment {
     private int deviceType;
     private final String[] array = {"Detects three times", "Detects three seconds"};
     private int mSelected;
-    private final String[] chargeArray = {"When battery dead", "Every time"};
+    private final String[] chargeArray = {"Every time", "When battery dead"};
     private int chargeSelected;
     private int cellularType;
 
