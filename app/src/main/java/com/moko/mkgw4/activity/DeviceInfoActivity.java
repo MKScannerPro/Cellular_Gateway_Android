@@ -1,7 +1,5 @@
 package com.moko.mkgw4.activity;
 
-import static com.moko.mkgw4.AppConstants.TYPE_USB;
-
 import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.content.BroadcastReceiver;
@@ -13,16 +11,12 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.RadioGroup;
 
-import androidx.annotation.IdRes;
-import androidx.fragment.app.FragmentManager;
-
-import okhttp3.RequestBody;
-
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
+import com.lzy.okgo.model.HttpHeaders;
 import com.lzy.okgo.model.Response;
 import com.lzy.okgo.request.base.Request;
 import com.moko.ble.lib.MokoConstants;
@@ -31,11 +25,14 @@ import com.moko.ble.lib.event.OrderTaskResponseEvent;
 import com.moko.ble.lib.task.OrderTask;
 import com.moko.ble.lib.task.OrderTaskResponse;
 import com.moko.ble.lib.utils.MokoUtils;
+import com.moko.lib.scanneriot.IoTDMConstants;
+import com.moko.lib.scanneriot.dialog.LoginDialog;
+import com.moko.lib.scanneriot.utils.IoTDMSPUtils;
+import com.moko.lib.scannerui.dialog.AlertMessageDialog;
+import com.moko.lib.scannerui.utils.ToastUtils;
 import com.moko.mkgw4.AppConstants;
 import com.moko.mkgw4.R;
 import com.moko.mkgw4.databinding.ActivityDeviceInfoMkgw4Binding;
-import com.moko.mkgw4.dialog.AlertMessageDialog;
-import com.moko.mkgw4.dialog.LoginDialog;
 import com.moko.mkgw4.entity.MokoDevice;
 import com.moko.mkgw4.fragment.NetworkFragment;
 import com.moko.mkgw4.fragment.PositionFragment;
@@ -44,8 +41,6 @@ import com.moko.mkgw4.fragment.SettingsFragment;
 import com.moko.mkgw4.net.Urls;
 import com.moko.mkgw4.net.entity.CommonResp;
 import com.moko.mkgw4.net.entity.LoginEntity;
-import com.moko.mkgw4.utils.SPUtiles;
-import com.moko.mkgw4.utils.ToastUtils;
 import com.moko.support.mkgw4.MokoSupport;
 import com.moko.support.mkgw4.OrderTaskAssembler;
 import com.moko.support.mkgw4.entity.OrderCHAR;
@@ -62,6 +57,12 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import androidx.annotation.IdRes;
+import androidx.fragment.app.FragmentManager;
+import okhttp3.RequestBody;
+
+import static com.moko.mkgw4.AppConstants.TYPE_USB;
+
 public class DeviceInfoActivity extends BaseActivity implements RadioGroup.OnCheckedChangeListener {
     private ActivityDeviceInfoMkgw4Binding mBind;
     private FragmentManager fragmentManager;
@@ -73,7 +74,6 @@ public class DeviceInfoActivity extends BaseActivity implements RadioGroup.OnChe
     private int disConnectType;
     private String advName;
     private String mac;
-    public static String mAccessToken;
     private String mSubscribeTopic;
     private String mPublishTopic;
     private int deviceType;
@@ -486,9 +486,9 @@ public class DeviceInfoActivity extends BaseActivity implements RadioGroup.OnChe
     public void mainSyncDevices(View view) {
         if (isWindowLocked()) return;
         // 登录
-        String account = SPUtiles.getStringValue(this, AppConstants.EXTRA_KEY_LOGIN_ACCOUNT, "");
-        String password = SPUtiles.getStringValue(this, AppConstants.EXTRA_KEY_LOGIN_PASSWORD, "");
-        int env = SPUtiles.getIntValue(this, AppConstants.EXTRA_KEY_LOGIN_ENV, 0);
+        String account = IoTDMSPUtils.getStringValue(this, IoTDMConstants.EXTRA_KEY_LOGIN_ACCOUNT, "");
+        String password = IoTDMSPUtils.getStringValue(this, IoTDMConstants.EXTRA_KEY_LOGIN_PASSWORD, "");
+        int env = IoTDMSPUtils.getIntValue(this, IoTDMConstants.EXTRA_KEY_LOGIN_ENV, 0);
         if (TextUtils.isEmpty(account) || TextUtils.isEmpty(password)) {
             LoginDialog dialog = new LoginDialog();
             dialog.setOnLoginClicked(this::login);
@@ -529,10 +529,16 @@ public class DeviceInfoActivity extends BaseActivity implements RadioGroup.OnChe
                             dialog.show(getSupportFragmentManager());
                             return;
                         }
-                        SPUtiles.setStringValue(DeviceInfoActivity.this, AppConstants.EXTRA_KEY_LOGIN_ACCOUNT, account);
-                        SPUtiles.setStringValue(DeviceInfoActivity.this, AppConstants.EXTRA_KEY_LOGIN_PASSWORD, password);
-                        SPUtiles.setIntValue(DeviceInfoActivity.this, AppConstants.EXTRA_KEY_LOGIN_ENV, envValue);
-                        mAccessToken = commonResp.data.get("access_token").getAsString();
+                        // add header
+                        String accessToken = commonResp.data.get("access_token").getAsString();
+                        HttpHeaders headers = new HttpHeaders();
+                        headers.put("Authorization", accessToken);
+                        OkGo.getInstance().addCommonHeaders(headers);
+
+                        IoTDMSPUtils.setStringValue(DeviceInfoActivity.this, IoTDMConstants.EXTRA_KEY_LOGIN_ACCOUNT, account);
+                        IoTDMSPUtils.setStringValue(DeviceInfoActivity.this, IoTDMConstants.EXTRA_KEY_LOGIN_PASSWORD, password);
+                        IoTDMSPUtils.setIntValue(DeviceInfoActivity.this, IoTDMConstants.EXTRA_KEY_LOGIN_ENV, envValue);
+
                         String macUpper = mac.replaceAll(":", "").toUpperCase();
                         MokoDevice mokoDevice = new MokoDevice();
                         mokoDevice.name = String.format("MKGW4-%s", macUpper.substring(8));

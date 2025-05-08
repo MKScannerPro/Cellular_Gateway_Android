@@ -19,7 +19,7 @@ import com.moko.mkgw4.activity.BaseActivity;
 import com.moko.mkgw4.activity.MKGW4MainActivity;
 import com.moko.mkgw4.adapter.LogDataListAdapter;
 import com.moko.mkgw4.databinding.ActivityLogDataMkgw4Binding;
-import com.moko.mkgw4.dialog.AlertMessageDialog;
+import com.moko.lib.scannerui.dialog.AlertMessageDialog;
 import com.moko.mkgw4.entity.LogData;
 import com.moko.mkgw4.utils.Utils;
 import com.moko.support.mkgw4.MokoSupport;

@@ -15,15 +15,15 @@ import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.lzy.okgo.request.base.Request;
+import com.moko.lib.scanneriot.dialog.LogoutDialog;
 import com.moko.mkgw4.R;
 import com.moko.mkgw4.adapter.SyncDeviceAdapter;
 import com.moko.mkgw4.databinding.ActivityDevicesMkgw4Binding;
-import com.moko.mkgw4.dialog.LogoutDialog;
 import com.moko.mkgw4.entity.MokoDevice;
 import com.moko.mkgw4.net.Urls;
 import com.moko.mkgw4.net.entity.CommonResp;
 import com.moko.mkgw4.net.entity.SyncDevice;
-import com.moko.mkgw4.utils.ToastUtils;
+import com.moko.lib.scannerui.utils.ToastUtils;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -82,7 +82,6 @@ public class SyncDeviceActivity extends BaseActivity implements BaseQuickAdapter
         RequestBody body = RequestBody.create(Urls.JSON, new Gson().toJson(syncDevices));
         OkGo.<String>post(Urls.syncGatewayApi(getApplicationContext()))
                 .upRequestBody(body)
-                .headers("Authorization", DeviceInfoActivity.mAccessToken)
                 .execute(new StringCallback() {
 
                     @Override

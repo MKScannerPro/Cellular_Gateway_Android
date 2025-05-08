@@ -31,14 +31,14 @@ import com.moko.mkgw4.R;
 import com.moko.mkgw4.activity.setting.LogDataActivity;
 import com.moko.mkgw4.adapter.DeviceListAdapter;
 import com.moko.mkgw4.databinding.ActivityMainMkgw4Binding;
-import com.moko.mkgw4.dialog.AlertMessageDialog;
-import com.moko.mkgw4.dialog.LoadingMessageDialog;
-import com.moko.mkgw4.dialog.PasswordDialog;
-import com.moko.mkgw4.dialog.ScanFilterDialog;
+import com.moko.lib.scannerui.dialog.AlertMessageDialog;
+import com.moko.lib.scannerui.dialog.LoadingMessageDialog;
+import com.moko.lib.scannerui.dialog.PasswordDialog;
+import com.moko.lib.scannerui.dialog.ScanFilterDialog;
 import com.moko.mkgw4.entity.AdvInfo;
 import com.moko.mkgw4.utils.AdvInfoAnalysisImpl;
 import com.moko.mkgw4.utils.SPUtiles;
-import com.moko.mkgw4.utils.ToastUtils;
+import com.moko.lib.scannerui.utils.ToastUtils;
 import com.moko.mkgw4.utils.Utils;
 import com.moko.support.mkgw4.MokoBleScanner;
 import com.moko.support.mkgw4.MokoSupport;
@@ -265,7 +265,7 @@ public class MKGW4MainActivity extends BaseActivity implements MokoScanDeviceCal
             mHandler.removeMessages(0);
             mokoBleScanner.stopScanDevice();
         }
-        ScanFilterDialog scanFilterDialog = new ScanFilterDialog(this);
+        ScanFilterDialog scanFilterDialog = new ScanFilterDialog();
         scanFilterDialog.setFilterName(filterName);
         scanFilterDialog.setFilterMac(filterMac);
         scanFilterDialog.setFilterRssi(filterRssi);
@@ -309,11 +309,7 @@ public class MKGW4MainActivity extends BaseActivity implements MokoScanDeviceCal
             if (isWindowLocked()) return;
             if (animation == null) startScan();
         });
-        scanFilterDialog.setOnDismissListener(dialog -> {
-            if (isWindowLocked()) return;
-            if (animation == null) startScan();
-        });
-        scanFilterDialog.show();
+        scanFilterDialog.show(getSupportFragmentManager());
     }
 
     public void onFilterDelete(View view) {
@@ -352,8 +348,8 @@ public class MKGW4MainActivity extends BaseActivity implements MokoScanDeviceCal
                 return;
             }
             // show password
-            final PasswordDialog dialog = new PasswordDialog(this);
-            dialog.setData(mSavedPassword);
+            final PasswordDialog dialog = new PasswordDialog();
+            dialog.setPassword(mSavedPassword);
             dialog.setOnPasswordClicked(new PasswordDialog.PasswordClickListener() {
                 @Override
                 public void onEnsureClicked(String password) {
@@ -376,14 +372,7 @@ public class MKGW4MainActivity extends BaseActivity implements MokoScanDeviceCal
 
                 }
             });
-            dialog.show();
-            Timer timer = new Timer();
-            timer.schedule(new TimerTask() {
-                @Override
-                public void run() {
-                    runOnUiThread(dialog::showKeyboard);
-                }
-            }, 200);
+            dialog.show(getSupportFragmentManager());
         }
     }
 

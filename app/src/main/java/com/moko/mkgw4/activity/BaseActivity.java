@@ -9,8 +9,8 @@ import android.os.SystemClock;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 
-import com.moko.mkgw4.dialog.LoadingDialog;
-import com.moko.mkgw4.dialog.LoadingMessageDialog;
+import com.moko.lib.scannerui.dialog.LoadingDialog;
+import com.moko.lib.scannerui.dialog.LoadingMessageDialog;
 
 
 public class BaseActivity extends FragmentActivity {

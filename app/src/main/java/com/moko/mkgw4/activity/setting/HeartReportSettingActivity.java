@@ -20,7 +20,7 @@ import com.moko.ble.lib.utils.MokoUtils;
 import com.moko.mkgw4.AppConstants;
 import com.moko.mkgw4.activity.BaseActivity;
 import com.moko.mkgw4.databinding.ActivityHeartReportSettingMkgw4Binding;
-import com.moko.mkgw4.utils.ToastUtils;
+import com.moko.lib.scannerui.utils.ToastUtils;
 import com.moko.support.mkgw4.MokoSupport;
 import com.moko.support.mkgw4.OrderTaskAssembler;
 import com.moko.support.mkgw4.entity.OrderCHAR;

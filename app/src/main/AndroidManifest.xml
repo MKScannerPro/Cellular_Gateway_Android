@@ -1,13 +1,10 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.moko.mkgw4">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <application
         android:name="com.moko.mkgw4.BaseApplication"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
-        android:label="@string/app_name"
-        android:theme="@style/LaunchActivityTheme"
-        android:usesCleartextTraffic="true">
+        android:label="@string/app_name">
         <activity
             android:name="com.moko.mkgw4.activity.GuideActivity"
             android:exported="true">
@@ -213,8 +210,9 @@
         <activity
             android:name=".activity.payload.BxpSensorPayloadActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".activity.setting.UpPayloadSettingsActivity"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".activity.setting.UpPayloadSettingsActivity"
+            android:screenOrientation="portrait" />
 
         <activity
             android:name="com.moko.mkgw4.activity.SyncDeviceActivity"

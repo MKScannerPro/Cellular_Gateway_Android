@@ -21,8 +21,5 @@ public class AppConstants {
     public static final String EXTRA_KEY_DEVICE_MAC = "EXTRA_KEY_DEVICE_MAC";
     public static final String EXTRA_KEY_FROM_ACTIVITY = "EXTRA_KEY_FROM_ACTIVITY";
     public static final String DEVICE_TYPE = "DEVICE_TYPE";
-    public static final String EXTRA_KEY_LOGIN_ACCOUNT = "EXTRA_KEY_LOGIN_ACCOUNT";
-    public static final String EXTRA_KEY_LOGIN_PASSWORD = "EXTRA_KEY_LOGIN_PASSWORD";
-    public static final String EXTRA_KEY_LOGIN_ENV = "EXTRA_KEY_LOGIN_ENV";
     public static final int TYPE_USB = 1;
 }

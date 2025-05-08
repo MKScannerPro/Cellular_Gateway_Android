@@ -29,8 +29,8 @@ import com.moko.mkgw4.activity.setting.LogDataActivity;
 import com.moko.mkgw4.activity.setting.SystemInfoActivity;
 import com.moko.mkgw4.activity.setting.MkGw4SystemTimeActivity;
 import com.moko.mkgw4.databinding.FragmentSettingsMkgw4Binding;
-import com.moko.mkgw4.dialog.AlertMessageDialog;
-import com.moko.mkgw4.dialog.BottomDialog;
+import com.moko.lib.scannerui.dialog.AlertMessageDialog;
+import com.moko.lib.scannerui.dialog.BottomDialog;
 import com.moko.support.mkgw4.MokoSupport;
 import com.moko.support.mkgw4.OrderTaskAssembler;
 
