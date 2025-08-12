@@ -1,7 +1,5 @@
 package com.moko.mkgw4.fragment;
 
-import static com.moko.mkgw4.AppConstants.TYPE_USB;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,15 +7,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-
 import com.moko.mkgw4.activity.DeviceInfoActivity;
 import com.moko.mkgw4.activity.FixModeActivity;
 import com.moko.mkgw4.activity.GpsFixActivity;
 import com.moko.mkgw4.activity.setting.AxisParameterActivity;
 import com.moko.mkgw4.activity.setting.UpPayloadSettingsActivity;
 import com.moko.mkgw4.databinding.FragmentPosMkgw4Binding;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+
+import static com.moko.mkgw4.AppConstants.TYPE_USB;
 
 public class PositionFragment extends Fragment {
     private static final String TAG = PositionFragment.class.getSimpleName();

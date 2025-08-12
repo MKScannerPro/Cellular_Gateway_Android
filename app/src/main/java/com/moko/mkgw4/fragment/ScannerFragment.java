@@ -7,9 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-
 import com.moko.ble.lib.task.OrderTask;
 import com.moko.mkgw4.AppConstants;
 import com.moko.mkgw4.R;
@@ -23,6 +20,9 @@ import com.moko.support.mkgw4.OrderTaskAssembler;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 
 public class ScannerFragment extends Fragment {
     private static final String TAG = ScannerFragment.class.getSimpleName();

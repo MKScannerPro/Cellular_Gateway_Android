@@ -4,8 +4,6 @@ package com.moko.mkgw4.entity;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.io.Serializable;
-
 public class MokoDevice implements Parcelable {
 
     public int id;

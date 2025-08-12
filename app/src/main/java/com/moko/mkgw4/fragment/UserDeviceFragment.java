@@ -8,10 +8,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.moko.mkgw4.databinding.FragmentUserDeviceMkgw4Binding;
+
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-
-import com.moko.mkgw4.databinding.FragmentUserDeviceMkgw4Binding;
 
 public class UserDeviceFragment extends Fragment {
     private final String FILTER_ASCII = "[ -~]*";

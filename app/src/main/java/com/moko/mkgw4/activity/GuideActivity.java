@@ -12,14 +12,11 @@ import android.os.Looper;
 import android.provider.Settings;
 
 import com.elvishew.xlog.XLog;
-import com.moko.mkgw4.R;
 import com.moko.lib.scannerui.dialog.PermissionDialog;
+import com.moko.mkgw4.R;
 import com.moko.mkgw4.databinding.ActivityGuideBinding;
 import com.moko.mkgw4.utils.Utils;
 import com.permissionx.guolindev.PermissionX;
-
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;

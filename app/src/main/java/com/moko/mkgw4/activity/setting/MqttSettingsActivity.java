@@ -14,11 +14,6 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.RadioGroup;
 
-import androidx.annotation.IdRes;
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.viewpager2.widget.ViewPager2;
-
 import com.elvishew.xlog.XLog;
 import com.moko.ble.lib.MokoConstants;
 import com.moko.ble.lib.event.ConnectStatusEvent;
@@ -26,18 +21,18 @@ import com.moko.ble.lib.event.OrderTaskResponseEvent;
 import com.moko.ble.lib.task.OrderTask;
 import com.moko.ble.lib.task.OrderTaskResponse;
 import com.moko.ble.lib.utils.MokoUtils;
+import com.moko.lib.scannerui.dialog.AlertMessageDialog;
+import com.moko.lib.scannerui.utils.ToastUtils;
 import com.moko.mkgw4.ExcelHelper;
 import com.moko.mkgw4.R;
 import com.moko.mkgw4.activity.BaseActivity;
 import com.moko.mkgw4.adapter.NetworkFragmentAdapter;
 import com.moko.mkgw4.databinding.ActivityMqttSettingsMkgw4Binding;
-import com.moko.lib.scannerui.dialog.AlertMessageDialog;
 import com.moko.mkgw4.entity.NetworkSettings;
 import com.moko.mkgw4.fragment.GeneralDeviceFragment;
 import com.moko.mkgw4.fragment.SSLDeviceFragment;
 import com.moko.mkgw4.fragment.UserDeviceFragment;
 import com.moko.mkgw4.utils.FileUtils;
-import com.moko.lib.scannerui.utils.ToastUtils;
 import com.moko.mkgw4.utils.Utils;
 import com.moko.support.mkgw4.MokoSupport;
 import com.moko.support.mkgw4.OrderTaskAssembler;
@@ -55,6 +50,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
+import androidx.annotation.IdRes;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.viewpager2.widget.ViewPager2;
 
 public class MqttSettingsActivity extends BaseActivity implements RadioGroup.OnCheckedChangeListener {
     private ActivityMqttSettingsMkgw4Binding mBind;

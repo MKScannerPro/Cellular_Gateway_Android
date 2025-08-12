@@ -1,13 +1,8 @@
 package com.moko.mkgw4.activity.filter;
 
-import static com.moko.mkgw4.AppConstants.TYPE_USB;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 
 import com.moko.ble.lib.MokoConstants;
 import com.moko.ble.lib.event.ConnectStatusEvent;
@@ -15,11 +10,11 @@ import com.moko.ble.lib.event.OrderTaskResponseEvent;
 import com.moko.ble.lib.task.OrderTask;
 import com.moko.ble.lib.task.OrderTaskResponse;
 import com.moko.ble.lib.utils.MokoUtils;
+import com.moko.lib.scannerui.utils.ToastUtils;
 import com.moko.mkgw4.AppConstants;
 import com.moko.mkgw4.R;
 import com.moko.mkgw4.activity.BaseActivity;
 import com.moko.mkgw4.databinding.ActivityFilterRawDataMkgw4Binding;
-import com.moko.lib.scannerui.utils.ToastUtils;
 import com.moko.support.mkgw4.MokoSupport;
 import com.moko.support.mkgw4.OrderTaskAssembler;
 import com.moko.support.mkgw4.entity.OrderCHAR;
@@ -32,6 +27,11 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+
+import static com.moko.mkgw4.AppConstants.TYPE_USB;
 
 public class FilterRawDataActivity extends BaseActivity {
     private ActivityFilterRawDataMkgw4Binding mBind;

@@ -4,9 +4,9 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
-import androidx.annotation.Nullable;
-
 import com.moko.mkgw4.activity.MKGW4MainActivity;
+
+import androidx.annotation.Nullable;
 
 /**
  * @author: jun.liu

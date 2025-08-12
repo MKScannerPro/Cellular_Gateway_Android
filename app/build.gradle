@@ -6,13 +6,13 @@ if (!isLibrary.toBoolean()) {
 
 android {
     namespace "com.moko.mkgw4"
-    compileSdk 34
+    compileSdk 35
 
     defaultConfig {
-        minSdk 26
-        targetSdk 34
-        versionCode 110
-        versionName "1.1.0"
+        minSdk 28
+        targetSdk 35
+        versionCode 111
+        versionName "1.1.1"
 
         def formatDate = new Date().format("yyyyMMddHHmm")
         setProperty("archivesBaseName", "MKGW4_${versionName}_${formatDate}")

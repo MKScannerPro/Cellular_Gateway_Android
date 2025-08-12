@@ -10,21 +10,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-
+import com.moko.lib.scannerui.dialog.BottomDialog;
+import com.moko.lib.scannerui.utils.ToastUtils;
 import com.moko.mkgw4.R;
 import com.moko.mkgw4.activity.BaseActivity;
 import com.moko.mkgw4.databinding.FragmentSslDeviceMkgw4Binding;
-import com.moko.lib.scannerui.dialog.BottomDialog;
 import com.moko.mkgw4.utils.FileUtils;
-import com.moko.lib.scannerui.utils.ToastUtils;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 
 public class SSLDeviceFragment extends Fragment {
     private static final String TAG = SSLDeviceFragment.class.getSimpleName();

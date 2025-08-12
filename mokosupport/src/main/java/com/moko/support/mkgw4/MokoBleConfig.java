@@ -6,14 +6,14 @@ import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattService;
 import android.content.Context;
 
-import androidx.annotation.NonNull;
-
 import com.elvishew.xlog.XLog;
 import com.moko.ble.lib.MokoBleManager;
 import com.moko.ble.lib.callback.MokoResponseCallback;
 import com.moko.ble.lib.utils.MokoUtils;
 import com.moko.support.mkgw4.entity.OrderCHAR;
 import com.moko.support.mkgw4.entity.OrderServices;
+
+import androidx.annotation.NonNull;
 
 final class MokoBleConfig extends MokoBleManager {
 

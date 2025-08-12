@@ -7,11 +7,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.moko.lib.scannerui.utils.ToastUtils;
+import com.moko.mkgw4.databinding.FragmentGeneralDeviceMkgw4Binding;
+
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-
-import com.moko.mkgw4.databinding.FragmentGeneralDeviceMkgw4Binding;
-import com.moko.lib.scannerui.utils.ToastUtils;
 
 public class GeneralDeviceFragment extends Fragment {
     private static final String TAG = GeneralDeviceFragment.class.getSimpleName();

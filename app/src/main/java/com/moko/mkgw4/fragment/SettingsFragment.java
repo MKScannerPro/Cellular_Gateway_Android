@@ -1,7 +1,5 @@
 package com.moko.mkgw4.fragment;
 
-import static com.moko.mkgw4.AppConstants.TYPE_USB;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,14 +8,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-
 import com.moko.ble.lib.task.OrderTask;
+import com.moko.lib.scannerui.dialog.AlertMessageDialog;
+import com.moko.lib.scannerui.dialog.BottomDialog;
 import com.moko.mkgw4.AppConstants;
 import com.moko.mkgw4.R;
 import com.moko.mkgw4.activity.DeviceInfoActivity;
@@ -26,17 +19,22 @@ import com.moko.mkgw4.activity.setting.BleParametersActivity;
 import com.moko.mkgw4.activity.setting.HeartReportSettingActivity;
 import com.moko.mkgw4.activity.setting.LedSettingsActivity;
 import com.moko.mkgw4.activity.setting.LogDataActivity;
-import com.moko.mkgw4.activity.setting.SystemInfoActivity;
 import com.moko.mkgw4.activity.setting.MkGw4SystemTimeActivity;
+import com.moko.mkgw4.activity.setting.SystemInfoActivity;
 import com.moko.mkgw4.databinding.FragmentSettingsMkgw4Binding;
-import com.moko.lib.scannerui.dialog.AlertMessageDialog;
-import com.moko.lib.scannerui.dialog.BottomDialog;
 import com.moko.support.mkgw4.MokoSupport;
 import com.moko.support.mkgw4.OrderTaskAssembler;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+
+import static com.moko.mkgw4.AppConstants.TYPE_USB;
 
 public class SettingsFragment extends Fragment {
     private static final String TAG = SettingsFragment.class.getSimpleName();

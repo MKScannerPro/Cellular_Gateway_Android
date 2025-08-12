@@ -16,29 +16,26 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
-
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.elvishew.xlog.XLog;
 import com.moko.ble.lib.MokoConstants;
 import com.moko.ble.lib.event.ConnectStatusEvent;
 import com.moko.ble.lib.event.OrderTaskResponseEvent;
 import com.moko.ble.lib.task.OrderTaskResponse;
+import com.moko.lib.scannerui.dialog.AlertMessageDialog;
+import com.moko.lib.scannerui.dialog.LoadingMessageDialog;
+import com.moko.lib.scannerui.dialog.PasswordDialog;
+import com.moko.lib.scannerui.dialog.ScanFilterDialog;
+import com.moko.lib.scannerui.utils.ToastUtils;
 import com.moko.mkgw4.AppConstants;
 import com.moko.mkgw4.BuildConfig;
 import com.moko.mkgw4.R;
 import com.moko.mkgw4.activity.setting.LogDataActivity;
 import com.moko.mkgw4.adapter.DeviceListAdapter;
 import com.moko.mkgw4.databinding.ActivityMainMkgw4Binding;
-import com.moko.lib.scannerui.dialog.AlertMessageDialog;
-import com.moko.lib.scannerui.dialog.LoadingMessageDialog;
-import com.moko.lib.scannerui.dialog.PasswordDialog;
-import com.moko.lib.scannerui.dialog.ScanFilterDialog;
 import com.moko.mkgw4.entity.AdvInfo;
 import com.moko.mkgw4.utils.AdvInfoAnalysisImpl;
 import com.moko.mkgw4.utils.SPUtiles;
-import com.moko.lib.scannerui.utils.ToastUtils;
 import com.moko.mkgw4.utils.Utils;
 import com.moko.support.mkgw4.MokoBleScanner;
 import com.moko.support.mkgw4.MokoSupport;
@@ -55,9 +52,10 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.concurrent.ConcurrentHashMap;
+
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 
 public class MKGW4MainActivity extends BaseActivity implements MokoScanDeviceCallback, BaseQuickAdapter.OnItemChildClickListener {
     private ActivityMainMkgw4Binding mBind;

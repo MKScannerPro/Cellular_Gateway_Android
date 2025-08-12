@@ -3,14 +3,18 @@ package com.moko.mkgw4.activity;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.SystemClock;
-
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.FragmentActivity;
+import android.view.DisplayCutout;
 
 import com.moko.lib.scannerui.dialog.LoadingDialog;
 import com.moko.lib.scannerui.dialog.LoadingMessageDialog;
+
+import java.util.List;
+
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.FragmentActivity;
 
 
 public class BaseActivity extends FragmentActivity {
@@ -23,6 +27,17 @@ public class BaseActivity extends FragmentActivity {
             startActivity(intent);
             return;
         }
+        getWindow().getDecorView().setOnApplyWindowInsetsListener((v, insets) -> {
+            DisplayCutout cutout = insets.getDisplayCutout();
+            if (cutout != null) {
+                List<Rect> rects = cutout.getBoundingRects();
+                if (rects.size() != 0) {
+                    getWindow().getDecorView().setPadding(cutout.getSafeInsetLeft(), cutout.getSafeInsetTop(),
+                            cutout.getSafeInsetRight(), cutout.getSafeInsetBottom());
+                }
+            }
+            return insets;
+        });
     }
 
     // 记录上次页面控件点击时间,屏蔽无效点击事件

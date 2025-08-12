@@ -1,8 +1,5 @@
 package com.moko.support.mkgw4;
 
-import androidx.annotation.IntRange;
-import androidx.annotation.Nullable;
-
 import com.moko.ble.lib.task.OrderTask;
 import com.moko.support.mkgw4.entity.ParamsKeyEnum;
 import com.moko.support.mkgw4.task.GetFirmwareRevisionTask;
@@ -17,6 +14,9 @@ import com.moko.support.mkgw4.task.SetPasswordTask;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+
+import androidx.annotation.IntRange;
+import androidx.annotation.Nullable;
 
 public class OrderTaskAssembler {
     ///////////////////////////////////////////////////////////////////////////

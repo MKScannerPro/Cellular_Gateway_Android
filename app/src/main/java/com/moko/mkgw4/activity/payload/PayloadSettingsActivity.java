@@ -1,7 +1,5 @@
 package com.moko.mkgw4.activity.payload;
 
-import static com.moko.mkgw4.AppConstants.TYPE_USB;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -10,10 +8,10 @@ import com.moko.ble.lib.MokoConstants;
 import com.moko.ble.lib.event.ConnectStatusEvent;
 import com.moko.ble.lib.event.OrderTaskResponseEvent;
 import com.moko.ble.lib.task.OrderTaskResponse;
+import com.moko.lib.scannerui.utils.ToastUtils;
 import com.moko.mkgw4.AppConstants;
 import com.moko.mkgw4.activity.BaseActivity;
 import com.moko.mkgw4.databinding.ActivityPayloadSettingsMkgw4Binding;
-import com.moko.lib.scannerui.utils.ToastUtils;
 import com.moko.support.mkgw4.MokoSupport;
 import com.moko.support.mkgw4.OrderTaskAssembler;
 import com.moko.support.mkgw4.entity.OrderCHAR;
@@ -22,6 +20,8 @@ import com.moko.support.mkgw4.entity.ParamsKeyEnum;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+
+import static com.moko.mkgw4.AppConstants.TYPE_USB;
 
 /**
  * @author: jun.liu
