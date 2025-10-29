@@ -558,6 +558,26 @@ public class ParamsTask extends OrderTask {
         };
     }
 
+    public void setExternalPowerSupplyType(@IntRange(from = 0, to = 1) int type) {
+        response.responseValue = data = new byte[]{
+                (byte) 0xED,
+                (byte) 0x01,
+                (byte) ParamsKeyEnum.KEY_EXTERNAL_POWER_SUPPLY_TYPE.getParamsKey(),
+                (byte) 0x01,
+                (byte) type
+        };
+    }
+
+    public void setPowerOnThreshold(@IntRange(from = 0, to = 9) int threshold) {
+        response.responseValue = data = new byte[]{
+                (byte) 0xED,
+                (byte) 0x01,
+                (byte) ParamsKeyEnum.KEY_POWER_ON_THRESHOLD.getParamsKey(),
+                (byte) 0x01,
+                (byte) threshold
+        };
+    }
+
     public void setLowPowerReportEnable(@IntRange(from = 0, to = 1) int enable) {
         data = new byte[]{
                 (byte) 0xED,
@@ -1560,6 +1580,38 @@ public class ParamsTask extends OrderTask {
         response.responseValue = data;
     }
 
+    public void setFilterNanoRules(int enable, int triggerType, List<String> filterNanoRules) {
+        if (filterNanoRules == null || filterNanoRules.isEmpty()) {
+            data = new byte[]{
+                    (byte) 0xED,
+                    (byte) 0x01,
+                    (byte) ParamsKeyEnum.KEY_FILTER_NANO_RULES.getParamsKey(),
+                    (byte) 0x02,
+                    (byte) enable,
+                    (byte) triggerType
+            };
+        } else {
+            StringBuilder builder = new StringBuilder();
+            for (int i = 0, size = filterNanoRules.size(); i < size; i++) {
+                String id = filterNanoRules.get(i);
+                builder.append(id);
+            }
+            byte[] bytes = MokoUtils.hex2bytes(builder.toString());
+            int length = bytes.length + 2;
+            data = new byte[4 + length];
+            data[0] = (byte) 0xED;
+            data[1] = (byte) 0x01;
+            data[2] = (byte) ParamsKeyEnum.KEY_FILTER_NANO_RULES.getParamsKey();
+            data[3] = (byte) length;
+            data[4] = (byte) enable;
+            data[5] = (byte) triggerType;
+            for (int i = 0; i < bytes.length; i++) {
+                data[6 + i] = bytes[i];
+            }
+        }
+        response.responseValue = data;
+    }
+
     public void setIBeaconPayload(int payload) {
         response.responseValue = data = new byte[]{
                 (byte) 0xED,
@@ -1686,6 +1738,18 @@ public class ParamsTask extends OrderTask {
         };
     }
 
+    public void setNanoPayload(int payload) {
+        byte[] bytes = MokoUtils.toByteArray(payload, 2);
+        response.responseValue = data = new byte[]{
+                (byte) 0xED,
+                (byte) 0x01,
+                (byte) ParamsKeyEnum.KEY_NANO_PAYLOAD.getParamsKey(),
+                (byte) 0x02,
+                bytes[0],
+                bytes[1]
+        };
+    }
+
     public void setOtherPayload(int payload) {
         response.responseValue = data = new byte[]{
                 (byte) 0xED,
@@ -1759,7 +1823,7 @@ public class ParamsTask extends OrderTask {
     }
 
 
-    public void setGPSPDOP(@IntRange(from = 25, to = 100) int limit) {
+    public void setGPSPDOP(@IntRange(from = 5, to = 100) int limit) {
         response.responseValue = data = new byte[]{
                 (byte) 0xED,
                 (byte) 0x01,

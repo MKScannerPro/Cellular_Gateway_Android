@@ -62,8 +62,6 @@ import androidx.annotation.IdRes;
 import androidx.fragment.app.FragmentManager;
 import okhttp3.RequestBody;
 
-import static com.moko.mkgw4.AppConstants.TYPE_USB;
-
 public class DeviceInfoActivity extends BaseActivity implements RadioGroup.OnCheckedChangeListener {
     private ActivityDeviceInfoMkgw4Binding mBind;
     private FragmentManager fragmentManager;
@@ -194,11 +192,13 @@ public class DeviceInfoActivity extends BaseActivity implements RadioGroup.OnChe
                                 case KEY_SCAN_REPORT_ENABLE:
                                 case KEY_POWER_ON_METHOD:
                                 case KEY_POWER_LOSS_NOTIFY:
+                                case KEY_EXTERNAL_POWER_SUPPLY_TYPE:
+                                case KEY_POWER_ON_THRESHOLD:
                                     ToastUtils.showToast(this, result == 1 ? "Setup succeed" : "Setup failed");
                                     break;
                                 case KEY_DELETE_BUFFER_DATA:
                                     ToastUtils.showToast(this, result == 1 ? "Setup succeed" : "Setup failed");
-                                    if (deviceType == TYPE_USB) {
+                                    if (deviceType > 0) {
                                         MokoSupport.getInstance().sendOrder(OrderTaskAssembler.getBufferDataCount());
                                     }
                                     break;
@@ -274,6 +274,12 @@ public class DeviceInfoActivity extends BaseActivity implements RadioGroup.OnChe
                                     break;
                                 case KEY_POWER_ON_METHOD:
                                     settingsFragment.setPowerOnMethod(value[4]);
+                                    break;
+                                case KEY_EXTERNAL_POWER_SUPPLY_TYPE:
+                                    settingsFragment.setExternalPowerSupplyType(value[4]);
+                                    break;
+                                case KEY_POWER_ON_THRESHOLD:
+                                    settingsFragment.setPowerOnThreshold(value[4]);
                                     break;
                             }
                         }
@@ -421,9 +427,13 @@ public class DeviceInfoActivity extends BaseActivity implements RadioGroup.OnChe
         orderTasks.add(OrderTaskAssembler.getBattery());
         orderTasks.add(OrderTaskAssembler.getPowerLossNotify());
         orderTasks.add(OrderTaskAssembler.getAutoPowerOn());
-        if (deviceType == TYPE_USB) {
+        if (deviceType > 0) {
             orderTasks.add(OrderTaskAssembler.getBufferDataCount());
             orderTasks.add(OrderTaskAssembler.getPowerOnMethod());
+        }
+        if (deviceType > 1) {
+            orderTasks.add(OrderTaskAssembler.getExternalPowerSupplyType());
+            orderTasks.add(OrderTaskAssembler.getPowerOnThreshold());
         }
         MokoSupport.getInstance().sendOrder(orderTasks.toArray(new OrderTask[]{}));
     }
@@ -484,8 +494,26 @@ public class DeviceInfoActivity extends BaseActivity implements RadioGroup.OnChe
         dialog.show(getSupportFragmentManager());
     }
 
-    public void mainSyncDevices(View view) {
+    public void onConnect(View view) {
         if (isWindowLocked()) return;
+        AlertMessageDialog dialog = new AlertMessageDialog();
+        dialog.setMessage("TThe device will reboot and apply new settings to connect network and MQTT broker.");
+        dialog.setOnAlertConfirmListener(() -> {
+            showSyncingProgressDialog();
+            MokoSupport.getInstance().sendOrder(OrderTaskAssembler.reboot());
+        });
+        dialog.show(getSupportFragmentManager());
+    }
+
+    public void onSyncDevices(View view) {
+        if (isWindowLocked()) return;
+        if (!networkFragment.isNetworkConnected()) {
+            AlertMessageDialog dialog = new AlertMessageDialog();
+            dialog.setMessage("The device needs to be connected to the network and mqtt");
+            dialog.setCancelGone();
+            dialog.show(getSupportFragmentManager());
+            return;
+        }
         // 登录
         String account = IoTDMSPUtils.getStringValue(this, IoTDMConstants.EXTRA_KEY_LOGIN_ACCOUNT, "");
         String password = IoTDMSPUtils.getStringValue(this, IoTDMConstants.EXTRA_KEY_LOGIN_PASSWORD, "");

@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.moko.mkgw4.AppConstants;
 import com.moko.mkgw4.activity.DeviceInfoActivity;
 import com.moko.mkgw4.activity.FixModeActivity;
 import com.moko.mkgw4.activity.GpsFixActivity;
@@ -16,8 +17,6 @@ import com.moko.mkgw4.databinding.FragmentPosMkgw4Binding;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-
-import static com.moko.mkgw4.AppConstants.TYPE_USB;
 
 public class PositionFragment extends Fragment {
     private static final String TAG = PositionFragment.class.getSimpleName();
@@ -35,7 +34,7 @@ public class PositionFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.i(TAG, "onCreateView: ");
         mBind = FragmentPosMkgw4Binding.inflate(inflater, container, false);
-        if (deviceType == TYPE_USB)
+        if (deviceType > 0)
             mBind.tvUpPayloadSettings.setVisibility(View.VISIBLE);
         mBind.tvFixMode.setOnClickListener(v -> startActivity(FixModeActivity.class));
         mBind.tvGpsParams.setOnClickListener(v -> startActivity(GpsFixActivity.class));
@@ -48,12 +47,13 @@ public class PositionFragment extends Fragment {
         DeviceInfoActivity activity = (DeviceInfoActivity) getActivity();
         if (null == activity || activity.isWindowLocked()) return;
         Intent intent = new Intent(activity, clazz);
+        intent.putExtra(AppConstants.DEVICE_TYPE, deviceType);
         startActivity(intent);
     }
 
     public void setDeviceType(int deviceType) {
         this.deviceType = deviceType;
-        if (null != mBind && deviceType == TYPE_USB) {
+        if (null != mBind && deviceType > 0) {
             mBind.tvUpPayloadSettings.setVisibility(View.VISIBLE);
         }
     }

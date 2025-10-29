@@ -32,8 +32,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.moko.mkgw4.AppConstants.TYPE_USB;
-
 /**
  * @author: jun.liu
  * @date: 2023/12/4 17:36
@@ -57,7 +55,7 @@ public class HeartReportSettingActivity extends BaseActivity {
         registerReceiver(mReceiver, filter);
         mReceiverTag = true;
         deviceType = getIntent().getIntExtra(AppConstants.DEVICE_TYPE, 0);
-        if (deviceType == TYPE_USB) mBind.cbSequenceNum.setVisibility(View.VISIBLE);
+        if (deviceType > 0) mBind.cbSequenceNum.setVisibility(View.VISIBLE);
         showSyncingProgressDialog();
         List<OrderTask> orderTasks = new ArrayList<>(2);
         orderTasks.add(OrderTaskAssembler.getDevicePayloadInterval());
@@ -127,7 +125,7 @@ public class HeartReportSettingActivity extends BaseActivity {
                                         mBind.cbBattery.setChecked((status & 0x01) == 1);
                                         mBind.cbAcc.setChecked((status >> 1 & 0x01) == 1);
                                         mBind.cbVehicleStatus.setChecked((status >> 2 & 0x01) == 1);
-                                        if (deviceType == TYPE_USB) {
+                                        if (deviceType > 0) {
                                             mBind.cbSequenceNum.setChecked((status >> 3 & 0x01) == 1);
                                         }
                                     }
@@ -149,7 +147,7 @@ public class HeartReportSettingActivity extends BaseActivity {
             List<OrderTask> orderTasks = new ArrayList<>(4);
             orderTasks.add(OrderTaskAssembler.setDevicePayloadInterval(interval));
             int status;
-            if (deviceType == TYPE_USB) {
+            if (deviceType > 0) {
                 status = (mBind.cbBattery.isChecked() ? 1 : 0) | (mBind.cbAcc.isChecked() ? 1 << 1 : 0) |
                         (mBind.cbVehicleStatus.isChecked() ? 1 << 2 : 0) | (mBind.cbSequenceNum.isChecked() ? 1 << 3 : 0);
             } else {

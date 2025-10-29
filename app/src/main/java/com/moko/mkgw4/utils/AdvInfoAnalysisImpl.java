@@ -30,7 +30,7 @@ public class AdvInfoAnalysisImpl implements DeviceInfoParseable<AdvInfo> {
         byte[] bytes = record.getServiceData(new ParcelUuid(OrderServices.SERVICE_ADV.getUuid()));
         if (null == bytes || bytes.length < 8) return null;
         int deviceType = bytes[0] & 0xff;
-        if (deviceType != 0 && deviceType != 1) return null;
+        if (deviceType > 2) return null;
         boolean verifyEnable = (bytes[7] & 0xff) == 1;
         String uuid = null;
         String major = null;

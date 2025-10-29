@@ -48,8 +48,6 @@ import no.nordicsemi.android.dfu.DfuProgressListenerAdapter;
 import no.nordicsemi.android.dfu.DfuServiceInitiator;
 import no.nordicsemi.android.dfu.DfuServiceListenerHelper;
 
-import static com.moko.mkgw4.AppConstants.TYPE_USB;
-
 public class SystemInfoActivity extends BaseActivity {
     private ActivitySystemInfoMkgw4Binding mBind;
     private boolean mReceiverTag = false;
@@ -70,7 +68,7 @@ public class SystemInfoActivity extends BaseActivity {
         mReceiverTag = true;
         int deviceType = getIntent().getIntExtra(AppConstants.DEVICE_TYPE, 0);
         cellularType = getIntent().getIntExtra("cellularType", 0);
-        if (deviceType == TYPE_USB) {
+        if (deviceType > 0) {
             mBind.layoutLteFirmware.setVisibility(View.VISIBLE);
         }
         showSyncingProgressDialog();
@@ -84,7 +82,7 @@ public class SystemInfoActivity extends BaseActivity {
         orderTasks.add(OrderTaskAssembler.getMacAddress());
         orderTasks.add(OrderTaskAssembler.getIMEI());
         orderTasks.add(OrderTaskAssembler.getIccId());
-        if (deviceType == TYPE_USB) {
+        if (deviceType > 0) {
             orderTasks.add(OrderTaskAssembler.getCellularVersion());
         }
         MokoSupport.getInstance().sendOrder(orderTasks.toArray(new OrderTask[]{}));

@@ -26,6 +26,8 @@ public enum ParamsKeyEnum implements Serializable {
     KEY_DELETE_BUFFER_DATA(0x18),
     KEY_AUTO_POWER_ON_ENABLE(0x19),
     KEY_POWER_ON_METHOD(0x1A),
+    KEY_EXTERNAL_POWER_SUPPLY_TYPE(0x1D),
+    KEY_POWER_ON_THRESHOLD(0x1E),
 
 
 
@@ -118,6 +120,7 @@ public enum ParamsKeyEnum implements Serializable {
     KEY_FILTER_MK_SENSOR_PRECISE(0x7C),
     KEY_FILTER_MK_SENSOR_REVERSE(0x7D),
     KEY_FILTER_MK_SENSOR_RULES(0x7E),
+    KEY_FILTER_NANO_RULES(0x7F),
 
 
 
@@ -167,6 +170,7 @@ public enum ParamsKeyEnum implements Serializable {
     KEY_OTHER_PAYLOAD_DATA(0xAC),
     KEY_SCAN_PAYLOAD_PARAMS(0xAD),
     KEY_MK_SENSOR_PAYLOAD(0xAE),
+    KEY_NANO_PAYLOAD(0xAF),
 
 
 

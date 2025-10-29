@@ -11,6 +11,7 @@ import com.moko.ble.lib.task.OrderTask;
 import com.moko.ble.lib.task.OrderTaskResponse;
 import com.moko.ble.lib.utils.MokoUtils;
 import com.moko.lib.scannerui.utils.ToastUtils;
+import com.moko.mkgw4.AppConstants;
 import com.moko.mkgw4.databinding.ActivityGpsFixMkgw4Binding;
 import com.moko.support.mkgw4.MokoSupport;
 import com.moko.support.mkgw4.OrderTaskAssembler;
@@ -28,6 +29,7 @@ import java.util.List;
 public class GpsFixActivity extends BaseActivity {
     private ActivityGpsFixMkgw4Binding mBind;
     private boolean savedParamsError;
+    private int mDeviceType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +37,8 @@ public class GpsFixActivity extends BaseActivity {
         mBind = ActivityGpsFixMkgw4Binding.inflate(getLayoutInflater());
         setContentView(mBind.getRoot());
         EventBus.getDefault().register(this);
+        mDeviceType = getIntent().getIntExtra(AppConstants.DEVICE_TYPE, 0);
+        mBind.etPdop.setHint(mDeviceType < 2 ? "25-100" : "5-100");
         showSyncingProgressDialog();
         List<OrderTask> orderTasks = new ArrayList<>(2);
         orderTasks.add(OrderTaskAssembler.getGPSTimeout());
@@ -131,7 +135,10 @@ public class GpsFixActivity extends BaseActivity {
         if (TextUtils.isEmpty(mBind.etPdop.getText())) return false;
         final String limitStr = mBind.etPdop.getText().toString();
         final int limit = Integer.parseInt(limitStr);
-        return limit >= 25 && limit <= 100;
+        if (mDeviceType < 2) {
+            return limit >= 25 && limit <= 100;
+        }
+        return limit >= 5 && limit <= 100;
     }
 
     private void saveParams() {

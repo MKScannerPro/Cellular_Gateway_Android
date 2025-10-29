@@ -21,5 +21,4 @@ public class AppConstants {
     public static final String EXTRA_KEY_DEVICE_MAC = "EXTRA_KEY_DEVICE_MAC";
     public static final String EXTRA_KEY_FROM_ACTIVITY = "EXTRA_KEY_FROM_ACTIVITY";
     public static final String DEVICE_TYPE = "DEVICE_TYPE";
-    public static final int TYPE_USB = 1;
 }

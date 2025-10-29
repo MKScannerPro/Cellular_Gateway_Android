@@ -21,6 +21,7 @@ import androidx.annotation.Nullable;
 public class OrderTaskAssembler {
     ///////////////////////////////////////////////////////////////////////////
     // READ
+
     ///////////////////////////////////////////////////////////////////////////
 
     public static OrderTask getManufacturer() {
@@ -77,9 +78,21 @@ public class OrderTaskAssembler {
         return task;
     }
 
-    public static OrderTask getPowerOnMethod(){
+    public static OrderTask getPowerOnMethod() {
         ParamsTask task = new ParamsTask();
         task.setData(ParamsKeyEnum.KEY_POWER_ON_METHOD);
+        return task;
+    }
+
+    public static OrderTask getExternalPowerSupplyType() {
+        ParamsTask task = new ParamsTask();
+        task.setData(ParamsKeyEnum.KEY_EXTERNAL_POWER_SUPPLY_TYPE);
+        return task;
+    }
+
+    public static OrderTask getPowerOnThreshold() {
+        ParamsTask task = new ParamsTask();
+        task.setData(ParamsKeyEnum.KEY_POWER_ON_THRESHOLD);
         return task;
     }
 
@@ -648,6 +661,12 @@ public class OrderTaskAssembler {
         return task;
     }
 
+    public static OrderTask getNanoPayload() {
+        ParamsTask task = new ParamsTask();
+        task.setData(ParamsKeyEnum.KEY_NANO_PAYLOAD);
+        return task;
+    }
+
     public static OrderTask getFilterOtherRelationship() {
         ParamsTask task = new ParamsTask();
         task.setData(ParamsKeyEnum.KEY_FILTER_OTHER_RELATIONSHIP);
@@ -657,6 +676,12 @@ public class OrderTaskAssembler {
     public static OrderTask getFilterOtherRules() {
         ParamsTask task = new ParamsTask();
         task.setData(ParamsKeyEnum.KEY_FILTER_OTHER_RULES);
+        return task;
+    }
+
+    public static OrderTask getFilterNanoRules() {
+        ParamsTask task = new ParamsTask();
+        task.setData(ParamsKeyEnum.KEY_FILTER_NANO_RULES);
         return task;
     }
 
@@ -672,7 +697,7 @@ public class OrderTaskAssembler {
         return task;
     }
 
-    public static OrderTask getGPSPayloadSettings(){
+    public static OrderTask getGPSPayloadSettings() {
         ParamsTask task = new ParamsTask();
         task.setData(ParamsKeyEnum.KEY_GPS_PAYLOAD_SETTINGS);
         return task;
@@ -708,13 +733,13 @@ public class OrderTaskAssembler {
         return task;
     }
 
-    public static OrderTask getBufferDataCount(){
+    public static OrderTask getBufferDataCount() {
         ParamsTask task = new ParamsTask();
         task.setData(ParamsKeyEnum.KEY_BUFFER_DATA_COUNT);
         return task;
     }
 
-    public static OrderTask getCellularVersion(){
+    public static OrderTask getCellularVersion() {
         ParamsTask task = new ParamsTask();
         task.setData(ParamsKeyEnum.KEY_CELLULAR_VERSION);
         return task;
@@ -874,6 +899,7 @@ public class OrderTaskAssembler {
 
     ///////////////////////////////////////////////////////////////////////////
     // WRITE
+
     ///////////////////////////////////////////////////////////////////////////
     public static OrderTask setPowerLossNotify(@IntRange(from = 0, to = 1) int enable) {
         ParamsTask task = new ParamsTask();
@@ -1525,6 +1551,12 @@ public class OrderTaskAssembler {
         return task;
     }
 
+    public static OrderTask setFilterNanoRules(int enable, int triggerType, List<String> filterNanoRules) {
+        ParamsTask task = new ParamsTask();
+        task.setFilterNanoRules(enable, triggerType, filterNanoRules);
+        return task;
+    }
+
     public static OrderTask setFilterMkSensorEnable(@IntRange(from = 0, to = 1) int enable) {
         ParamsTask task = new ParamsTask();
         task.setFilterMkSensorEnable(enable);
@@ -1621,6 +1653,12 @@ public class OrderTaskAssembler {
         return task;
     }
 
+    public static OrderTask setNanoPayload(int payload) {
+        ParamsTask task = new ParamsTask();
+        task.setNanoPayload(payload);
+        return task;
+    }
+
     public static OrderTask setOtherPayloadData(List<String> otherRules) {
         ParamsTask task = new ParamsTask();
         task.setOtherPayloadData(otherRules);
@@ -1652,7 +1690,7 @@ public class OrderTaskAssembler {
     }
 
 
-    public static OrderTask setGPSPDOP(@IntRange(from = 25, to = 100) int limit) {
+    public static OrderTask setGPSPDOP(@IntRange(from = 5, to = 100) int limit) {
         ParamsTask task = new ParamsTask();
         task.setGPSPDOP(limit);
         return task;
@@ -1687,6 +1725,18 @@ public class OrderTaskAssembler {
     public static OrderTask setPowerOnMethod(@IntRange(from = 0, to = 1) int method) {
         ParamsTask task = new ParamsTask();
         task.setPowerOnMethod(method);
+        return task;
+    }
+
+    public static OrderTask setExternalPowerSupplyType(@IntRange(from = 0, to = 1) int type) {
+        ParamsTask task = new ParamsTask();
+        task.setExternalPowerSupplyType(type);
+        return task;
+    }
+
+    public static OrderTask setPowerOnThreshold(@IntRange(from = 0, to = 9) int threshold) {
+        ParamsTask task = new ParamsTask();
+        task.setPowerOnThreshold(threshold);
         return task;
     }
 }

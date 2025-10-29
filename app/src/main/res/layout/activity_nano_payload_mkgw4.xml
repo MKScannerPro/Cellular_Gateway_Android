@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/grey_f2f2f2"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:background="@color/blue_0188cc">
+
+        <TextView
+            android:id="@+id/tv_back"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:drawableLeft="@drawable/ic_back"
+            android:drawablePadding="6dp"
+            android:gravity="center_vertical"
+            android:paddingLeft="16dp"
+            android:textColor="@color/white_ffffff"
+            android:textSize="15sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="NanoBeacon info payload"
+            android:textColor="@color/white_ffffff"
+            android:textSize="17sp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/ivSave"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:src="@drawable/ic_save" />
+    </RelativeLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <CheckBox
+                android:id="@+id/cbRssi"
+                style="@style/NormalCheckBox"
+                android:text="RSSI" />
+
+            <CheckBox
+                android:id="@+id/cbTimestamp"
+                style="@style/NormalCheckBox"
+                android:layout_marginTop="1dp"
+                android:text="Timestamp" />
+
+            <CheckBox
+                android:id="@+id/cbDeviceName"
+                style="@style/NormalCheckBox"
+                android:layout_marginTop="10dp"
+                android:text="Device name" />
+
+            <CheckBox
+                android:id="@+id/cbManufactureId"
+                style="@style/NormalCheckBox"
+                android:layout_marginTop="1dp"
+                android:text="Manufacture id" />
+
+            <CheckBox
+                android:id="@+id/cbAdvType"
+                style="@style/NormalCheckBox"
+                android:layout_marginTop="1dp"
+                android:text="Adv type" />
+
+            <CheckBox
+                android:id="@+id/cbBattery"
+                style="@style/NormalCheckBox"
+                android:layout_marginTop="1dp"
+                android:text="Battery voltage" />
+
+            <CheckBox
+                android:id="@+id/cbTemperature"
+                style="@style/NormalCheckBox"
+                android:layout_marginTop="1dp"
+                android:text="Temperature" />
+
+            <CheckBox
+                android:id="@+id/cbSecCNT"
+                style="@style/NormalCheckBox"
+                android:layout_marginTop="1dp"
+                android:text="SEC CNT" />
+
+            <CheckBox
+                android:id="@+id/cbTriggerStatus"
+                style="@style/NormalCheckBox"
+                android:layout_marginTop="1dp"
+                android:text="Trigger status" />
+
+            <CheckBox
+                android:id="@+id/cbRawDataAdv"
+                style="@style/NormalCheckBox"
+                android:layout_marginTop="10dp"
+                android:text="Raw data- Advertising" />
+
+            <CheckBox
+                android:id="@+id/cbRawDataRes"
+                style="@style/NormalCheckBox"
+                android:layout_marginTop="1dp"
+                android:text="Raw data- Response" />
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</LinearLayout>

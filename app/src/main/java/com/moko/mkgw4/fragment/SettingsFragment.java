@@ -34,8 +34,6 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import static com.moko.mkgw4.AppConstants.TYPE_USB;
-
 public class SettingsFragment extends Fragment {
     private static final String TAG = SettingsFragment.class.getSimpleName();
     private FragmentSettingsMkgw4Binding mBind;
@@ -47,6 +45,8 @@ public class SettingsFragment extends Fragment {
     private final String[] array = {"Detects three times", "Detects three seconds"};
     private int mSelected;
     private final String[] chargeArray = {"Every time", "When battery dead"};
+    private final String[] powerTypeArray = {"Non-solar", "Solar"};
+    private final String[] thresholdArray = {"5%", "10%", "15%", "20%", "25%", "30%", "35%", "40%", "45%", "50%"};
     private int chargeSelected;
     private int cellularType;
 
@@ -73,7 +73,7 @@ public class SettingsFragment extends Fragment {
     public void setMac(String mac, int deviceType) {
         this.mac = mac;
         this.deviceType = deviceType;
-        if (null != mBind && deviceType == TYPE_USB) {
+        if (null != mBind && deviceType > 0) {
             mBind.layoutPowerOnMethod.setVisibility(View.VISIBLE);
         }
     }
@@ -87,10 +87,31 @@ public class SettingsFragment extends Fragment {
         mBind.tvPowerOnMethod.setText(array[mSelected]);
     }
 
+    public void setExternalPowerSupplyType(int type) {
+        mBind.tvExternalPowerSupplyType.setTag(type);
+        mBind.tvExternalPowerSupplyType.setText(powerTypeArray[type]);
+        if (type == 1) {
+            mBind.layoutPowerOnThreshold.setVisibility(View.VISIBLE);
+            mBind.tvPowerOnThreshold.setOnClickListener(this::onPowerOnThresholdClick);
+        } else {
+            mBind.layoutPowerOnThreshold.setVisibility(View.GONE);
+        }
+    }
+
+    public void setPowerOnThreshold(int threshold) {
+        mBind.tvPowerOnThreshold.setTag(threshold);
+        mBind.tvPowerOnThreshold.setText(thresholdArray[threshold]);
+    }
+
     private void initView() {
-        if (deviceType == TYPE_USB) {
+        if (deviceType > 0) {
             mBind.layoutPowerOnMethod.setVisibility(View.VISIBLE);
             mBind.tvPowerOnMethod.setOnClickListener(v -> onPowerOnMethodClick());
+        }
+        if (deviceType > 1) {
+            mBind.layoutExternalPowerSupplyType.setVisibility(View.VISIBLE);
+            mBind.tvExternalPowerSupplyType.setOnClickListener(this::onExternalPowerSupplyTypeClick);
+
         }
         mBind.ivPowerNotification.setOnClickListener(v -> {
             activity.showSyncingProgressDialog();
@@ -162,6 +183,38 @@ public class SettingsFragment extends Fragment {
             List<OrderTask> orderTasks = new ArrayList<>(2);
             orderTasks.add(OrderTaskAssembler.setPowerOnMethod(value));
             orderTasks.add(OrderTaskAssembler.getPowerOnMethod());
+            MokoSupport.getInstance().sendOrder(orderTasks.toArray(new OrderTask[0]));
+        });
+        dialog.show(getChildFragmentManager());
+    }
+
+    private void onExternalPowerSupplyTypeClick(View view) {
+        if (activity.isWindowLocked()) return;
+        int selected = (int) view.getTag();
+        BottomDialog dialog = new BottomDialog();
+        dialog.setDatas(new ArrayList<>(Arrays.asList(powerTypeArray)), selected);
+        dialog.setListener(value -> {
+            view.setTag(value);
+            activity.showSyncingProgressDialog();
+            List<OrderTask> orderTasks = new ArrayList<>(2);
+            orderTasks.add(OrderTaskAssembler.setExternalPowerSupplyType(value));
+            orderTasks.add(OrderTaskAssembler.getExternalPowerSupplyType());
+            MokoSupport.getInstance().sendOrder(orderTasks.toArray(new OrderTask[0]));
+        });
+        dialog.show(getChildFragmentManager());
+    }
+
+    private void onPowerOnThresholdClick(View view) {
+        if (activity.isWindowLocked()) return;
+        int selected = (int) view.getTag();
+        BottomDialog dialog = new BottomDialog();
+        dialog.setDatas(new ArrayList<>(Arrays.asList(thresholdArray)), selected);
+        dialog.setListener(value -> {
+            view.setTag(value);
+            activity.showSyncingProgressDialog();
+            List<OrderTask> orderTasks = new ArrayList<>(2);
+            orderTasks.add(OrderTaskAssembler.setPowerOnThreshold(value));
+            orderTasks.add(OrderTaskAssembler.getPowerOnThreshold());
             MokoSupport.getInstance().sendOrder(orderTasks.toArray(new OrderTask[0]));
         });
         dialog.show(getChildFragmentManager());
@@ -240,7 +293,7 @@ public class SettingsFragment extends Fragment {
     }
 
     public void setPowerChargeNotify(int enable) {
-        if (deviceType == TYPE_USB) {
+        if (deviceType > 0) {
             mBind.tvPowerTitle.setText("Power on by charging");
             mBind.ivPowerCharge.setVisibility(View.GONE);
             mBind.tvPowerCharge.setVisibility(View.VISIBLE);

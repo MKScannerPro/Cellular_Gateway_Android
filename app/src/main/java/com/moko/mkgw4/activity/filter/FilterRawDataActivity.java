@@ -31,8 +31,6 @@ import java.util.List;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 
-import static com.moko.mkgw4.AppConstants.TYPE_USB;
-
 public class FilterRawDataActivity extends BaseActivity {
     private ActivityFilterRawDataMkgw4Binding mBind;
     private boolean savedParamsError;
@@ -50,9 +48,13 @@ public class FilterRawDataActivity extends BaseActivity {
         setContentView(mBind.getRoot());
         EventBus.getDefault().register(this);
         deviceType = getIntent().getIntExtra(AppConstants.DEVICE_TYPE, 0);
-        if (deviceType == TYPE_USB) {
+        if (deviceType > 0) {
             mBind.layoutBxpSensor.setVisibility(View.VISIBLE);
             mBind.layoutBxpSensor.setOnClickListener(v -> startActivity(BxpSensorFilterActivity.class));
+        }
+        if (deviceType > 1) {
+            mBind.rlFilterByNano.setVisibility(View.VISIBLE);
+            mBind.rlFilterByNano.setOnClickListener(v -> startActivity(FilterNanoActivity.class));
         }
         showSyncingProgressDialog();
         MokoSupport.getInstance().sendOrder(OrderTaskAssembler.getFilterRawData());
@@ -117,8 +119,11 @@ public class FilterRawDataActivity extends BaseActivity {
                                     mBind.tvFilterByPir.setText((data >> 9 & 0x01) == 1 ? ON : OFF);
                                     mBind.tvFilterByMkTof.setText((data >> 10 & 0x01) == 1 ? ON : OFF);
                                     mBind.tvFilterByOther.setText((data >> 11 & 0x01) == 1 ? ON : OFF);
-                                    if (deviceType == TYPE_USB) {
+                                    if (deviceType > 0) {
                                         mBind.tvFilterByBxpSensor.setText((data >> 12 & 0x01) == 1 ? ON : OFF);
+                                    }
+                                    if (deviceType > 1) {
+                                        mBind.tvFilterByNano.setText((data >> 13 & 0x01) == 1 ? ON : OFF);
                                     }
                                     isBXPDeviceOpen = (data >> 4 & 0x01) == 1;
                                     isBXPAccOpen = (data >> 5 & 0x01) == 1;

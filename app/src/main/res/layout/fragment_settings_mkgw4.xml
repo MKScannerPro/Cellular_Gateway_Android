@@ -155,19 +155,19 @@
                 android:paddingTop="6dp"
                 android:paddingEnd="12dp"
                 android:paddingBottom="6dp"
-                android:visibility="gone"
-                android:src="@drawable/ic_unchecked" />
+                android:src="@drawable/ic_unchecked"
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/tvPowerCharge"
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
+                android:layout_marginEnd="12dp"
                 android:background="@drawable/shape_radius_blue_btn_bg"
                 android:gravity="center"
                 android:minWidth="145dp"
                 android:paddingStart="10dp"
                 android:paddingEnd="10dp"
-                android:layout_marginEnd="12dp"
                 android:textColor="@color/white_ffffff"
                 android:textSize="15sp"
                 tools:text="When battery dead" />
@@ -238,8 +238,84 @@
             style="@style/NormalText"
             android:layout_marginTop="1dp"
             android:text="Debug mode" />
+
+
+        <LinearLayout
+            android:id="@+id/layoutExternalPowerSupplyType"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/white_ffffff"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
+            android:visibility="gone"
+            tools:visibility="visible">
+
+            <TextView
+                android:layout_width="0px"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:text="External power supply type"
+                android:textColor="@color/black_333333"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/tvExternalPowerSupplyType"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:background="@drawable/shape_radius_blue_btn_bg"
+                android:gravity="center"
+                android:minWidth="145dp"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:textColor="@color/white_ffffff"
+                android:textSize="15sp"
+                tools:text="Solar" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layoutPowerOnThreshold"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="1dp"
+            android:background="@color/white_ffffff"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
+            android:visibility="gone"
+            tools:visibility="visible">
+
+            <TextView
+                android:layout_width="0px"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:text="Power on threshold"
+                android:textColor="@color/black_333333"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/tvPowerOnThreshold"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:background="@drawable/shape_radius_blue_btn_bg"
+                android:gravity="center"
+                android:minWidth="145dp"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:textColor="@color/white_ffffff"
+                android:textSize="15sp"
+                tools:text="20%" />
+        </LinearLayout>
+
         <View
             android:layout_width="match_parent"
-            android:layout_height="80dp"/>
+            android:layout_height="80dp" />
     </LinearLayout>
+
+
 </androidx.core.widget.NestedScrollView>

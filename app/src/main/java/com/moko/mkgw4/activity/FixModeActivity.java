@@ -9,6 +9,7 @@ import com.moko.ble.lib.event.OrderTaskResponseEvent;
 import com.moko.ble.lib.task.OrderTaskResponse;
 import com.moko.lib.scannerui.dialog.BottomDialog;
 import com.moko.lib.scannerui.utils.ToastUtils;
+import com.moko.mkgw4.AppConstants;
 import com.moko.mkgw4.databinding.ActivityFixModeMkgw4Binding;
 import com.moko.support.mkgw4.MokoSupport;
 import com.moko.support.mkgw4.OrderTaskAssembler;
@@ -33,7 +34,7 @@ public class FixModeActivity extends BaseActivity {
         mBind = ActivityFixModeMkgw4Binding.inflate(getLayoutInflater());
         setContentView(mBind.getRoot());
         EventBus.getDefault().register(this);
-
+        int deviceType = getIntent().getIntExtra(AppConstants.DEVICE_TYPE, 0);
         mBind.tvMode.setOnClickListener(v -> {
             if (isWindowLocked()) return;
             BottomDialog dialog = new BottomDialog();

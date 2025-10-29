@@ -21,8 +21,6 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import static com.moko.mkgw4.AppConstants.TYPE_USB;
-
 /**
  * @author: jun.liu
  * @date: 2023/11/30 16:46
@@ -38,7 +36,7 @@ public class PayloadSettingsActivity extends BaseActivity {
         setContentView(mBind.getRoot());
         EventBus.getDefault().register(this);
         int deviceType = getIntent().getIntExtra(AppConstants.DEVICE_TYPE, 0);
-        if (deviceType == TYPE_USB) {
+        if (deviceType > 0) {
             mBind.ivSave.setVisibility(View.VISIBLE);
             mBind.tvBxpSensorPayload.setVisibility(View.VISIBLE);
             mBind.tvCommonItems.setVisibility(View.VISIBLE);
@@ -48,6 +46,10 @@ public class PayloadSettingsActivity extends BaseActivity {
             showSyncingProgressDialog();
             MokoSupport.getInstance().sendOrder(OrderTaskAssembler.getScanPayloadParams());
             mBind.tvBxpSensorPayload.setOnClickListener(v -> startActivity(BxpSensorPayloadActivity.class));
+        }
+        if (deviceType > 1) {
+            mBind.tvNanoPayload.setVisibility(View.VISIBLE);
+            mBind.tvNanoPayload.setOnClickListener(v -> startActivity(NanoPayloadActivity.class));
         }
         mBind.tvBack.setOnClickListener(v -> finish());
         mBind.tvIBeaconPayload.setOnClickListener(v -> startActivity(IBeaconPayloadActivity.class));

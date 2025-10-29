@@ -126,6 +126,14 @@
                 android:text="MK TOF" />
 
             <TextView
+                android:id="@+id/tvNanoPayload"
+                style="@style/NormalText"
+                android:layout_marginTop="1dp"
+                android:text="NanoBeacon info"
+                android:visibility="gone"
+                tools:visibility="visible" />
+
+            <TextView
                 android:id="@+id/tvOtherPayload"
                 style="@style/NormalText"
                 android:layout_marginTop="1dp"

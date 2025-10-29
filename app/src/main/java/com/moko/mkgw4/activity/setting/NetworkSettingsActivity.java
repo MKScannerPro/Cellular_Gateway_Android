@@ -30,8 +30,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.moko.mkgw4.AppConstants.TYPE_USB;
-
 /**
  * @author: jun.liu
  * @date: 2023/11/27 15:22
@@ -65,7 +63,7 @@ public class NetworkSettingsActivity extends BaseActivity implements CompoundBut
         mBind.etApn.setFilters(new InputFilter[]{new InputFilter.LengthFilter(100), inputFilter});
         mBind.etUsername.setFilters(new InputFilter[]{new InputFilter.LengthFilter(100), inputFilter});
         mBind.etPwd.setFilters(new InputFilter[]{new InputFilter.LengthFilter(100), inputFilter});
-        if (deviceType == TYPE_USB) mBind.groupBand.setVisibility(View.VISIBLE);
+        if (deviceType > 0) mBind.groupBand.setVisibility(View.VISIBLE);
 
         showSyncingProgressDialog();
         List<OrderTask> orderTasks = new ArrayList<>(8);
@@ -73,7 +71,7 @@ public class NetworkSettingsActivity extends BaseActivity implements CompoundBut
         orderTasks.add(OrderTaskAssembler.getApn());
         orderTasks.add(OrderTaskAssembler.getApnUsername());
         orderTasks.add(OrderTaskAssembler.getApnPassword());
-        if (deviceType == TYPE_USB) {
+        if (deviceType > 0) {
             orderTasks.add(OrderTaskAssembler.getPin());
             orderTasks.add(OrderTaskAssembler.getRegion());
         }
@@ -81,7 +79,7 @@ public class NetworkSettingsActivity extends BaseActivity implements CompoundBut
 
         MokoSupport.getInstance().sendOrder(orderTasks.toArray(new OrderTask[0]));
         mBind.tvNetworkPriority.setOnClickListener(v -> onNetPriorityClick());
-        if (deviceType == TYPE_USB) {
+        if (deviceType > 0) {
             mBind.checkUs.setOnCheckedChangeListener(this);
             mBind.checkEurope.setOnCheckedChangeListener(this);
             mBind.checkKorea.setOnCheckedChangeListener(this);
@@ -236,7 +234,7 @@ public class NetworkSettingsActivity extends BaseActivity implements CompoundBut
             List<OrderTask> orderTasks = new ArrayList<>(8);
             if (cellularType == 0)
                 orderTasks.add(OrderTaskAssembler.setNetworkPriority(netPrioritySelect));
-            if (deviceType == TYPE_USB) {
+            if (deviceType > 0) {
                 String pin = TextUtils.isEmpty(mBind.etPin.getText()) ? null : mBind.etPin.getText().toString();
                 orderTasks.add(OrderTaskAssembler.setPin(pin));
                 //频段设置
@@ -275,7 +273,7 @@ public class NetworkSettingsActivity extends BaseActivity implements CompoundBut
     }
 
     private boolean isValid() {
-        if (deviceType == TYPE_USB) {
+        if (deviceType > 0) {
             if (!TextUtils.isEmpty(mBind.etPin.getText())) {
                 int length = mBind.etPin.getText().length();
                 if (length < 4 || length > 8) return false;

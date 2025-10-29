@@ -21,13 +21,13 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import static android.app.Activity.RESULT_OK;
-import static com.moko.mkgw4.AppConstants.TYPE_USB;
 
 public class NetworkFragment extends Fragment {
     private static final String TAG = NetworkFragment.class.getSimpleName();
     private FragmentNetworkMkgw4Binding mBind;
     private int cellularType = -1;
     private int mNetworkStatus;
+    private int mMqttStatus;
     private int deviceType;
     private DeviceInfoActivity activity;
 
@@ -72,10 +72,14 @@ public class NetworkFragment extends Fragment {
 
     public void setMqttConnectionStatus(int status) {
         mBind.tvMqttStatus.setText(status == 1 ? "Connected" : "Unconnected");
-        if (deviceType == TYPE_USB) {
-            mBind.tvSyncDevices2Cloud.setVisibility(status == 1 && mNetworkStatus == 4 ? View.VISIBLE : View.GONE);
+        this.mMqttStatus = status;
+    }
+
+    public boolean isNetworkConnected() {
+        if (deviceType > 0) {
+            return mMqttStatus == 1 && mNetworkStatus == 4;
         } else {
-            mBind.tvSyncDevices2Cloud.setVisibility(status == 1 && mNetworkStatus == 2 ? View.VISIBLE : View.GONE);
+            return mMqttStatus == 1 && mNetworkStatus == 2;
         }
     }
 
@@ -92,10 +96,10 @@ public class NetworkFragment extends Fragment {
                 networkCheckDisPlay = "Unconnected";
                 break;
             case 1:
-                networkCheckDisPlay = deviceType == TYPE_USB ? "Registering" : "Connecting";
+                networkCheckDisPlay = deviceType > 0 ? "Registering" : "Connecting";
                 break;
             case 2:
-                networkCheckDisPlay = deviceType == TYPE_USB ? "Registered" : "Connected";
+                networkCheckDisPlay = deviceType > 0 ? "Registered" : "Connected";
                 break;
             case 3:
                 networkCheckDisPlay = "Attaching";
