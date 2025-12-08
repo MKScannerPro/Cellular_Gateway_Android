@@ -324,6 +324,8 @@ mac address of device.You can use it like this:
 DfuServiceInitiator starter = new DfuServiceInitiator(deviceMac)
     .setDeviceName(deviceName)
     .setKeepBond(false)
+    .setCurrentMtu(247)
+    .setForeground(false)
     .setDisableNotification(true);
 starter.setZip(null, firmwareFilePath);
 starter.start(this, DfuService.class);

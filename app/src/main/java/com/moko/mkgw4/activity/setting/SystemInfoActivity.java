@@ -345,9 +345,9 @@ public class SystemInfoActivity extends BaseActivity {
         final DfuServiceInitiator starter = new DfuServiceInitiator(mDeviceMac)
                 .setDeviceName(mDeviceName)
                 .setKeepBond(false)
-                .setForeground(true)
-                .disableMtuRequest()
-                .setDisableNotification(false);
+                .setCurrentMtu(247)
+                .setForeground(false)
+                .setDisableNotification(true);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             DfuServiceInitiator.createDfuNotificationChannel(this);
         }

@@ -105,7 +105,7 @@
                     android:minWidth="120dp"
                     android:onClick="onTriggerType"
                     android:padding="10dp"
-                    android:text="all"
+                    android:text="Normal type"
                     android:textColor="@color/white_ffffff"
                     android:textSize="15sp"
                     app:layout_constraintRight_toRightOf="parent"

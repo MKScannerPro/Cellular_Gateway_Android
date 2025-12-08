@@ -37,7 +37,7 @@ public class FilterNanoActivity extends BaseActivity {
     private boolean savedParamsError;
     private final List<String> filterNano = new ArrayList<>();
 
-    private final String[] mTriggerType = {"All", "Normal type", "Trigger type"};
+    private final String[] mTriggerType = {"Normal type", "Trigger type", "All"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
