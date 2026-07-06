@@ -22,6 +22,8 @@ import com.moko.ble.lib.MokoConstants;
 import com.moko.ble.lib.event.ConnectStatusEvent;
 import com.moko.ble.lib.event.OrderTaskResponseEvent;
 import com.moko.ble.lib.task.OrderTaskResponse;
+import com.moko.lib.scanneriot.Urls;
+import com.moko.lib.scanneriot.utils.IoTDMSPUtils;
 import com.moko.lib.scannerui.dialog.AlertMessageDialog;
 import com.moko.lib.scannerui.dialog.LoadingMessageDialog;
 import com.moko.lib.scannerui.dialog.PasswordDialog;
@@ -112,6 +114,8 @@ public class MKGW4MainActivity extends BaseActivity implements MokoScanDeviceCal
             XLog.d(buffer.toString());
         }
         MokoSupport.getInstance().init(getApplicationContext());
+        if (Urls.loginApi(getApplicationContext()).contains("mokotechnology"))
+            IoTDMSPUtils.clearAllData(getApplicationContext());
         mSavedPassword = SPUtiles.getStringValue(this, AppConstants.SP_KEY_SAVED_PASSWORD_MKGW4, "");
         adapter.setOnItemChildClickListener(this);
         adapter.openLoadAnimation();
